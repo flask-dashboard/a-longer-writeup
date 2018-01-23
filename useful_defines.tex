@@ -1,0 +1,87 @@
+%
+\def\sharedaffiliation{%
+\end{tabular}
+\begin{tabular}{c}}
+%
+
+\lstset{language=Python}
+
+\definecolor{LightGray}{RGB}{250,250,250}
+
+\lstdefinestyle{custompython}{
+	captionpos=b,                    % sets the caption-position to bottom
+	% frame=tb,
+	xleftmargin=\parindent,
+	language=Python,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{MidnightBlue},
+	stringstyle=\color{PineGreen},
+  	commentstyle=\color{Magenta},
+  	backgroundcolor=\color{LightGray}
+}
+
+
+\newcommand{\tool}{Flask Dashboard\xspace}
+\newcommand{\zee}{Zeeguu\xspace}
+\newcommand{\git}{\texttt{git}\xspace}
+\newcommand{\install}{{\small \texttt{pip install flask\_monitoring\_dashboard}}\xspace}
+\newcommand{\activeUserCount}{two hundred\xspace}
+\newcommand{\code}[1]{\texttt{#1}\xspace}
+\newcommand{\perspective}[1]{{\small {\texttt{#1}}\xspace}}
+
+\usepackage{fourier-orns}
+
+\definecolor{myred}{RGB}{230, 20, 70}
+\definecolor{mygreen}{RGB}{60, 180, 75}
+
+
+\newcommand{\niceseparator}
+	{
+		\begin{center}
+  		% $\ast$~$\ast$~$\ast$
+  		% $\clubsuit$~$\clubsuit$~$\clubsuit$
+  		\leafleft
+		\end{center}
+	}
+
+% Endpoint Names 
+%\newcommand{\epDecoration}[1]{{\small {\bf #1}}\xspace}
+\newcommand{\epDecoration}[1]{\code{#1}}
+
+\newcommand{\epTranslations}{{\epDecoration{api.get\_possible\_translations}}\xspace}
+\newcommand{\epOutcome}{\epDecoration{api.report\_exercise\_outcome}}
+\newcommand{\epFeedItems}{\epDecoration{api.get\_feed\_items\_with\_metrics}}
+
+
+
+% Author Comments / Discussion
+
+\definecolor{mlcolor}{RGB}{140, 140, 205}
+\definecolor{vacolor}{RGB}{255, 0, 255}
+
+\newcommand{\ml}[1]{ 
+	{\footnotesize \color{mlcolor}ML: #1}
+	}
+
+\newcommand{\ins}[1]{ 
+	{\color{blue}#1}
+	}
+
+
+\newcommand{\va}[1]{ 
+	{\footnotesize \color{vacolor}VA: #1}
+}
+
+
+\newcommand{\mltp}[1]{\ml{Thijs, Patrick: #1}}
+\newcommand{\mlv}[1]{\ml{Vasilios: #1}}
+
+\definecolor{todocolor}{RGB}{200, 140, 200}
+
+\newcommand{\todo}[1]{ 
+	{\bfseries \color{todocolor}Todo: #1}
+	}
+
+\newcommand{\Fref}[1]{Fig.~\ref{#1}}
+\newcommand{\Sref}[1]{Sec.~\ref{#1}}
+
