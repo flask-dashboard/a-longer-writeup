@@ -19,17 +19,17 @@
 
 
 \begin{document}
-	
 
 %
-\title{A Low-Effort Analytics Platform for Visualizing Evolving Flask-Based Python Web Services}
-% Alternative Titles: The Importance of Visualization in the Performance Monitoring of Python Web Services
+\title{The Importance of Visualization in Performance Monitoring of Python Web Services}
+% Alternative Titles: A Low-Effort Analytics Platform for Visualizing Evolving Flask-Based Python Web Services
 
 \author{
 \IEEEauthorblockN{Patrick Vogel, Thijs Klooster, Vasilios Andrikopoulos, Mircea Lungu}\\
 Johann Bernoulli Institute for Mathematics and Computer Science\\
 University of Groningen, Netherland\\
-Email: \{t.klooster.1,p.p.vogel\}@student.rug.nl, \{v.andrikopoulos,m.f.lungu\}@rug.nl 
+Email: \{t.klooster.1,p.p.vogel\}@student.rug.nl, 
+\{v.andrikopoulos,m.f.lungu\}@rug.nl 
 }
 
 
@@ -37,21 +37,20 @@ Email: \{t.klooster.1,p.p.vogel\}@student.rug.nl, \{v.andrikopoulos,m.f.lungu\}@
 \maketitle
 
 \begin{abstract}
-\todo{Update abstract \& title}
+% TODO: Update abstract
   Tens of thousands of web applications are written in Flask, a Python-based web framework. Despite a rich ecosystem of extensions, there is none that supports the developer in gaining insight into the evolving performance of their service. In this paper, we introduce \tool, a library that addresses this problem. We present the ease with which the library can be integrated in an already existing web application, discuss some of the visualization perspectives that the library provides and point to some future challenges for similar libraries.
-
 \end{abstract}
-
-
 
 
 \section{Introduction}
 
 \todo{Intro to be rewritten; refer to VISSOFT paper as previous work, explain focus is on integration with version control/CI for evolution support, and use of unit tests as early performance indicator}
 
-\todo{motivate with: monitoring in a world which is becoming more and more service-oriented is essential because it allows to perform three main types of actions: system adaptations to provide the request service at the desired level of quality, enabling flexibility in dealing with changing requirements and modes of operation, and enabling operational awareness through dashboards organizing the collected data~\cite{pernici2016monitoring}. In this work we focus on the last part and we discuss how a minimal effort probe-based solution for a particular type of web services can be used to facilitate the other two types of actions by involving the developer.}
+Networked computer systems play important roles in the operation of many businesses and organizations. The performance of a computer system providing services to a business or customers of a business is integral to the 
+successful operation of the business. % TODO: Add citation
+Therefore, monitoring those services is essential because it allows to perform three main types of actions: system adaptations to provide the request service at the desired level of quality, enabling flexibility in dealing with changing requirements and modes of operation, and enabling operational awareness through dashboards organizing the collected data~\cite{pernici2016monitoring}. In this work we focus on the last part and we discuss how a minimal effort probe-based solution for a particular type of web services can be used to facilitate the other two types of actions by involving the developer.
 
-\todo{explain: in~\cite{vogel2017low} we introduced the \tool an a high level with a focus on presenting its performance visualization aspects; in this work we only summarize these features by means of introducing some of the provided functionalities of the \tool. We focus on discussing how the tool is implemented and operating, provide a deeper look at its capabilities for integration with version control and continuous integration environments, introduce a mechanism for performance prediction, and provide an evaluation of the proposed approach based on a case study. }
+In \cite{vogel2017low} we introduced the \tool on a high level with a focus on presenting its performance visualization aspects; in this work we only summarize these features by means of introducing some of the provided functionalities of the \tool. We focus on discussing how the tool is implemented and operating, provide a deeper look at its capabilities for integration with version control and continuous integration environments, introduce a mechanism for performance prediction, and provide an evaluation of the proposed approach based on a case study.
 
 %Every system is a distributed system nowadays \cite{cavage2013there}. Indeed a very large number of applications and web applications are nowadays implemented as two-tier architectures with a front-end implemented with web technologies and a service back-end.
 %\ml{I'm not completely happy with this paragraph}
