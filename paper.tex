@@ -1,6 +1,6 @@
 \documentclass[conference]{IEEEtran}
-	\pdfpagewidth=8.5truein
-	\pdfpageheight=11truein
+\pdfpagewidth=8.5truein
+\pdfpageheight=11truein
 
 \usepackage{graphicx}
 \usepackage{subfig}
@@ -8,7 +8,8 @@
 \usepackage{xspace}
 \usepackage{listings}
 \usepackage[usenames, dvipsnames]{color}
-
+\usepackage{cite}
+\usepackage{caption}
 \usepackage{booktabs}         
 
 \graphicspath{{./img/}}
@@ -17,17 +18,14 @@
 
 \input{useful_defines}
 
-
 \begin{document}
-
-%
 \title{The Importance of Visualization in Performance Monitoring of Python Web Services}
 % Alternative Titles: A Low-Effort Analytics Platform for Visualizing Evolving Flask-Based Python Web Services
 
 \author{
 \IEEEauthorblockN{Patrick Vogel, Thijs Klooster, Vasilios Andrikopoulos, Mircea Lungu}\\
 Johann Bernoulli Institute for Mathematics and Computer Science\\
-University of Groningen, Netherland\\
+University of Groningen, Netherlands\\
 Email: \{t.klooster.1,p.p.vogel\}@student.rug.nl, 
 \{v.andrikopoulos,m.f.lungu\}@rug.nl 
 }
@@ -44,25 +42,25 @@ Email: \{t.klooster.1,p.p.vogel\}@student.rug.nl,
 
 \section{Introduction}
 
-\todo{Intro to be rewritten; refer to VISSOFT paper as previous work, explain focus is on integration with version control/CI for evolution support, and use of unit tests as early performance indicator}
+% \todo{Intro to be rewritten; refer to VISSOFT paper as previous work, explain focus is on integration with version control/CI for evolution support, and use of unit tests as early performance indicator}
 
-Networked computer systems play important roles in the operation of many businesses and organizations. The performance of a computer system providing services to a business or customers of a business is integral to the 
-successful operation of the business. % TODO: Add citation
-Therefore, monitoring those services is essential because it allows to perform three main types of actions: system adaptations to provide the request service at the desired level of quality, enabling flexibility in dealing with changing requirements and modes of operation, and enabling operational awareness through dashboards organizing the collected data~\cite{pernici2016monitoring}. In this work we focus on the last part and we discuss how a minimal effort probe-based solution for a particular type of web services can be used to facilitate the other two types of actions by involving the developer.
+Networked computer systems play important roles in the operation of many businesses and organizations \cite{davenport1998working}. 
+The performance of a computer system providing services to a business or customers of a business is integral to the successful operation of the business.
+And, as every system is nowadays a distributed system \cite{cavage2013there}, it is often hard to achieve the desired quality of those systems. 
+Therefore, monitoring those services is essential because it allows to perform three main types of actions: system adaptations to provide the request service at the desired level of quality, enabling flexibility in dealing with changing requirements and modes of operation, and enabling operational awareness through dashboards organizing the collected data~\cite{pernici2016monitoring}.
+
+In this work we focus on the last part and we discuss how a minimal effort probe-based solution for a particular type of web services can be used to facilitate the other two types of actions by involving the developer.
 
 In \cite{vogel2017low} we introduced the \tool on a high level with a focus on presenting its performance visualization aspects; in this work we only summarize these features by means of introducing some of the provided functionalities of the \tool. We focus on discussing how the tool is implemented and operating, provide a deeper look at its capabilities for integration with version control and continuous integration environments, introduce a mechanism for performance prediction, and provide an evaluation of the proposed approach based on a case study.
 
-%Every system is a distributed system nowadays \cite{cavage2013there}. Indeed a very large number of applications and web applications are nowadays implemented as two-tier architectures with a front-end implemented with web technologies and a service back-end.
-%\ml{I'm not completely happy with this paragraph}
-{\em There is no getting around it: you are building a distributed system} argues a recent article \cite{cavage2013there}. Indeed, even the simplest second-year student project is a web application implemented as two-tier architecture with a Javascript/HTML5 front-end a service backend, usually a REST API.
+
+%{\em There is no getting around it: you are building a distributed system} argues a recent article \cite{cavage2013there}. Indeed, even the simplest second-year student project is a web application implemented as two-tier architecture with a Javascript/HTML5 front-end a service backend, usually a REST API.
 
 % \hfill mds
 % Many contemporary programming languages are offering libraries, modules, or frameworks that facilitate the development of such architectures. 
-Python is one of the most popular programming language choices for implementing the back-end of web applications. GitHub contains more than 500K open source Python projects and the Tiobe Index\footnote{TIOBE programming community index is a measure of popularity of programming languages, created and maintained by the TIOBE Company based in Eindhoven, the Netherlands} ranks Python as the 4th most popular programming language as of June 2016.
+Python is one of the most popular programming language choices for implementing the back-end of web applications. GitHub contains more than 500K open source Python projects and the Tiobe Index\footnote{TIOBE programming community index is a measure of popularity of programming languages, created and maintained by the TIOBE Company based in Eindhoven, the Netherlands} ranks Python as the 4th most popular programming language as of February 2018.
  
-% possible flask summary
 Within the Python community, Flask\footnote{\url{http://flask.pocoo.org/}} is a very popular web framework\footnote{More than 25K projects on GitHub (5\% of all Python projects) are implemented with Flask (cf. a GitHub search for ``language:Python Flask'')}. It provides simplicity and flexibility by implementing a bare-minimum web server, and thus advertises as a micro-framework. The Flask tutorial shows how setting up a simple Flask {\em ``Hello World''} web-service requires no more than 5 lines of Python code \cite{ flask:tutorial}.
-% end of summary
  
 Despite their popularity, to the best of our knowledge, there is no simple solution for monitoring the evolving performance of Flask web applications. Thus, every one of the developers of these projects faces one of the following options when confronted with the need of gathering insight into the runtime behavior of their implemented services: 
 
@@ -91,12 +89,8 @@ As a case study, on which we will illustrate our solution, we are going to use a
 
 \section{Case Study}
 \label{sec:case}
-
-%\todo{Either leave as is or add more info on usage by college if possible}
-
   \zee\footnote{\url{https://github.com/zeeguu-ecosystem/}} is a platform and an ecosystem of applications for accelerating vocabulary acquisition in a foreign language \cite{Lungu16}. 
-%
-  The architecture of the ecosystem has at its core an API and a series of satellite applications that together offer to a learner three main inter-dependent features:
+The architecture of the ecosystem has at its core an API and a series of satellite applications that together offer to a learner three main inter-dependent features:
 
   \begin{enumerate}
 
@@ -112,6 +106,8 @@ As a case study, on which we will illustrate our solution, we are going to use a
   % The development of the core API itself is a research project. 
 
   At the time of writing this article, the ecosystem consists of a reader web application, a web based exercises platform, and a smartwatch application, which are used at the moment of writing this article by more than \activeUserCount active users. The users come from a highschool, a language school, and some users are using it on their own, without any educational context. The highest load we observed until now on the API consisted of 12K requests in one day.
+% Without the Dashboard, there is no possible way to measure that you've 12K requests per day, so maybe leave this out.
+% Furhtermore, it sounds like an advertisement for Zeeguu, which is not the purpose of this paper.
 
   
   We will use this \zee API as a case study for this paper. 
@@ -129,7 +125,7 @@ As a case study, on which we will illustrate our solution, we are going to use a
 
   As discussed in the introductory section, in previous work~\cite{vogel2017low} we introduced \tool, a drop-in Python library that allows developers to monitor their Flask-based Python web applications with minimal effort.
 %
-  The \tool is implemented for Python 3.6 and is available on the Python Package Index repository\footnote{\url{https://pypi.python.org/pypi/flask-monitoring-dashboard/1.8}} from where it can be installed by running \install from the command line. 
+  The \tool is implemented in Python and works in Python 2.7 up to Python 3.6 and is available on the Python Package Index repository\footnote{\url{https://pypi.python.org/pypi/flask-monitoring-dashboard/1.8}} from where it can be installed by running \install from the command line. 
 %  
   The source code of the \tool is published under a permissive MIT license and is available on GitHub\footnote{\url{https://github.com/flask-dashboard}}.
   
@@ -164,7 +160,7 @@ As a case study, on which we will illustrate our solution, we are going to use a
   ...
   \end{lstlisting}
 
-  During binding, the \tool will search for all endpoints defined in the target application. These will be presented to the user in the tool web interface, where the user can select the ones that should be monitored, see \Fref{fig:sep}. The last access time of the endpoint by users, irrespective of whether it is selected by the user to be monitored or not, is also displayed as the means of identifying potentially obsolete endpoints.
+  During binding, the \tool will iterate through all endpoints defined in the target application. These will be presented to the user in the tool web interface, where the user can select the ones that should be monitored, see \Fref{fig:sep}. The last access time of the endpoint by users, irrespective of whether it is selected by the user to be monitored or not, is also displayed as the means of identifying potentially obsolete endpoints.
 
     % \mltp{a small screenshot of how the dashboard allows one to select the interesting }
     \begin{figure}
@@ -174,9 +170,16 @@ As a case study, on which we will illustrate our solution, we are going to use a
       \label{fig:sep}
     \end{figure}
 
-  In order to monitor an endpoint, the \tool creates a function wrapper for the API function that corresponds to the endpoint. This way, the wrapper will be executed whenever that API call is made. The wrapper contains the code that takes care of monitoring an endpoint. Data collected by the wrappers are persisted in a local database. The SQLAlchemy Object Relational Mapper\footnote{\url{https://www.sqlalchemy.org/}} on top of SQLite\footnote{\url{https://www.sqlite.org/}} is used for this purpose.
+  In order to monitor an endpoint, the \tool creates a function wrapper for the API function that corresponds to the endpoint. An alternative for monitoring endpoints would be to wrap the entire application into a middleware. However, this alternative results in an overhead for all endpoints, while using a function wrapper only provides overhead for the monitored endpoints. Thus, the wrapper will be executed whenever that API call is made. The wrapper contains the code that takes care of monitoring an endpoint. Data collected by the wrappers are persisted in a local database. The SQLAlchemy Object Relational Mapper\footnote{\url{https://www.sqlalchemy.org/}} on top of SQLite\footnote{\url{https://www.sqlite.org/}} is used for this purpose.
 
-  \ml{we must insert at least one dashboard view here... otherwise people will lose their patience... also it will help with explaining the outliers... also, one should see that a large variety of views are already available at this point... I know this risks being  }
+Together with the monitoring-API, a visualization-API is provided. The functionality of this API is to present the results that are collected in the former API to the user of the \tool. The visualization-API is further explained in Section \ref{sec:views}, but can already be seen in Figure \ref{fig:overview}.
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=\linewidth]{overview.png}
+      \caption{Overview of the endpoints that are monitored in \zee API}
+      \label{fig:overview}
+    \end{figure}
   
   \paragraph{Automated outlier detection and monitoring}
   
@@ -211,7 +214,7 @@ As a case study, on which we will illustrate our solution, we are going to use a
   \end{lstlisting}
   This feature, as discussed further in the following section, is important for the clustering of users depending on their application usage. It also provides a view on the distribution of the work load across the application endpoints on a per user basis that allows the identification of more or less popular endpoints for further performance improvements. \ml{this previous paragraph seems a bit reduntant. must revisit}
   
-  \paragraph{Evolution monitoring for Git-versioned projects }
+  \paragraph{Evolution monitoring for Git-versioned projects}
   
   Version control in \tool is supported in two ways. 
 
@@ -573,10 +576,8 @@ In the future, we plan to perform case studies with other sytstems, with the goa
 
 
 % references section
-
 \bibliographystyle{abbrv}
 \bibliography{paper}
-
 
 % that's all folks
 \end{document}
