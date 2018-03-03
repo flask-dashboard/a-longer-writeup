@@ -1,6 +1,6 @@
 \documentclass[conference]{IEEEtran}
-	\pdfpagewidth=8.5truein
-	\pdfpageheight=11truein
+\pdfpagewidth=8.5truein
+\pdfpageheight=11truein
 
 \usepackage{graphicx}
 \usepackage{subfig}
@@ -8,7 +8,8 @@
 \usepackage{xspace}
 \usepackage{listings}
 \usepackage[usenames, dvipsnames]{color}
-
+\usepackage{cite}
+\usepackage{caption}
 \usepackage{booktabs}         
 
 \graphicspath{{./img/}}
@@ -17,19 +18,16 @@
 
 \input{useful_defines}
 
-
 \begin{document}
-	
-
-%
-\title{A Low-Effort Analytics Platform for Visualizing Evolving Flask-Based Python Web Services}
-% Alternative Titles: The Importance of Visualization in the Performance Monitoring of Python Web Services
+\title{The Importance of Visualization in Performance Monitoring of Python Web Services}
+% Alternative Titles: A Low-Effort Analytics Platform for Visualizing Evolving Flask-Based Python Web Services
 
 \author{
 \IEEEauthorblockN{Patrick Vogel, Thijs Klooster, Vasilios Andrikopoulos, Mircea Lungu}\\
 Johann Bernoulli Institute for Mathematics and Computer Science\\
-University of Groningen, Netherland\\
-Email: \{t.klooster.1,p.p.vogel\}@student.rug.nl, \{v.andrikopoulos,m.f.lungu\}@rug.nl 
+University of Groningen, Netherlands\\
+Email: \{t.klooster.1,p.p.vogel\}@student.rug.nl, 
+\{v.andrikopoulos,m.f.lungu\}@rug.nl 
 }
 
 
@@ -37,33 +35,32 @@ Email: \{t.klooster.1,p.p.vogel\}@student.rug.nl, \{v.andrikopoulos,m.f.lungu\}@
 \maketitle
 
 \begin{abstract}
-\todo{Update abstract \& title}
+% TODO: Update abstract
   Tens of thousands of web applications are written in Flask, a Python-based web framework. Despite a rich ecosystem of extensions, there is none that supports the developer in gaining insight into the evolving performance of their service. In this paper, we introduce \tool, a library that addresses this problem. We present the ease with which the library can be integrated in an already existing web application, discuss some of the visualization perspectives that the library provides and point to some future challenges for similar libraries.
-
 \end{abstract}
-
-
 
 
 \section{Introduction}
 
-\todo{Intro to be rewritten; refer to VISSOFT paper as previous work, explain focus is on integration with version control/CI for evolution support, and use of unit tests as early performance indicator}
+% \todo{Intro to be rewritten; refer to VISSOFT paper as previous work, explain focus is on integration with version control/CI for evolution support, and use of unit tests as early performance indicator}
 
-\todo{motivate with: monitoring in a world which is becoming more and more service-oriented is essential because it allows to perform three main types of actions: system adaptations to provide the request service at the desired level of quality, enabling flexibility in dealing with changing requirements and modes of operation, and enabling operational awareness through dashboards organizing the collected data~\cite{pernici2016monitoring}. In this work we focus on the last part and we discuss how a minimal effort probe-based solution for a particular type of web services can be used to facilitate the other two types of actions by involving the developer.}
+Networked computer systems play important roles in the operation of many businesses and organizations \cite{davenport1998working}. 
+The performance of a computer system providing services to a business or customers of a business is integral to the successful operation of the business.
+And, as every system is nowadays a distributed system \cite{cavage2013there}, it is often hard to achieve the desired quality of those systems. 
+Therefore, monitoring those services is essential because it allows to perform three main types of actions: system adaptations to provide the request service at the desired level of quality, enabling flexibility in dealing with changing requirements and modes of operation, and enabling operational awareness through dashboards organizing the collected data~\cite{pernici2016monitoring}.
 
-\todo{explain: in~\cite{vogel2017low} we introduced the \tool an a high level with a focus on presenting its performance visualization aspects; in this work we only summarize these features by means of introducing some of the provided functionalities of the \tool. We focus on discussing how the tool is implemented and operating, provide a deeper look at its capabilities for integration with version control and continuous integration environments, introduce a mechanism for performance prediction, and provide an evaluation of the proposed approach based on a case study. }
+In this work we focus on the last part and we discuss how a minimal effort probe-based solution for a particular type of web services can be used to facilitate the other two types of actions by involving the developer.
 
-%Every system is a distributed system nowadays \cite{cavage2013there}. Indeed a very large number of applications and web applications are nowadays implemented as two-tier architectures with a front-end implemented with web technologies and a service back-end.
-%\ml{I'm not completely happy with this paragraph}
-{\em There is no getting around it: you are building a distributed system} argues a recent article \cite{cavage2013there}. Indeed, even the simplest second-year student project is a web application implemented as two-tier architecture with a Javascript/HTML5 front-end a service backend, usually a REST API.
+In \cite{vogel2017low} we introduced the \tool on a high level with a focus on presenting its performance visualization aspects; in this work we only summarize these features by means of introducing some of the provided functionalities of the \tool. We focus on discussing how the tool is implemented and operating, provide a deeper look at its capabilities for integration with version control and continuous integration environments, introduce a mechanism for performance prediction, and provide an evaluation of the proposed approach based on a case study.
+
+
+%{\em There is no getting around it: you are building a distributed system} argues a recent article \cite{cavage2013there}. Indeed, even the simplest second-year student project is a web application implemented as two-tier architecture with a Javascript/HTML5 front-end a service backend, usually a REST API.
 
 % \hfill mds
 % Many contemporary programming languages are offering libraries, modules, or frameworks that facilitate the development of such architectures. 
-Python is one of the most popular programming language choices for implementing the back-end of web applications. GitHub contains more than 500K open source Python projects and the Tiobe Index\footnote{TIOBE programming community index is a measure of popularity of programming languages, created and maintained by the TIOBE Company based in Eindhoven, the Netherlands} ranks Python as the 4th most popular programming language as of June 2016.
+Python is one of the most popular programming language choices for implementing the back-end of web applications. GitHub contains more than 500K open source Python projects and the Tiobe Index\footnote{TIOBE programming community index is a measure of popularity of programming languages, created and maintained by the TIOBE Company based in Eindhoven, the Netherlands} ranks Python as the 4th most popular programming language as of February 2018 \cite{tiobe}.
  
-% possible flask summary
-Within the Python community, Flask\footnote{\url{http://flask.pocoo.org/}} is a very popular web framework\footnote{More than 25K projects on GitHub (5\% of all Python projects) are implemented with Flask (cf. a GitHub search for ``language:Python Flask'')}. It provides simplicity and flexibility by implementing a bare-minimum web server, and thus advertises as a micro-framework. The Flask tutorial shows how setting up a simple Flask {\em ``Hello World''} web-service requires no more than 5 lines of Python code \cite{ flask:tutorial}.
-% end of summary
+Within the Python community, Flask\footnote{\url{http://flask.pocoo.org/}} is a very popular web framework\footnote{More than 35K projects on GitHub are implemented with Flask (cf. a GitHub search for ``language:Python Flask'')}. It provides simplicity and flexibility by implementing a bare-minimum web server, and thus advertises as a micro-framework. The Flask tutorial shows how setting up a simple Flask {\em ``Hello World''} web-service requires no more than 5 lines of Python code \cite{ flask:tutorial}.
  
 Despite their popularity, to the best of our knowledge, there is no simple solution for monitoring the evolving performance of Flask web applications. Thus, every one of the developers of these projects faces one of the following options when confronted with the need of gathering insight into the runtime behavior of their implemented services: 
 
@@ -92,12 +89,8 @@ As a case study, on which we will illustrate our solution, we are going to use a
 
 \section{Case Study}
 \label{sec:case}
-
-%\todo{Either leave as is or add more info on usage by college if possible}
-
   \zee\footnote{\url{https://github.com/zeeguu-ecosystem/}} is a platform and an ecosystem of applications for accelerating vocabulary acquisition in a foreign language \cite{Lungu16}. 
-%
-  The architecture of the ecosystem has at its core an API and a series of satellite applications that together offer to a learner three main inter-dependent features:
+The architecture of the ecosystem has at its core an API and a series of satellite applications that together offer to a learner three main inter-dependent features:
 
   \begin{enumerate}
 
@@ -113,7 +106,6 @@ As a case study, on which we will illustrate our solution, we are going to use a
   % The development of the core API itself is a research project. 
 
   At the time of writing this article, the ecosystem consists of a reader web application, a web based exercises platform, and a smartwatch application, which are used at the moment of writing this article by more than \activeUserCount active users. The users come from a highschool, a language school, and some users are using it on their own, without any educational context. The highest load we observed until now on the API consisted of 12K requests in one day.
-
   
   We will use this \zee API as a case study for this paper. 
   All the figures in this paper are captured from the actual deployment of \tool in the context of the \zee API. The figures are interactive offering basic data exploration capabilities: filter, zoom, and details on demand\cite{Shne99a}. The \tool deployment for the case study can be accessed publicly\footnote{\url{https://zeeguu.unibe.ch/api/dashboard}; username: {\em guest}, password: {\em soap-sac}}. 
@@ -128,28 +120,26 @@ As a case study, on which we will illustrate our solution, we are going to use a
 
 %\todo{Refer to VISSOFT paper~\cite{vogel2017low} and rephrase where possible; add more info on implementation, e.g. annotation mechanism, database design, session handling etc.}
 
-  As discussed in the introductory section, in previous work~\cite{vogel2017low} we introduced \tool, a drop-in Python library that allows developers to monitor their Flask-based Python web applications with minimal effort.
+  As discussed in the introductory section, in previous work~\cite{vogel2017low} we introduced \tool, a drop-in Flask Extension in Python that allows developers to monitor their web applications with minimal effort.
 %
-  The \tool is implemented for Python 3.6 and is available on the Python Package Index repository\footnote{\url{https://pypi.python.org/pypi/flask-monitoring-dashboard/1.8}} from where it can be installed by running \install from the command line. 
+  The \tool is implemented in Python and works in Python 2.7 up to Python 3.6 and is available on the Python Package Index repository\footnote{\url{https://pypi.org/project/Flask-MonitoringDashboard/}} from where it can be installed by running \install from the command line. 
 %  
-  The source code of the \tool is published under a permissive MIT license and is available on GitHub\footnote{\url{https://github.com/flask-dashboard}}.
+  The source code of the \tool is published under a permissive MIT license and is available on GitHub\footnote{\url{https://github.com/flask-dashboard/flask_monitoringdashboard/}}.
   
   \paragraph{Usage \& Configuration}
   
-  The fact that the \tool itself is being developed in Python using Flask makes binding to the services of a to-be monitored application developed with the same technologies easy and intuitive. \ml{this is not what matters... rather, what matters is that with the right backend, we can do this minimal configuration for any technology... do you see what i mean? let me see if i can put it in words...}
+  The fact that the \tool itself is being developed in Python using Flask makes binding to the services of a to-be monitored application developed with the same technologies easy and intuitive. Thus, there are no external dependencies needed (apart from the \tool itself). This leads to minimal effort, as the configuration is the only thing that has be done.
 
-  Our main goal with the \tool was to allow the integration of the dashboard with an API with minimal effort.
-  To start using the \tool, one simply needs to add two lines of code to their Flask web service\footnote{\ins{ In this paper we present the integration with APIs written in Python and Flask hoping that this will not prevent the reader from seeing the more general idea; all the tools we show here for Flask can be applied to other API technologies (e.g. Django) by simply providing a few back-end adapters in the right places. }}:
+  To start using the \tool, one simply needs to add two lines of code to their Flask web service:
 
-  % caption=Configuring the \tool is straightforward,
-  \begin{lstlisting}[style=custompython]
-  import dashboard
+  \begin{lstlisting}[style=custompython, caption=Configuring the \tool is straightforward]
+  import flask_monitoringdashboard as dashboard
 
   # flask_app is the Flask app object
   dashboard.bind(flask_app)
   \end{lstlisting}
 
-  After (re)deployment of the application, the \tool becomes available at the \code{/dashboard} route of the Flask application. Further configuration is possible by adding additional statements before the binding definition, for example,
+  After (re)deployment of the application, the \tool becomes available at the \code{/dashboard} route of the Flask application. Further configuration is possible by adding additional statements before the binding definition, for example:
 
   \begin{lstlisting}[style=custompython]
   ...
@@ -161,13 +151,12 @@ As a case study, on which we will illustrate our solution, we are going to use a
   
   \begin{lstlisting}[style=custompython]
   ...
-  dashboard.config.from_file('config.cfg')
+  dashboard.config.init_form(file='config.cfg')
   ...
   \end{lstlisting}
 
-  During binding, the \tool will search for all endpoints defined in the target application. These will be presented to the user in the tool web interface, where the user can select the ones that should be monitored, see \Fref{fig:sep}. The last access time of the endpoint by users, irrespective of whether it is selected by the user to be monitored or not, is also displayed as the means of identifying potentially obsolete endpoints.
+  During binding, the \tool will iterate through all endpoints defined in the target application. These will be presented to the user in the tool web interface, where the user can select the ones that should be monitored, see \Fref{fig:sep}. 
 
-    % \mltp{a small screenshot of how the dashboard allows one to select the interesting }
     \begin{figure}
       \centering
       \includegraphics[width=\linewidth]{selecting_endpoints.png}
@@ -175,55 +164,54 @@ As a case study, on which we will illustrate our solution, we are going to use a
       \label{fig:sep}
     \end{figure}
 
-  In order to monitor an endpoint, the \tool creates a function wrapper for the API function that corresponds to the endpoint. This way, the wrapper will be executed whenever that API call is made. The wrapper contains the code that takes care of monitoring an endpoint. Data collected by the wrappers are persisted in a local database. The SQLAlchemy Object Relational Mapper\footnote{\url{https://www.sqlalchemy.org/}} on top of SQLite\footnote{\url{https://www.sqlite.org/}} is used for this purpose.
+  In order to monitor an endpoint, the \tool attaches a function wrapper for the API function that corresponds to the endpoint. An alternative for monitoring endpoints would be to wrap the entire application into a middleware \footnote{This is presented in \cite{Zeng}.}. However, this alternative results in an overhead for the entire application, while using a function wrapper only provides overhead for the endpoints that are wrapped. Thus, the wrapper will be executed only whenever the corresponding API call is made. The wrapper contains the code that takes care of monitoring an endpoint. Data collected by the wrappers are persisted in a local database. The SQLAlchemy Object Relational Mapper\footnote{\url{https://www.sqlalchemy.org/}} on top of SQLite\footnote{\url{https://www.sqlite.org/}} is used for this purpose.
+  
+  In \Fref{fig:sep} the last access time of the endpoint by users, irrespective of whether it is selected by the user to be monitored or not, is also displayed. This has the means of identifying potentially obsolete endpoints. This functionality is implemented using a different wrapper. But, since this wrapper is attached to every endpoint, it introduces some overhead for the entire application.
 
-  \ml{we must insert at least one dashboard view here... otherwise people will lose their patience... also it will help with explaining the outliers... also, one should see that a large variety of views are already available at this point... I know this risks being  }
-  
-  \paragraph{Automated outlier detection and monitoring}
-  
-  \ins{When an API is called from within a highly interactive application (as it is the case with the Zeeguu ecosystem) 
-  of particular interest to the API developers are performance {\em outliers}. Indeed, a translation request that takes three times more than expected can seriously decrease the perceived quality of the application. Thus,} identifying, collecting all appropriate data, and diagnosing the root causes of such outliers is especially critical in improving the quality of an application. 
-  
-  % In the context of the RESTful services support by Flask, this means request serving times that deviate from the average to an unexpected degree. 
-  
-  For this purpose the \tool tracks for every monitored endpoint a {\em running average} response time value\footnote{\ins{For performance reasons, we assume that the response times for the endpoints are normally distributed. Otherwise, more general density distribution information must be collected in real time.}}. When it detects that a given request is an outlier with respect to this past average running value, it triggers the {\em outlier data collection routine} which stores \ins{extra information} about the current execution environment. A configurable threshold with a default value of $2.5$ times the running average response time is used for this purpose. 
+% PV: Maybe remove paragraph and figure, as it doesn't make really sense in this place.
+Apart form the monitoring-API, a visualization-API is provided. The functionality of this API is to present the results that are collected in the former API to the user of the \tool. The visualization-API is further explained in Section \ref{sec:views}, but can already be seen in Figure \ref{fig:overview}.
 
-  For every detected outlier request, the \tool collects information about the current Python stack trace, CPU load, memory consumption, request parameters, etc. in order to allow the maintainer to investigate the causes of these exceptionally slow response times. In this way it is possible to get \ins{detailed insight into the operation of the application in the extreme cases without unnecessarily burdening it with logging this information for every request}.
+    \begin{figure}
+      \centering
+      \includegraphics[width=\linewidth]{overview.png}
+      \caption{Overview of the endpoints that are monitored in \zee API}
+      \label{fig:overview}
+    \end{figure}
+  
+\paragraph{Automated outlier detection and monitoring}
+  When an API is called from within a highly interactive application (as it is the case with the Zeeguu ecosystem) of particular interest to the API developers are performance {\em outliers}. We consider a request an outlier, if processing that requests takes three times more than the {\em running average} for that endpoint\footnote{It is also possible to configure a different number for detecting outliers.}. Identifying and collecting all appropriate data, and diagnosing the root causes of such outliers is especially critical in improving the quality of an application. 
+  
+  An assumption that have to be made is that the response time values are normally distributed, otherwise more general density distribution information must be collected in real time. When it detects that a given request is an outlier with respect to this past average running value, it triggers the {\em outlier data collection routine} which stores extra information, such as the current stack trace, all request variables, memory consumption, and CPU load at the moment of processing the request. This allow the maintainer to investigate the causes of these exceptionally slow response times. In this way it is possible to get detailed insight into the operation of the application in the extreme cases without unnecessarily burdening it with logging this information for every request.
   
   \paragraph{User-level monitoring}
+  \label{sec:user-monitoring}
+  Another possibility for the occurrence of outliers is due to differences in response time per user. For example, Gmail engineers admitted in 2010 that the performance of their service was dependent on the amount of emails a user would have in their Inbox \cite{gmail}. Therefore, it is important to keep track which request belongs to which user. This provides the functionality for the developer to understand the performance of their service for individual users, or for different user groups. However, since Flask itself support no functionality for user-management, it is not possible for the \tool to retrieve the corresponding user for a certain request. Neither it is an option for storing this in the configuration file, due to retrieving the user-information is only possible in the code itself.
   
-  \ins{Sometimes, the same service endpoint will have different execution times for different users, based on the amount of data that a user has in their account. Gmail engineers admitted in 2010 that the performance of their service was dependent on the amount of emails a user would have in their Inbox \footnote{https://techcrunch.com/2010/03/14/gmail-slow/, visited September 23 2017}. }
-
-  \ins{If the API provider needs to understand the performance of their service for individual users, or for different user groups, the dashboard should have a way of distilling a user or a user group from the API request. For a large number of Flask applications that use the global \code{flask.request} object, the object} can be used to retrieve session information, \ins{as in the following snippet}: 
+This leads to a functionality in which the API developer can pass a function that retrieves the information per user. This implements a way of distilling a user or a user group from the API request. Another advantage of specifying the function by the API developer is that the results can be clustered on more than users only. In the example above, the developers might group on email-count, which allows them to find a relation between this and the execution time. For a large number of Flask applications that use the global \code{flask.request} object, the object can be used to retrieve session information, as in the following snippet: 
   % . This ability can be used in order to allow, for example, the identification of application users from the \tool, and the consequent aggregation of monitoring information on a per user basis as follows: 
   
-  \begin{lstlisting}[style=custompython]  
-  # app specific way of extracting the user
-  # from a flask request object    
+  \begin{lstlisting}[style=custompython,caption=App specific way of extracting the user from a Flask request object]
   def get_user_id():
-  sid = int(flask.request.args['session'])
-  session = User.find_for_session(sid)
-  return user_id
+    sid = int(flask.request.args['session'])
+    session = User.find_for_session(sid)
+    return user_id
   
   # attaching the get_user_id function
   dashboard.config.get_group_by = 
       get_user_id
   
   \end{lstlisting}
-  This feature, as discussed further in the following section, is important for the clustering of users depending on their application usage. It also provides a view on the distribution of the work load across the application endpoints on a per user basis that allows the identification of more or less popular endpoints for further performance improvements. \ml{this previous paragraph seems a bit reduntant. must revisit}
+  %This feature, as discussed further in the following section, is important for the clustering of users depending on their application usage. It also provides a view on the distribution of the work load across the application endpoints on a per user basis that allows the identification of more or less popular endpoints for further performance improvements. \ml{this previous paragraph seems a bit reduntant. must revisit}
   
-  \paragraph{Evolution monitoring for Git-versioned projects }
-  
-  Version control in \tool is supported in two ways. 
-
+  \paragraph{Evolution monitoring for Git-versioned projects}
+  It is not only useful to find relations in processing endpoints across users, but it is also important to detect whether the overall performance of the web-service decreases during its evolution, which is likely to happen according to \cite{Kaminski:2006:DAW:1137677.1137694}. There are two ways in \tool to support version control: 
 
 \begin{enumerate}
-
   \item  \textit{Manual} version control requires the developer to tag each new version of the application with an appropriate version identifier~\cite{papazoglou2011managing} using the \code{APP\_VERSION} configuration parameter, for example by adding to the configuration file:
   
-    \begin{lstlisting}[style=custompython]
+    \begin{lstlisting}[style=custompython,caption=Manually adding version control]
     [dashboard]
-    APP_VERSION=<versionID>
+    APP_VERSION=1.2.3
     \end{lstlisting}
 
 
@@ -231,23 +219,20 @@ As a case study, on which we will illustrate our solution, we are going to use a
   
       \begin{lstlisting}[style=custompython]
       ....
-      dashboard.config.git = '.git'
+      dashboard.config.git = '/path/to/.git'
       ....
       \end{lstlisting}  
   
-    With this extra configuration parameter, the \tool automatically detects the current version of the project by reading the hash code of the deployed version as soon as the application is deployed and started. Information about the version history of the application is also persisted in the tool database and is used during the collection of measurements for the application.
+    With this extra configuration parameter, the \tool automatically detects the current version of the project by reading the hash code of the deployed version as soon as the application is deployed and started. Information about the version history of the application is also persisted in the tool database and is used for clustering the requests result per endpoint.
 
 
 \end{enumerate}
   
   \paragraph{Preemptive monitoring}
   
-  \todo{the following might need a bit of rewrite}
+  The concept of {\em preemptive monitoring} of the application performance by means of instrumenting integration unit testing as the synthetic load is similar to the idea of augmenting service monitoring with online testing~\cite{metzger2010proactive}. Testing service-based application can be done in parallel to its normal use and operation. By using the capability of a Continuous Integration (CI) framework, a ``live'' environment for integration testing purposes can be simulated without affecting the performance of the deployed application. After the results on the testing framework have been collected, they are send to the deployed application, on which they are visualized in the \tool.  
   
-  The concept of {\em preemptive monitoring} of the application performance by means of instrumenting integration unit testing as the synthetic load is similar to the idea of augmenting service monitoring with online testing~\cite{metzger2010proactive}, i.e.~testing service-based applications by using dedicated test input in parallel to its normal use and operation. The difference is that we take advantage of the capability of the CI framework (i.e. Travis in this case) to create an emulated ``live'' environment for integration testing purposes, and use unit testing as the dedicated test input in order to measure performance. 
-  
-  For example, \Fref{fig:builds} is a screenshot from the dashboard showing the measured response times for 5 consequent builds, with 180 iterations of the unit tests executed in total across all endpoints. The outliers on the right of the figure are due to initial requests \ins{which must wait for a boot-up phase of the API}.  
-
+  For example, \Fref{fig:builds} is a screenshot from the dashboard showing the measured response times for 5 consequent builds, with 180 iterations of the unit tests executed in total across all endpoints. The outliers on the right of the figure are due to initial requests, which must wait for a boot-up phase of the API.  
 
     \begin{figure}[h!]
         \centering
@@ -255,21 +240,19 @@ As a case study, on which we will illustrate our solution, we are going to use a
         \caption{Response times in 5 consequent Travis builds in the \zee case study}
         \label{fig:builds}
       \end{figure}
-
   
-  While this integration testing environment is different from the actual production deployment one, and the load used is purely synthetic, as will show in Section~\ref{sec:evaluation}, it can actually be used successfully as an early performance indicator for the application developer. \ins{Although predicting the performance of the application would require advanced statistical work, it can be succesfully used as an advanced warning system for the overall performance trend for given endpoints}.  
+  While this integration testing environment is different from the actual production deployment one, and the load used is purely synthetic, as will show in Section~\ref{sec:evaluation}, it can actually be used successfully as an early performance indicator for the application developer. Although predicting the performance of the application would require advanced statistical work, it can be successfully used as an advanced warning system for the overall performance trend for given endpoints.  
 
 
-  \paragraph{Integration with Travis}
-  \ml{added new section... also, this has to be moved after introducing the pre-emptive monitoring since it's about running tests. switched the order}
+%  \paragraph{Integration with Travis}
+%  \ml{added new section... also, this has to be moved after introducing the pre-emptive monitoring since it's about running tests. switched the order}
   
 
-  \ins{The pre-emptive monitoring system} can be configured to work together with Continuous Integration (CI) frameworks like Travis\footnote{\url{https://travis-ci.org/}} that deal with automated integration testing.
-  The developer needs to define the unit test folder of the project, the URL that Travis should use for reporting its results, and the number of iterations for each unit test should be executed in order to generate a load for the application. 
+  The {\em pre-emptive monitoring system} can be configured to work together with CI frameworks like Travis\footnote{\url{https://travis-ci.org/}} that deal with automated integration testing. The developer needs to define the unit test folder of the project, the URL that Travis should use for reporting its results, and the number of iterations for each unit test should be executed in order to generate a load for the application. 
   
   Each time a new build is created through Travis, the \tool automatically detects all available unit tests defined by the application developer and iterates through each one of them the number of times predefined by the developer while monitoring the response times for each request. The resulting measurements are persisted in a separate part of the tool database so as not to contaminate the ``live'' monitoring data. Beyond seeing the results of each Travis build in the \tool, this feature also allows for preemptive monitoring of the application, as we discuss in the following.    
 
-  \ins{Besides functioning as an early warning system for performance, tracking the evolving performance of API tests serves a second purpose. To function as an anchor when the developer analyzes performance degradations. For example, when a developer sees that a given endpoint has become less performant after in a newly deployed version, they are able to investigate whether the performance degradation is visible also with the synthetic load. This would correspond to a performance degradation which is due to ``algorithmic performance degradation''. If on the other hand, the performance of the tests does not change between versions, the developer might conclude that the performance degradation could be due to the workload on the machines, or maybe to the workload mix of the users}
+  Besides functioning as an early warning system for performance, tracking the evolving performance of API tests serves a second purpose. To function as an anchor when the developer analyzes performance degradations. For example, when a developer sees that a given endpoint has become less performant after in a newly deployed version, they are able to investigate whether the performance degradation is visible also with the synthetic load. This would correspond to a performance degradation which is due to ``algorithmic performance degradation''. If on the other hand, the performance of the tests does not change between versions, the developer might conclude that the performance degradation could be due to the workload on the machines, or maybe to the workload mix of the users.
   
   %By these means, an application developer can use unit tests as synthetic loads for driving the performance monitoring of the application before it reaches the production phase.  As we will discuss further in Section~\ref{sec:testing}, this feature is integral in enabling preemptive performance monitoring of the application.  
   
@@ -286,7 +269,8 @@ As a case study, on which we will illustrate our solution, we are going to use a
     \item \textit{User Experience} presents information about the user-perceived performance of monitored service endpoints.
   \end{enumerate}
 
-  %In the remainder of the paper we present several of these perspectives.\footnote{We recommend obtaining a color version of this paper for better readability}
+In the remainder of this section we present the views into more depth\footnote{We recommend obtaining a color version of this paper for better readability.}.
+% TODO: Elaborate on the introduction, as it is quite short
 
   % The second endpoint conists of two parts, one of them being a table that shows for every monitored endpoint the number of hits it has gotten, the time it was last accessed and its average execution time. The second part is a view with four graphs which show:
   % \begin{itemize} 
@@ -296,15 +280,17 @@ As a case study, on which we will illustrate our solution, we are going to use a
   %   \item A boxplot graph showing the average execution time for every monitored endpoint
   % \end{itemize}
 
-\todo{Summarize the subsections extensively; evaluate which figures to keep and ideally take new screenshots for the ones we keep; consider adding two more views (like Fig. 3.2 of Patrick's thesis)}
+% \todo{Summarize the subsections extensively; evaluate which figures to keep and ideally take new screenshots for the ones we keep; consider adding two more views (like Fig. 3.2 of Patrick's thesis)}
 
 \begin{figure*}[t]
 	\centering
-	\subfloat[number of requests per endpoint per day]{\includegraphics[width=.9\columnwidth]{number_of_requests_}\label{fig:aeu}}
-	\subfloat[requests per hour heatmap]{\includegraphics[width=\columnwidth]{daily_patterns_}\label{fig:dp}}
+	\subfloat[Number of requests per endpoint per day]{\includegraphics[width=.9\columnwidth]{number_of_requests_}\label{fig:aeu}}
+	\subfloat[Daily patterns for the \epOutcome endpoint]{\includegraphics[width=\columnwidth]{heatmap_requests}\label{fig:dp}}
 	\qquad
-	\subfloat[response time (in ms) per monitored endpoint view]{\includegraphics[width=.8\columnwidth]{endpoint_performance_}\label{fig:ep}}\qquad
-	\subfloat[The Performance Evolution of the \epTranslations endpoint]{\includegraphics[width=.95\columnwidth]{translation_endpoint_evolution_}\label{fig:tee}}
+\subfloat[The Performance Evolution of the \epTranslations endpoint]{\includegraphics[width=.95\columnwidth]{exec_time_reo}\label{fig:tee}}\qquad	
+\subfloat[response time (in ms) per monitored endpoint view]{\includegraphics[width=.8\columnwidth]{endpoint_performance_}\label{fig:ep}}
+%	\subfloat[The Performance Evolution of the \epTranslations endpoint]{\includegraphics[width=.95\columnwidth]{translation_endpoint_evolution_}\label{fig:tee}}
+    
 	\caption{Some of the available views\label{fig:views}}
 \end{figure*}
 
@@ -315,16 +301,16 @@ As a case study, on which we will illustrate our solution, we are going to use a
 \paragraph{Service Utilization}
 \label{sec:util}
 
-The most fundamental insight that a service maintainer needs regards service utilization. %\vspace{0.5cm}
-
-Figure \ref{fig:aeu} shows a first perspective on endpoint utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. Figure~\ref{fig:aeu} in particular shows that at its peak the API has about 12.000 hits per day. 
-The way users interact with the platform can also be inferred since the endpoints are indicators of different activity types, e.g.: 
+The most fundamental insight that a service maintainer needs regards service utilization. 
+\Fref{fig:aeu} shows a first perspective on endpoint utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views.}. This figure is interesting for two reasons. First, it provides a quick overview of the number of requests that the API processes. It shows that at its peak the API has about 12.000 requests per day. Second, it is easy to spot what the most popular endpoints are, which are in our case study the following three endpoints:
 
 \begin{enumerate}
 	
-	\item {\color{myred} \epTranslations} is an indicator of the amount of foreign language reading the users are doing, and 
+	\item \textbf{\color{myred} \epTranslations} is an indicator of the amount of foreign language reading the users are doing, and 
 	
-	\item {\color{mygreen} \epOutcome} is an indicator of the amount of foreign vocabulary practice the users are doing.
+	\item \textbf{\color{myblue} \epLearnedLanguage} is an indicator of ... % TODO for Mircea	
+	
+	\item \textbf{\color{mygreen} \epOutcome} is an indicator of the amount of foreign vocabulary practice the users are doing.
 	
 \end{enumerate}
 
@@ -338,15 +324,15 @@ The way users interact with the platform can also be inferred since the endpoint
 
 Besides showing the overall utilization, this endpoint provides the maintainer with information relevant for decisions regarding endpoint deprecation --- one of the most elementary ways of {\em understanding the needs of the downstream}\cite{Haen14a}. In our case study, the maintainer realized that one endpoint which they thought was not being used (i.e. \code{words\_to\_study}), contrary to their expectations, was actually being used\footnote{A complementary type of usage information can also be discovered in the view presented in Figure \ref{fig:sep} where seeing that an endpoint is never accessed can increase the confidence of the maintainer that a given endpoint is not used, although it can never be used a proof.}.
 
-\niceseparator
-
 %   \todo{Add the time series graph and discuss it before the heatmap? We can then sell the heatmap better} 
 %   \ml{Not sure about which graph you refer to here V}
 
-A second type of utilization question that the \tool can answer automatically regards {\em cyclic patterns of usage per hour of day} by means of a heatmap, as in \Fref{fig:dp}. 
+As \epOutcome is one of the endpoints that are most used in the API, it is interesting to have investigate the usage patterns into more depth. For this purpose, \Fref{fig:dp} has been created. This graph shows the usage of the endpoint in the number of requests per hour, which is presented in a color-scale from low usage (blue) to highly active (red). This figure shows the API is not being used during the early morning hours, with most of the activity focused around working hours and some light activity during the evening. This is consistent with the fact that the current users are all in the central European timezone. Also, the figure shows that the spike in utilization that was visible also in \Fref{fig:aeu} happened in the afternoon/evening. Another utilization that is visible in the \Fref{fig:dp} regards {\em cyclic patterns of usage per hour of day}, which is of interest to attack possible service overloads in the future.
+% PV I'm not sure whether this is a good argument, but the following source might be of interest: http://static.usenix.org/events/usits03/tech/full_papers/welsh/welsh_html/
 
-% \mltp{ can we add vertical lines that highlight the beginning of a new week (e.g. before Sunday): }
-% Patrick: adding separators in the graph is unfortunately not supported by the library.
+
+
+%A second type of utilization question that the \tool can answer automatically regards {\em cyclic patterns of usage per hour of day} by means of a heatmap, as in \Fref{fig:dp}. 
 
 %\begin{figure}[!ht]
 %	\centering
@@ -356,110 +342,27 @@ A second type of utilization question that the \tool can answer automatically re
 %\end{figure}
 
 
-Figure \ref{fig:dp} shows the API not being used during the early morning hours, with most of the activity focused around working hours and some light activity during the evening. This is consistent with the fact that the current users are all in the central European timezone. Also, the figure shows that the spike in utilization that was visible also in the previous graph happended in on afternoon/evening.
-
 \paragraph{Endpoint Performance}
 \label{sec:perf}
+The \tool also collects information regarding endpoint performance, and as discussed in the previous section, \epTranslations is one of the most used endpoints in the API. Therefore, this endpoint is used for further investigating the overall response time. In order to do so, one might ask himself whether the overall execution time remains constant during its evolution. In order to answer this question, the \tool creates a view which is presented in \Fref{fig:tee}. This Figure creates a horizontal boxplot for every version using the response times. It is easy to see that there is an increase in the performance times since version {\em 257e1a}. The maintainer has confirmed that this decrease in performance is due to a new algorithm that was deployed.
 
-  The \tool also collects information regarding endpoint performance. The view in \Fref{fig:ep} summarizes the response times for various endpoints by using a box-and-whiskers plot. 
+Another useful view that the \tool generates is the overall response time clustered per endpoint. This is of interest to the maintainer of the API since it provides information about what endpoints might need optimization. The results of this view for the case study are presented in \Fref{fig:ep}. From this figure it is visible that the response time for \epLearnedLanguage and \epOutcome are in most cases almost instant, while the response time for \epTranslations is far from instant. Another observation that can be made is the fact that some endpoints show a huge variation in the response time, this is explained below:
 
-  % \ml{Thijs and Patrick... the visualization people will complain when they see that we have different colors for the same endpoint in different graphs. Can we insure that there is consistency in colors? Simplest trick would be to obtain the color by hashing the name of the endpoint... in that case the same endpoint would have the same color in various graphs.}
-  % This is supported in the latest version of the dashboard
-
-%  \begin{figure}[!ht]
-%    \centering
-%    \includegraphics[width=0.95\linewidth]{endpoint_performance_}
-%    \caption{The response time (in ms) per monitored endpoint view allows for identifying performance variability and balancing issues}
-%    \label{fig:ep}
-%  \end{figure}
-
-  From this view it became clear to the maintainer that four of the endpoints had very large variation in performance.   The most critical for the application and consequently the one optimized first was the \epTranslations endpoint which was part of an interactive loop in the reader applications that relied on the Zeeguu API. Moreover, cf. \Fref{fig:aeu} this endpoint is one of the most used in the system.
-
-
-  \niceseparator
-
-  \todo{remove the part about how to configure git, the discussion has been subsumed by Section~\ref{sec:tool}.}
-
-  However, with the current configuration of the tool, it would be impossible for the maintainer to see the improvements resulting from the optimization. One way to do this is to add an extra line of configuration to allow \tool to find the git\footnote{\url{https://git-scm.com/}} folder of the deployed service: 
-
-%  \begin{lstlisting}[caption=Configuring the \tool with the path to the .git folder enables the generation of evolutionary performance graphs, style=custompython]
-%
-%dashboard.config.git = 'path/to/.git'
-%
-%
-%    \end{lstlisting}
-    
-    \begin{lstlisting}[style=custompython]
-  
-  dashboard.config.git = 'path/to/.git'
-    
-  \end{lstlisting}  
- 
-  With this extra configuration, the \tool can now automatically detect the current version of the project, and group measurements by version\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use git.}. \Fref{fig:tee} is a zoomed-in version of such a view for \epTranslations with versions increasing from top to bottom
-  
-  
-%    \begin{figure}[h!]
-%      \centering
-%      \includegraphics[width=0.95\linewidth]{translation_endpoint_evolution_}
-%      \caption{Visualizing The Performance Evolution of the \epTranslations endpoint}
-%      \label{fig:tee}
-%    \end{figure}
-
-  This view confirms that the performance of the translation endpoint improved in the recent versions: the median of the last three versions is constantly moving towards the left, and progresses from 1.4 seconds (in the top-most box plot in \Fref{fig:tee}) to 0.8 in the latest version (bottom-most box plot).
-  
+\begin{figure*}[t]
+	\centering
+	\subfloat[User specific performance for the \epLearnedLanguage endpoint]{\includegraphics[width=\linewidth]{exec_time_user}\label{fig:etu}}\qquad
+	\subfloat[User specific performance per version for the \epLearnedLanguage endpoint]{\includegraphics[width=\linewidth]{exec_time_user_version}\label{fig:etuv}}
+	% TODO: Change to order of one of the two figures, such that the users are listed in the right order (they are now different listed).
+	\caption{Some of the available views\label{fig:user_experience}}
+\end{figure*}
 
 \paragraph{User Experience}
 \label{sec:user}
+According to \cite{gmail}, the performance might be user-specific. In such case, the maintainer of a system might want to understand the impact on the resulting response time. The \tool allows several ways of doing this, some of them are presented in \Fref{fig:user_experience}\footnote{Note that both figures show a subset of the corresponding view in the \tool.}. First of all, the view presented in \Fref{fig:etu} can be used to detect the impact per version across the entire evolution of the API. It shows a number of horizontal boxplots, one for each user (a user is represented by a user-id). From this view, it can be concluded that \epLearnedLanguage has a user-specific processing time. 
 
-For service endpoints which run computations in real time, the maintainer of a system might want to understand the endpoint performance on a per-user basis, especially for situations where the system response time is a function of some individual user load\footnote{E.g. in GMail some users have two emails while other have twenty thousand and this induces different response times for different users}.
+The limitation of this view is that it is not possible to detect whether the performance increases per user throughout the evolution of the API. To address this, a different view can be defined, which is shown in \Fref{fig:etuv}. This view presents a {\em circle-plot}, which shows a circle for the average execution time for every user per version. A larger circle represents a larger execution time. While it is impossible to infer the actual value of this average execution time, this plot is useful for determining for which users the performance increases throughout its evolution. However, for the \epLearnedLanguage endpoint, there is no clear trend visible: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times.
 
-\todo{remove the configuration part and rephrase the following, the discussion has been partially subsumed by Section~\ref{sec:tool}.}
-
-To enable this, the \tool must be configured to associate an API call with a given user. The simplest way is to take advantage of the architecture of Flask applications in which a global \code{flask.request} object can be used to retrieve the session which can in turn lead to user identification: 
-
-%\begin{lstlisting}[float,caption=Simply define a custom app-specific function for user retrieval and pass it to the \tool to group information by user,style=custompython]
-\begin{lstlisting}[style=custompython]  
-# app specific way of extracting the user
-# from a flask request object    
-def get_user_id():
-sid = int(flask.request.args['session'])
-session = User.find_for_session(sid)
-return user_id
-
-# attaching the get_user_id function
-dashboard.config.get_group_by = get_user_id
-
-\end{lstlisting}
-
-% \niceseparator
-
-\todo{consider losing one or both of the figures --- or at least updating them}
-
-In Zeeguu, \epFeedItems retrieves a list of recommended articles for a given user. Cf. \Fref{fig:ep} it is the endpoint with the slowest response time and highest variability. The reason for this is that a user can be subscribed to anything from one to three dozen article sources and for each of the sources the system must compute the personalized difficulty of each article at every request. 
-
-% In the Zeeguu case study, one of the slowest endpoints, and one with the highest variability as shown in \Fref{fig:ep} is \epFeedItems: it retrieves a list of recommended articles for a given user. However, since a user can be subscribed to anything from one to three dozen article sources, and since the computation of the difficulty is personalized and it is slow, the variability in time among users is likely to be very large. 
-
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.85\linewidth]{time_per_user}
-	\caption{The \epFeedItems shows a very high variability across users}
-	\label{fig:tpu}
-\end{figure}
-
-A \perspective{Per-User Performance} perspective should show the different response times for different users. Figure \ref{fig:tpu} presents a subset of the corresponding view in the \tool. The figure shows that the response times for this endpoint can vary considerably for different users with some extreme cases where a user has to wait a full minute until their recommended articles are shown\footnote{After seeing this perspective, the maintainer refactored the architecture of the system to move part the difficulty computation out of the interactive loop}.
-
-
-% \niceseparator
-
-The limitation of the previous view is that it does not present the information also on a per version basis. To address this, a different visual perspective entitled \perspective{Multi-Version per-User Performance} can be defined. Figure \ref{fig:tuv} presents such a perspective by mapping the average execution time for a given user (lines) and given version (columns) on the area of the corresponding circle. The colors represent users. The figure shows average performance varying  across users and versions with no clear trend: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times.
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.9\linewidth]{time_per_user_per_version}
-	\caption{This perspective shows that the evolution of response times for individual users (horizontal lines) across versions (the x-axis)}
-	\label{fig:tuv}
-\end{figure}
+% TODO: Add paragraph about Preemptive Monitoring
 
 %\section{Preemptive Monitoring}
 %\label{sec:testing}
@@ -574,10 +477,8 @@ In the future, we plan to perform case studies with other sytstems, with the goa
 
 
 % references section
-
 \bibliographystyle{abbrv}
 \bibliography{paper}
-
 
 % that's all folks
 \end{document}
