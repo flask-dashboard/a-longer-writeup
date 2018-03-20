@@ -530,7 +530,12 @@ Pearson correlation $r(3)=.93, p=.02$
 %
   A further possible extension point here is supporting other version control systems (e.g. Mercurial). However, this is a straightforward extension.
 
+  \subsubsection{NEW: API Renames}
+  \ml{just an idea}
 
+
+    The history would normally be lost in the case of an API rename. (also known as the {\em provenance issue} in source code evolution analysis)
+    In theory we could infer that an API was renamed if it is not to be found anymore, and another one with very similar timing characteristics would be found. Such a detection can never be completely sure, but it would help with meeting the needs of the API maintainer... 
 
   \subsubsection{User-Awareness }
 

@@ -1,0 +1,23 @@
+  \newpage
+  \section{User-level / App Level Monitoring}
+  
+  \ins{Sometimes, the same service endpoint will have different execution times for different users, based on the amount of data that a user has in their account. Gmail engineers admitted in 2010 that the performance of their service was dependent on the amount of emails a user would have in their Inbox \footnote{https://techcrunch.com/2010/03/14/gmail-slow/, visited September 23 2017}. }
+
+  \ins{If the API provider needs to understand the performance of their service for individual users, or for different user groups, the dashboard should have a way of distilling a user or a user group from the API request. For a large number of Flask applications that use the global \code{flask.request} object, the object} can be used to retrieve session information, \ins{as in the following snippet}: 
+  % . This ability can be used in order to allow, for example, the identification of application users from the \tool, and the consequent aggregation of monitoring information on a per user basis as follows: 
+  
+  \begin{lstlisting}[style=custompython]  
+  # app specific way of extracting the user
+  # from a flask request object    
+  def get_user_id():
+  sid = int(flask.request.args['session'])
+  session = User.find_for_session(sid)
+  return user_id
+  
+  # attaching the get_user_id function
+  dashboard.config.get_group_by = 
+      get_user_id
+  
+  \end{lstlisting}
+  This feature, as discussed further in the following section, is important for the clustering of users depending on their application usage. It also provides a view on the distribution of the work load across the application endpoints on a per user basis that allows the identification of more or less popular endpoints for further performance improvements. \ml{this previous paragraph seems a bit reduntant. must revisit}
+
