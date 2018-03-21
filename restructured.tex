@@ -225,7 +225,7 @@ TODO: TALK ABOUT THE DATABASE...
   \ins{The dashboard can take advantage of the fact that it is monitoring an API... so it can simply just add one extra endpoint there.} After (re)deployment of the application, the interactive visualizations of the \tool become available at the \code{/dashboard} route of the Flask application. 
 
 
-  During binding, the \tool will search for all endpoints defined in the target application. \ins{PERFORMANCE DISCUSSION: this introspection, which looks up endpoints, happens only once at the startup of the service, so it is going to affect the API startup performance, but not the actual endpoint performance. In our case, the overhead here was quite small: TO MEASURE}.
+  During binding, the \tool will search for all endpoints defined in the target application. 
 
   In order to monitor an endpoint, the \tool creates a function wrapper for the API function that corresponds to the endpoint. This way, the wrapper will be executed whenever that API call is made before the actual function is called. The wrapper contains the code that takes care of monitoring an endpoint. Data collected by the wrappers are persisted in a local database. The SQLAlchemy Object Relational Mapper\footnote{\url{https://www.sqlalchemy.org/}} on top of SQLite\footnote{\url{https://www.sqlite.org/}} is used for this purpose.
   \ins{DISCUSSION about how do to this in other languages? Java: AspectJ probably, etc.}
@@ -250,39 +250,44 @@ TODO: TALK ABOUT THE DATABASE...
 
   \ml{we must insert at least one dashboard view here... otherwise people will lose their patience... also it will help with explaining the outliers... also, one should see that a large variety of views are already available at this point... I know this risks being  }
 
+
+
+In the Zeeguu case study, one of the slowest endpoints, and one with the highest variability as shown in \Fref{fig:ep} is \epFeedItems: it retrieves a list of recommended articles for a given user. However, since a user can be subscribed to anything from one to three dozen article sources, and since the computation of the difficulty is personalized and it is slow, the variability in time among users is likely to be very large. 
+
+
+
 \begin{figure*}[h!]
   \centering
-  \subfloat[overview of the tracked endpoints]{\includegraphics[width=0.8\columnwidth]{overview}\label{fig:overview}}
-  \subfloat[number of requests per endpoint per day]{\includegraphics[width=.7\columnwidth]{number_of_requests_}\label{fig:aeu}}
-  \qquad
-  \subfloat[requests per hour heatmap]{\includegraphics[width=0.8\columnwidth]{daily_patterns_}\label{fig:dp}}
-  \subfloat[response time (in ms) per monitored endpoint view]{\includegraphics[width=.7\columnwidth]{endpoint_performance_}\label{fig:ep}}\qquad
+  \subfloat[number of requests per endpoint per day]{\includegraphics[width=.9\columnwidth]{number_of_requests_}\label{fig:aeu}}
+  \subfloat[requests per hour heatmap]{\includegraphics[width=\columnwidth]{daily_patterns_}\label{fig:dp}}
   \caption{Some of the available views\label{fig:views}}
 \end{figure*}
 
 \newpage
-\section{How Far Can We Go With One Line of Configuration?}
-
-A discussion must be added here about the types of useful information and problems that can be solved with these views.
-
-  There are three main categories of visual perspectives that are available using \tool:
-  \begin{enumerate}
-    \item \textit{Service Utilization} presents information about the usage of all endpoints of interest to the developer,
-    \item \textit{Endpoint Performance} presents response times of the various service endpoints, and
-    \item \textit{User Experience} presents information about the user-perceived performance of monitored service endpoints.
-  \end{enumerate}
-
-
-REQUIREMENT: Adding a time interval is important. 
-Otherwise the performance numbers in chart 1 are not good enough... also an outlier very far in the past, will make all the heatmap data points to look very pale in comparison forever after.
-
-
-\paragraph{Service Utilization}
+\section{Service Utilization}
 \label{sec:util}
+
+\ins{A discussion must be added here about the types of useful information and problems that can be solved with these views.}
+
+\textit{Service Utilization} presents information about the usage of all endpoints of interest to the developer,
 
 The most fundamental insight that a service maintainer needs regards service utilization. %\vspace{0.5cm}
 
+Simplest utilization perspective:
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\linewidth]{endpoint-call-count}
+  \caption{Caption here}
+  \label{fig:figure1}
+\end{figure}
+
+% REQUIREMENT: Adding a time interval is important. 
+% Otherwise the performance numbers in chart 1 are not good enough... also an outlier very far in the past, will make all the heatmap data points to look very pale in comparison forever after.
+
+
 Figure \ref{fig:aeu} shows a first perspective on endpoint utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. Figure~\ref{fig:aeu} in particular shows that at its peak the API has about 12.000 hits per day. 
+
 The way users interact with the platform can also be inferred since the endpoints are indicators of different activity types, e.g.: 
 
 \begin{enumerate}
@@ -327,42 +332,95 @@ A second type of utilization question that the \tool can answer automatically re
 
 Figure \ref{fig:dp} shows the API not being used during the early morning hours, with most of the activity focused around working hours and some light activity during the evening. This is consistent with the fact that the current users are all in the central European timezone. Also, the figure shows that the spike in utilization that was visible also in the previous graph happended in on afternoon/evening.
 
-\paragraph{Endpoint Performance}
+
+
+
+
+
+
+
+
+
+\newpage
+\section{Endpoint Performance}
 \label{sec:perf}
+
 
   The \tool also collects information regarding endpoint performance. The view in \Fref{fig:ep} summarizes the response times for various endpoints by using a box-and-whiskers plot. 
 
-  % \ml{Thijs and Patrick... the visualization people will complain when they see that we have different colors for the same endpoint in different graphs. Can we insure that there is consistency in colors? Simplest trick would be to obtain the color by hashing the name of the endpoint... in that case the same endpoint would have the same color in various graphs.}
-  % This is supported in the latest version of the dashboard
 
-%  \begin{figure}[!ht]
-%    \centering
-%    \includegraphics[width=0.95\linewidth]{endpoint_performance_}
-%    \caption{The response time (in ms) per monitored endpoint view allows for identifying performance variability and balancing issues}
-%    \label{fig:ep}
-%  \end{figure}
+ \begin{figure}[!ht]
+   \centering
+   \includegraphics[width=0.95\linewidth]{endpoint_performance_}
+   \caption{The response time (in ms) per monitored endpoint view allows for identifying performance variability and balancing issues}
+   \label{fig:ep}
+ \end{figure}
 
   From this view it became clear to the maintainer that four of the endpoints had very large variation in performance.   The most critical for the application and consequently the one optimized first was the \epTranslations endpoint which was part of an interactive loop in the reader applications that relied on the Zeeguu API. Moreover, cf. \Fref{fig:aeu} this endpoint is one of the most used in the system.
 
 
 
 
+\begin{figure}[h!]
+  \centering
+  \subfloat[overview of the tracked endpoints]{\includegraphics[width=0.8\columnwidth]{overview}\label{fig:overview}}
+  \caption{Some of the available views\label{fig:views}}
+\end{figure}
+
+
+
+  \newpage
+  \section{Evolution monitoring }
+  
+  \begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{translation_endpoint_evolution_}
+  \caption{The Performance Evolution of the \epTranslations endpoint}
+  \label{fig:tee}
+\end{figure}
+
+  When thinking about performance, 
+  one can not avoid thinking about the performance evolution. 
+
+  Version control in \tool can be supported in two ways,
+  the developer explicitly states the current version, 
+  or the current version is automatically detected based
+  on some version control system. 
+
+
+  However, with the current configuration of the tool, it would be impossible for the maintainer to see the improvements resulting from the optimization. 
+
+  \ins{The latest STack Overflow Developer Survey: 88.4\% of **professional** developers use git.}  
+  If assume that the code that they run is deployed using .git, then with an extra line of configuration they can allow \tool to find the git\footnote{\url{https://git-scm.com/}} folder of the deployed service and automatically detect the version of the project that is running: 
+    
+    \begin{lstlisting}[style=custompython]
+    
+      dashboard.config.git = 'path/to/.git'
+      
+    \end{lstlisting}  
+ 
+  If the \tool can automatically detect the current version of the project by reading the .git configuration as soon as the API is started and can then group measurements by version\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use git.}. \Fref{fig:tee} is a zoomed-in version of such a view for \epTranslations with versions increasing from top to bottom
+  
+
+  This view confirms that the performance of the translation endpoint improved in the recent versions: the median of the last three versions is constantly moving towards the left, and progresses from 1.4 seconds (in the top-most box plot in \Fref{fig:tee}) to 0.8 in the latest version (bottom-most box plot).
+
+
+
+  CHALLENGE: Supporting other types of version control... not real challenge, as we said 88percent of devs use git. 
+  CHALLENGE 2: detecting minor versions which don't need to be tracked, since they didn't touch the performance of the system. E.g. a modification of the README, etc. 
+  
+\todo{TODO: endpoint evolution }
 
 
 
   
-      \begin{figure*}[h!]
+  \begin{figure*}[h!]
     \centering
     \includegraphics[width=\linewidth]{outliers}
     \caption{Automatically collected outlier information}
     \label{fig:figure1}
   \end{figure*}
-
   \newpage
-
-
-
-
   \section{Automated outlier detection and monitoring}
   
   When an API is called from within a highly interactive application (as it is the case with the case study in this paper) 
@@ -394,50 +452,8 @@ This information has to be corroborated with the observations that neither the m
 
 
   
-\begin{figure*}[h!]
-  \centering
-  \includegraphics[width=0.6\linewidth]{translation_endpoint_evolution_}
-  \caption{The Performance Evolution of the \epTranslations endpoint}
-  \label{fig:tee}
-\end{figure*}
-
-  \newpage
-  \section{Evolution monitoring }
-  
-  When thinking about performance, 
-  one can not avoid thinking about the performance evolution. 
-
-  Version control in \tool can be supported in two ways,
-  the developer explicitly states the current version, 
-  or the current version is automatically detected based
-  on some version control system. 
 
 
-  However, with the current configuration of the tool, it would be impossible for the maintainer to see the improvements resulting from the optimization. 
-
-  \ins{The latest STack Overflow Developer Survey: 88.4\% of **professional** developers use git.}  
-  If assume that the code that they run is deployed using .git, then with an extra line of configuration they can allow \tool to find the git\footnote{\url{https://git-scm.com/}} folder of the deployed service and automatically detect the version of the project that is running: 
-    
-    \begin{lstlisting}[style=custompython]
-    
-      dashboard.config.git = 'path/to/.git'
-      
-    \end{lstlisting}  
- 
-  If the \tool can automatically detect the current version of the project by reading the .git configuration as soon as the API is started and can then group measurements by version\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use git.}. \Fref{fig:tee} is a zoomed-in version of such a view for \epTranslations with versions increasing from top to bottom
-  
-
-  This view confirms that the performance of the translation endpoint improved in the recent versions: the median of the last three versions is constantly moving towards the left, and progresses from 1.4 seconds (in the top-most box plot in \Fref{fig:tee}) to 0.8 in the latest version (bottom-most box plot).
-
-
-
-  CHALLENGE: Supporting other types of version control... not real challenge, as we said 88percent of devs use git. 
-  CHALLENGE 2: detecting minor versions which don't need to be tracked, since they didn't touch the performance of the system. E.g. a modification of the README, etc. 
-  
-    
-
-
-\todo{TODO: endpoint evolution }
 
 
 
@@ -579,6 +595,10 @@ Pearson correlation $r(3)=.93, p=.02$
 \label{sec:views}
 
 
+\ins{PERFORMANCE DISCUSSION: this introspection, which looks up endpoints, happens only once at the startup of the service, so it is going to affect the API startup performance, but not the actual endpoint performance. In our case, the overhead here was quite small: TO MEASURE}.
+
+
+
   %In the remainder of the paper we present several of these perspectives.\footnote{We recommend obtaining a color version of this paper for better readability}
 
   % The second endpoint conists of two parts, one of them being a table that shows for every monitored endpoint the number of hits it has gotten, the time it was last accessed and its average execution time. The second part is a view with four graphs which show:
@@ -589,24 +609,7 @@ Pearson correlation $r(3)=.93, p=.02$
   %   \item A boxplot graph showing the average execution time for every monitored endpoint
   % \end{itemize}
 
-\todo{Summarize the subsections extensively; evaluate which figures to keep and ideally take new screenshots for the ones we keep; consider adding two more views (like Fig. 3.2 of Patrick's thesis)}
-
-% \begin{figure*}[t]
-% 	\centering
-% 	\subfloat[number of requests per endpoint per day]{\includegraphics[width=.9\columnwidth]{number_of_requests_}\label{fig:aeu}}
-% 	\subfloat[requests per hour heatmap]{\includegraphics[width=\columnwidth]{daily_patterns_}\label{fig:dp}}
-% 	\qquad
-% 	\subfloat[response time (in ms) per monitored endpoint view]{\includegraphics[width=.8\columnwidth]{endpoint_performance_}\label{fig:ep}}\qquad
-% 	\subfloat[The Performance Evolution of the \epTranslations endpoint]{\includegraphics[width=.95\columnwidth]{translation_endpoint_evolution_}\label{fig:tee}}
-% 	\caption{Some of the available views\label{fig:views}}
-% \end{figure*}
-
-     
-
-
-
-
-
+\todo{evaluate which figures to keep and ideally take new screenshots for the ones we keep; consider adding two more views (like Fig. 3.2 of Patrick's thesis)}
 
 
   
