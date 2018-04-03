@@ -27,12 +27,16 @@
 \newcommand{\install}{{\small \texttt{pip install flask\_monitoring\_dashboard}}\xspace}
 \newcommand{\activeUserCount}{two hundred\xspace}
 \newcommand{\code}[1]{\texttt{#1}\xspace}
-\newcommand{\perspective}[1]{{\small {\texttt{#1}}\xspace}}
+\newcommand{\perspective}[1]{{\bf {\small {\texttt{#1}}\xspace}}}
+
+\newcommand{\lesson}[1]{{\bf {\small {\texttt{Lesson: }}\xspace}}: #1}
 
 \usepackage{fourier-orns}
 
 \definecolor{myred}{RGB}{230, 20, 70}
 \definecolor{mygreen}{RGB}{60, 180, 75}
+\definecolor{uploadUserData}{RGB}{135, 143, 197}
+\definecolor{feedItems}{RGB}{245, 130, 48}
 
 
 \newcommand{\niceseparator}
@@ -48,10 +52,12 @@
 %\newcommand{\epDecoration}[1]{{\small {\bf #1}}\xspace}
 \newcommand{\epDecoration}[1]{\code{#1}}
 
-\newcommand{\epTranslations}{{\epDecoration{api.get\_possible\_translations}}\xspace}
-\newcommand{\epOutcome}{\epDecoration{api.report\_exercise\_outcome}}
-\newcommand{\epFeedItems}{\epDecoration{api.get\_feed\_items\_with\_metrics}}
-\newcommand{\epUserActivity}{\epDecoration{api.upload\_user\_activity\_data}}
+\newcommand{\epColorDecoration}[2]{\color{#1}$\blacksquare$\color{black}\code{#2}}
+
+\newcommand{\epTranslations}{{\epColorDecoration{myred}{api.get\_possible\_translations}}\xspace}
+\newcommand{\epOutcome}{\epColorDecoration{mygreen}{api.report\_exercise\_outcome}}
+\newcommand{\epFeedItems}{\epColorDecoration{feedItems}{api.get\_feed\_items\_with\_metrics}}
+\newcommand{\epUserActivity}{\epColorDecoration{uploadUserData}{api.upload\_user\_activity\_data}}
 
 
 % Author Comments / Discussion

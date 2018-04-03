@@ -1,33 +1,22 @@
 %!TEX root=restructured.tex
 
-\newpage
 \section{Grouping Requests}
 \label{sec:user}
 
-
-
 For service endpoints which run computations in real time, the maintainer of a system might want to understand the endpoint performance on a per-user basis, especially for situations where the system response time is a function of some individual user load\footnote{E.g. in GMail some users have two emails while other have twenty thousand and this induces different response times for different users}.
-
 \todo{remove the configuration part and rephrase the following, the discussion has been partially subsumed by Section~\ref{sec:tool}.}
 
 To enable this, the \tool must be configured to associate an API call with a given user. The simplest way is to take advantage of the architecture of Flask applications in which a global \code{flask.request} object can be used to retrieve the session which can in turn lead to user identification: 
 
-%\begin{lstlisting}[float,caption=Simply define a custom app-specific function for user retrieval and pass it to the \tool to group information by user,style=custompython]
 \begin{lstlisting}[style=custompython]  
-# app specific way of extracting the user
-# from a flask request object    
-def get_user_id():
-sid = int(flask.request.args['session'])
-session = User.find_for_session(sid)
-return user_id
 
-# attaching the get_user_id function
-dashboard.config.get_group_by = get_user_id
+# attaching a group by function 
+dashboard.config.group_by = 'User',
+	lambda: Session.find(flask.request).userid
 
 \end{lstlisting}
 
 % \niceseparator
-
 
 \todo{consider losing one or both of the figures --- or at least updating them}
 
@@ -37,18 +26,15 @@ In Zeeguu, \epFeedItems retrieves a list of recommended articles for a given use
 A \perspective{Per-User Performance} perspective should show the different response times for different users. Figure \ref{fig:tpu} presents a subset of the corresponding view in the \tool. The figure shows that the response times for this endpoint can vary considerably for different users with some extreme cases where a user has to wait a full minute until their recommended articles are shown\footnote{After seeing this perspective, the maintainer refactored the architecture of the system to move part the difficulty computation out of the interactive loop}.
 
 
-
-The limitation of the previous view is that it does not present the information also on a per version basis. To address this, a different visual perspective entitled \perspective{Multi-Version per-User Performance} can be defined. Figure \ref{fig:tuv} presents such a perspective by mapping the average execution time for a given user (lines) and given version (columns) on the area of the corresponding circle. 
-
-
-The colors represent users. The figure shows average performance varying  across users and versions with no clear trend: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times. \ins{one can see that for user 1 performance degrades over the }
-
-\begin{figure}[!ht]
+\begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\linewidth]{time_per_user_per_version}
-  \caption{This perspective shows that the evolution of response times for individual users (horizontal lines) across versions (the x-axis)}
-  \label{fig:tuv}
+  \includegraphics[width=.8\linewidth]{time_per_user}
+  \caption{The \epFeedItems shows a very high variability across users}
+  \label{fig:tpu}
 \end{figure}
+
+
+
 
 
 

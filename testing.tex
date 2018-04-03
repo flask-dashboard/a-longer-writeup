@@ -1,6 +1,14 @@
 %!TEX root=restructured.tex
 
-  \newpage
+  \begin{figure*}[h!]
+  \centering
+  \subfloat[The reported response time (in ms) per deployed version in the observation period]{\includegraphics[width=.6\columnwidth]{response_per_version_trunced_trend}}
+  \quad
+  \subfloat[The measured response time (in ms) using integration with Travis]{\includegraphics[width=.56\columnwidth]{travis_builds_no_outliers_trend}}
+  \caption{Comparison of the response times per endpoint: actual production system versus preemptive monitoring data}
+  \label{fig:preemptive}
+\end{figure*}
+
   \section{Preemptive monitoring}
 
   \ins{INTRO - LINKING WITH PREVIOUS PARAGRAPH: the previous evolutionary view crucial for 
@@ -12,15 +20,19 @@
   
   The concept of {\em preemptive monitoring} of the application performance by means of instrumenting integration unit testing as the synthetic load is similar to the idea of augmenting service monitoring with online testing~\cite{metzger2010proactive}, i.e.~testing service-based applications by using dedicated test input in parallel to its normal use and operation. The difference is that we take advantage of the capability of the CI framework (i.e. Travis in this case) to create an emulated ``live'' environment for integration testing purposes, and use unit testing as the dedicated test input in order to measure performance. 
   
-  For example, \Fref{fig:builds} is a screenshot from the dashboard showing the measured response times for 5 consequent builds, with 180 iterations of the unit tests executed in total across all endpoints. The outliers on the right of the figure are due to initial requests \ins{which must wait for a boot-up phase of the API}.  
 
-
-    \begin{figure}[h!]
+      \begin{figure}[h!]
         \centering
-        \includegraphics[width=\columnwidth]{travis_builds}
+        \includegraphics[width=0.7\columnwidth]{travis_builds}
         \caption{Response times in 5 consequent Travis builds in the \zee case study}
         \label{fig:builds}
       \end{figure}
+
+
+
+  For example, \Fref{fig:builds} is a screenshot from the dashboard showing the measured response times for 5 consequent builds, with 180 iterations of the unit tests executed in total across all endpoints. The outliers on the right of the figure are due to initial requests \ins{which must wait for a boot-up phase of the API}.  
+
+
 
   
   While this integration testing environment is different from the actual production deployment one, and the load used is purely synthetic, as will show in Section~\ref{sec:evaluation}, it can actually be used successfully as an early performance indicator for the application developer. \ins{Although predicting the performance of the application would require advanced statistical work, it can be succesfully used as an advanced warning system for the overall performance trend for given endpoints}.  
@@ -42,14 +54,6 @@
 
 \todo{here goes the discussion about our forecasting capabilities}
 
-\begin{figure}[h!]
-  \centering
-  \subfloat[The reported response time (in ms) per deployed version in the observation period]{\includegraphics[width=.5\columnwidth]{response_per_version_trunced_trend}}
-  \quad
-  \subfloat[The measured response time (in ms) using integration with Travis]{\includegraphics[width=.46\columnwidth]{travis_builds_no_outliers_trend}}
-  \caption{Comparison of the response times per endpoint: actual production system versus preemptive monitoring data}
-  \label{fig:preemptive}
-\end{figure}
 
 
 \begin{table}[h]

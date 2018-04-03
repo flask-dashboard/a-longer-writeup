@@ -9,8 +9,9 @@
 
 \ins{
   
-  The most basic possible view shows the cummulative information about all the endpoints and the number of calls to that endpoint (over the lifetime of its tracking as well as in the current day and the last seven days). HERE? ELSEWHERE? Actually, probably better for performance. The importance of the last day and last seven days became clear only after having used the dashboard for several months. 
+  The most basic possible view shows the cummulative information about all the endpoints and the number of calls to that endpoint over the lifetime of its tracking as well as in the current day and the last seven days.  
 }
+
 
   \begin{figure}[h!]
   \centering
@@ -20,10 +21,26 @@
   \end{figure}
 
 This kind of information is already very useful, and can provide the API maintainer with insight into the evolution of their system. By looking at \Fref{fig:basicest}, which presents the top 7 endpoints (for lack of space) one can already see several patterns: 
-- the two most used endpoints stand for the two main activities in the system (doing exercises and asking for translations while reading personalized materials )
-- \epUserActivity has been disproportionately been used in the last day and last week
-- \epFeedItems has not been used in the last 7 days
 
+\begin{itemize}
+
+  \item {\bf Frequent Patterns of System Usage}. The two most used endpoints stand for the two main activities in the system: 
+
+  \begin{itemize}
+
+    \item \epTranslations is an indicator of the amount of foreign language reading the users are doing
+
+    \epOutcome is an indicator of the amount of foreign vocabulary practice the users are doing.
+
+  \end{itemize}
+
+  \item {\bf Sudden Increase of Endpoint Usage}. One endpoint (\epUserActivity) has been disproportionately been used in the last day and last week; much more than before. 
+
+  \item {\bf Possibly Discontinued Endpoint Usage}. One endpoint (\epFeedItems) has not been used in the last 7 days
+
+\end{itemize}
+
+\lesson{Although very useful, it was only after several months of using the system that the client requested the extra columsn for one day and seven days.}
 
   % \begin{figure}[h!]
   % \centering
@@ -33,6 +50,10 @@ This kind of information is already very useful, and can provide the API maintai
   % \end{figure}
 
 
+
+
+The table view is limited, and the one day and one week periods are conveniently but arbitrarily selected. For a more detailed evolution of utilization, Figure \ref{fig:aeu} shows the \perspective{Daily Utilization} perspective on endpoint utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. Figure~\ref{fig:aeu} in particular shows a peak utilization, a day when the API had more than 12.000 hits. 
+
 \begin{figure}[h!]
   \centering
   \subfloat[Daily Utilization]{\includegraphics[width=.42\columnwidth]{number_of_requests_}\label{fig:aeu}}
@@ -41,17 +62,9 @@ This kind of information is already very useful, and can provide the API maintai
 \end{figure}
 
 
-Figure \ref{fig:aeu} shows a first perspective on endpoint utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. Figure~\ref{fig:aeu} in particular shows that at its peak the API has about 12.000 hits per day. 
-
 % The way users interact with the platform can also be inferred since the endpoints are indicators of different activity types, e.g.: 
 
-% \begin{enumerate}
-  
-%   \item {\color{myred} \epTranslations} is an indicator of the amount of foreign language reading the users are doing, and 
-  
-%   \item {\color{mygreen} \epOutcome} is an indicator of the amount of foreign vocabulary practice the users are doing.
-  
-% \end{enumerate}
+
 
 % Besides showing the overall utilization, this endpoint provides the maintainer with information relevant for decisions regarding endpoint deprecation --- one of the most elementary ways of {\em understanding the needs of the downstream}\cite{Haen14a}. In our case study, the maintainer realized that one endpoint which they thought was not being used (i.e. \code{words\_to\_study}), contrary to their expectations, was actually being used\footnote{A complementary type of usage information can also be discovered in the view presented in Figure \ref{fig:sep} where seeing that an endpoint is never accessed can increase the confidence of the maintainer that a given endpoint is not used, although it can never be used a proof.}.
 
@@ -60,10 +73,8 @@ Figure \ref{fig:aeu} shows a first perspective on endpoint utilization that \too
 %   \todo{Add the time series graph and discuss it before the heatmap? We can then sell the heatmap better} 
 %   \ml{Not sure about which graph you refer to here V}
 
-A second type of utilization question that the \tool can answer automatically regards {\em cyclic patterns of usage per hour of day} by means of a heatmap, as in \Fref{fig:dp}. 
+Another utilization perspective is the \perspective{Hourly Utilization} in which  the \tool can highlight {\em cyclic patterns of usage per hour of day} by means of a heatmap, as in \Fref{fig:dp}. 
 
-% \mltp{ can we add vertical lines that highlight the beginning of a new week (e.g. before Sunday): }
-% Patrick: adding separators in the graph is unfortunately not supported by the library.
 
 %\begin{figure}[!ht]
 % \centering

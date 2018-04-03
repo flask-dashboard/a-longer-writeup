@@ -3,10 +3,14 @@
 \subsection{Service Performance}
 \label{sec:perf}
 
+Knowing the performance of one’s API is critical for the quality of a service API. Flask Dashboard introduces a series of perspectives on performance, which focus on the response times of the various endpoints.
 
-  The \tool also collects information regarding endpoint performance. The view in \Fref{fig:ep} summarizes the response times for various endpoints by using a box-and-whiskers plot. 
 
-In the Zeeguu case study, one of the slowest endpoints, and one with the highest variability as shown in \Fref{fig:ep} is \epFeedItems: it retrieves a list of recommended articles for a given user. However, since a user can be subscribed to anything from one to three dozen article sources, and since the computation of the difficulty is personalized and it is slow, the variability in time among users is likely to be very large. 
+\ins{HERE? ELSEWHERE? Actually, probably better for performance. The importance of the last day and last seven days became clear only after having used the dashboard for several months. }
+
+
+
+The \tool also collects information regarding endpoint performance. The view in \Fref{fig:ep} summarizes the response times for various endpoints by using a box-and-whiskers plot. 
 
 
  \begin{figure}[!ht]
@@ -16,6 +20,10 @@ In the Zeeguu case study, one of the slowest endpoints, and one with the highest
    \label{fig:ep}
  \end{figure}
 
+
+
+In the Zeeguu case study, one of the slowest endpoints, and one with the highest variability as shown in \Fref{fig:ep} is \epFeedItems: it retrieves a list of recommended articles for a given user. However, since a user can be subscribed to anything from one to three dozen article sources, and since the computation of the difficulty is personalized and it is slow, the variability in time among users is likely to be very large. 
+
   From this view it became clear to the maintainer that four of the endpoints had very large variation in performance.   The most critical for the application and consequently the one optimized first was the \epTranslations endpoint which was part of an interactive loop in the reader applications that relied on the Zeeguu API. Moreover, cf. \Fref{fig:aeu} this endpoint is one of the most used in the system.
 
 
@@ -23,7 +31,7 @@ In the Zeeguu case study, one of the slowest endpoints, and one with the highest
 
 
   \newpage
-  \subsection{Performance Insight: Automated outlier detection and monitoring}
+  \subsection{Automated Outlier Detection and Monitoring}
   
   When an API is called from within a highly interactive application (as it is the case with the case study in this paper) 
   of particular interest to the API developers are performance {\em outliers}. 
@@ -46,7 +54,7 @@ In the Zeeguu case study, one of the slowest endpoints, and one with the highest
   
 
 The bottom panel shows the stack trace. 
-In this particular case, it is revealing for the developer to learn that at the time of the stack trace snapshot, the code was in the microsoft\_translator.py: indeed, the system uses as back-end multiple translators, and it has been observed that many of the outliers happen to be waiting in the microsoft translator.
+In this particular case, it is revealing for the developer to learn that at the time of the stack trace snapshot, the code was in the google\_translator.py: indeed, the system uses as back-end multiple translators, and it has been observed that many of the outliers happen to be waiting in the google translator.
 
 This information has to be corroborated with the observations that neither the memory nor the processor are overloaded at the moment. Thus this functionality in microsoft\_translator is really slow in itself, and this is not a result of the machine being overloaded for example. 
 
@@ -57,11 +65,4 @@ This information has to be corroborated with the observations that neither the m
 
 
 
-
-\begin{figure*}[h!]
-  \centering
-  \includegraphics[width=0.9\linewidth]{utilization-evolution}
-  \caption{The Evolution of Endpoint Utilization Across System Versions}
-  \label{fig:tee}
-\end{figure*}
 
