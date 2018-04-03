@@ -1,0 +1,67 @@
+%!TEX root=restructured.tex
+
+\subsection{Service Performance}
+\label{sec:perf}
+
+
+  The \tool also collects information regarding endpoint performance. The view in \Fref{fig:ep} summarizes the response times for various endpoints by using a box-and-whiskers plot. 
+
+In the Zeeguu case study, one of the slowest endpoints, and one with the highest variability as shown in \Fref{fig:ep} is \epFeedItems: it retrieves a list of recommended articles for a given user. However, since a user can be subscribed to anything from one to three dozen article sources, and since the computation of the difficulty is personalized and it is slow, the variability in time among users is likely to be very large. 
+
+
+ \begin{figure}[!ht]
+   \centering
+   \includegraphics[width=0.95\linewidth]{endpoint_performance_}
+   \caption{The response time (in ms) per monitored endpoint view allows for identifying performance variability and balancing issues}
+   \label{fig:ep}
+ \end{figure}
+
+  From this view it became clear to the maintainer that four of the endpoints had very large variation in performance.   The most critical for the application and consequently the one optimized first was the \epTranslations endpoint which was part of an interactive loop in the reader applications that relied on the Zeeguu API. Moreover, cf. \Fref{fig:aeu} this endpoint is one of the most used in the system.
+
+
+
+
+
+  \newpage
+  \subsection{Performance Insight: Automated outlier detection and monitoring}
+  
+  When an API is called from within a highly interactive application (as it is the case with the case study in this paper) 
+  of particular interest to the API developers are performance {\em outliers}. 
+
+  Indeed, a translation request that takes three times more than expected can seriously decrease the perceived quality of the application. Thus, identifying, collecting all appropriate data, and diagnosing the root causes of such outliers is especially critical in improving the quality of an application. 
+  
+  % In the context of the RESTful services support by Flask, this means request serving times that deviate from the average to an unexpected degree. 
+  
+  For this purpose the \tool tracks for every monitored endpoint a {\em running average} response time value\footnote{\ins{For performance reasons, we assume that the response times for the endpoints are normally distributed. Otherwise, more general density distribution information must be collected in real time.}}. When it detects that a given request is an outlier with respect to this past average running value, it triggers the {\em outlier data collection routine} which stores \ins{extra information} about the current execution environment. A configurable threshold with a default value of $2.5$ times the running average response time is used for this purpose. 
+
+  For every detected outlier request, the \tool collects information about the current Python stack trace, CPU load, memory consumption, request parameters, etc. in order to allow the maintainer to investigate the causes of these exceptionally slow response times. In this way it is possible to get \ins{detailed insight into the operation of the application in the extreme cases without unnecessarily burdening it with logging this information for every request}.
+
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{outlier-annotated}
+    \caption{Automatically collected outlier information}
+    \label{fig:figure1}
+  \end{figure}
+  
+
+The bottom panel shows the stack trace. 
+In this particular case, it is revealing for the developer to learn that at the time of the stack trace snapshot, the code was in the microsoft\_translator.py: indeed, the system uses as back-end multiple translators, and it has been observed that many of the outliers happen to be waiting in the microsoft translator.
+
+This information has to be corroborated with the observations that neither the memory nor the processor are overloaded at the moment. Thus this functionality in microsoft\_translator is really slow in itself, and this is not a result of the machine being overloaded for example. 
+
+
+
+
+
+
+
+
+
+\begin{figure*}[h!]
+  \centering
+  \includegraphics[width=0.9\linewidth]{utilization-evolution}
+  \caption{The Evolution of Endpoint Utilization Across System Versions}
+  \label{fig:tee}
+\end{figure*}
+

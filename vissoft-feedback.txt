@@ -1,0 +1,80 @@
+Summary: The paper proposes an analytics platform for Flask-based python applications. By means of a few lines of code, developers can get lots of information about their web applications, such as number of requests, performance, and usage patterns. The tool also offers some comparison between different versions of the system.
+
+
+Pros:
++ Very easy to start using the tool
++ Support for evolution
++ Different dashboards
+
+
+Overall, the tool seems really practical for Python users. Although the information captured as well visualizations are definitely not novel, the simplicity to start using the tool is impressive (2 lines of code). In practice, this means users can start using it tomorrow in 30 seconds.
+
+I find the paper very straightforward. It contains a good balance between motivations, technicalities, and existing features. The GH repository also contains a decent README file.
+
+I list two points that came to mind while reading the paper.
+
+- When I read the evolution part in which the tool reads the Git repository and checks the current version, I wondered how the tool knew the current and old deployed versions. However, it is explained in the discussion. Maybe a link pointing to the discussion would help readers know that there's an explanation for that later on.
+
+- Identifying users in the analysis may pose privacy concerns. Google Analytics, for example, does not allow its users to track the user's identity. Although I acknowledge that GA may be able to identify very personal information about you, maybe the same can happen in a larger application full of personal data. So, maybe this is something for the authors to think about.
+
+
+Minor:
+
+than one year: -> than one year.
+happended -> happened
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 34
+TITLE: A Low-Effort Analytics Platform for Visualizing Evolving Flask-Based Python Web Services
+AUTHORS: Mircea Lungu and Vasilios Andrikopoulos
+
+
+----------- Overall evaluation -----------
+The paper presents Flask Dashboard — a plugin for Python Flask web applications that monitors them and provides developers with performance information. Flask is a popular Python framework for building web applications. The authors have created first of its kind open source plugin that provides a dashboard with the performance information about an application. The authors have tested the plugin on their web service called Zeeguu with 200 active users throughout the testing period. The plugin helped developers to identify problematic parts in their application and refactor them to achieve performance improvements.
+
+Pros:
+- a well-written paper
+- useful tool contribution
+- validated on a real system
+- promising results
+
+Cons:
+- does not fit into VISSOFT
+
+I absolutely like the paper, and I’d like to see the presentation and discuss decisions taken the results obtained by the authors. However, when I think about what I learned from the paper, it is not related to the visualization of software. From what I can say the main contribution is a plugin which is easy to install into Flask applications, and it collects useful data without a need for an excessive configuration. The visualizations are quite simplistic and are a relatively common choice when it comes to analysis of this kind of data (e.g. I'd expect an Excel user to use the same visualizations respective to the type of data). Simplistic visualizations should not be viewed as a negative aspect of the paper; they rather point out that the main focus of the paper is not on the visual crafts.
+
+Detailed suggestions:
+Authors say that in Figure 2 a maintainer detected that some of the endpoints are used although they were believed to have no users. Which endpoints are those? Can a user filter which endpoints he want's to see. Otherwise, I doubt that this visualization is the best way for detecting unused endpoints.
+
+Authors describe that in Figure 3 one can see that most interactions happen during the day and that there was a peak around June 28. How does an analyst act when she sees such a peak? Can she select the peak node(s) and view the details on the bar chart from Figure 2? Or she has to switch the visualization and find the corresponding time frame manually?
+
+It is not clear what is the measure of the X axis in Figure 4? Are these milliseconds needed for a response? Also, does Flask Dashboard have a cumulative response time? Maybe an endpoint takes a long time to respond, but it's almost never used.
+
+The per-user analysis lacks a motivating use case. How does one leverage the per-user difference in response times (even if you have only 200 users)? For the future work, I'd suggest doing this analysis per-user group either by clustering users by similar performance or using other data such as the country of origin. Having a small number of diverse groups may help to fine tune an application for each group.
+
+It would be nice to know how much overhead Flask Dashboard brings into the system where it is installed.
+
+Please, don't use citations as a part of a sentence i.e. don't say "see for example [3]" try to phrase it in a way: "as exemplified by Papazoglou et. al. [3]".
+
+P.S. I want to congratulate authors on putting 10 sections in a 5-page publication.
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 34
+TITLE: A Low-Effort Analytics Platform for Visualizing Evolving Flask-Based Python Web Services
+AUTHORS: Mircea Lungu and Vasilios Andrikopoulos
+
+
+----------- Overall evaluation -----------
+This paper presents a low-effort Flask Dashboard service monitoring library for flask-based Python web applications. The proposed library allows different analytic information to show the overall visualization of the services, visualize the performance evolution of the endpoint services, as well as other information such as the Python stack trace, CPU load, request parameters, etc. The authors illustrate their solution with a case study using open source API that was fairly discussed.
+
+The paper is easy to follow and the proposed solution is profitable in terms of cost and time. In addition it is easy to integrate in an existing web-application. I have a couple of comments to further improve the proposed solution.
+
+In terms of endpoint performance, the proposed tool considers response time as a performance measure, however, there are other metrics/measures that are not considered such as traffics, errors, and saturation, etc. These measures are widely used by the larger web-scale SRE community as the most fundamental metrics for tracking service health and performance.
+
+The case study is good but it lacks some details, for example when the authors describe the number of requests (fig 2), only details about the fail requests but no details about success requests? In addition, in terms of performance improvement of the translation endpoint, the authors did not discuss/investigate the causes of these improvements?
+
+In terms of monitoring, it is important to consider both web server and flask application. Web server monitoring is about CPU utilization, memory usage, network traffics... it is interesting to  collect all these extra information, but more importantly how to analyze them.
+
+The related work section is  weak, it only presents some java service monitoring tools while paying little attention to python tools and other performance metrics for web based applications.
