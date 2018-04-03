@@ -1,4 +1,4 @@
-%!TEX root=restructured.tex
+%!TEX root=paper.tex
 
 
 \newpage
@@ -54,12 +54,20 @@ This kind of information is already very useful, and can provide the API maintai
 
 The table view is limited, and the one day and one week periods are conveniently but arbitrarily selected. For a more detailed evolution of utilization, Figure \ref{fig:aeu} shows the \perspective{Daily Utilization} perspective on endpoint utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. Figure~\ref{fig:aeu} in particular shows a peak utilization, a day when the API had more than 12.000 hits. 
 
-\begin{figure}[h!]
-  \centering
-  \subfloat[Daily Utilization]{\includegraphics[width=.42\columnwidth]{number_of_requests_}\label{fig:aeu}}
-  \subfloat[Hourly Utilization]{\includegraphics[width=.5\columnwidth]{daily_patterns_}\label{fig:dp}}
-  \caption{Some of the available views\label{fig:views}}
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\linewidth]{number_of_requests_}
+\caption{Usage patterns become easy to spot in the requests per hour heatmap}
+\label{fig:aeu}
 \end{figure}
+
+
+% \begin{figure}[h!]
+%   \centering
+%   \subfloat[Daily Utilization]{\includegraphics[width=.42\columnwidth]{number_of_requests_}\label{fig:aeu}}
+%   \subfloat[Hourly Utilization]{\includegraphics[width=.5\columnwidth]{daily_patterns_}\label{fig:dp}}
+%   \caption{Some of the available views\label{fig:views}}
+% \end{figure}
 
 
 % The way users interact with the platform can also be inferred since the endpoints are indicators of different activity types, e.g.: 
@@ -76,12 +84,12 @@ The table view is limited, and the one day and one week periods are conveniently
 Another utilization perspective is the \perspective{Hourly Utilization} in which  the \tool can highlight {\em cyclic patterns of usage per hour of day} by means of a heatmap, as in \Fref{fig:dp}. 
 
 
-%\begin{figure}[!ht]
-% \centering
-% \includegraphics[width=0.9\linewidth]{daily_patterns_}
-% \caption{Usage patterns become easy to spot in the requests per hour heatmap}
-% \label{fig:dp}
-%\end{figure}
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\linewidth]{daily_patterns_}
+\caption{Usage patterns become easy to spot in the requests per hour heatmap}
+\label{fig:dp}
+\end{figure}
 
 
 Figure \ref{fig:dp} shows the API not being used during the early morning hours, with most of the activity focused around working hours and some light activity during the evening. This is consistent with the fact that the current users are all in the central European timezone. Also, the figure shows that the spike in utilization that was visible also in the previous graph happended in on afternoon/evening.

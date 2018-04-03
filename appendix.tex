@@ -1,0 +1,35 @@
+
+\appendix
+
+  \subsection{Changing the Default /dashboard Endpoint }
+
+  THIS STUFF SHOULD BE MOVED TO THE APPENDIX. And in a footnote we just mention that ... \ins{REQUIREMENT}: The system must provide an easy way to add more specific configurations if needed. A way of overwriting the common sense defaults.
+
+  Further configuration is not needed possible by adding additional statements before the binding definition, for example,
+
+  \begin{lstlisting}[style=custompython]
+  ...
+  dashboard.config.link = 'mydashboard'
+  dashboard.bind(flask_app)
+  \end{lstlisting}
+  
+  allows for a custom route (\code{/mydashboard}) to the dashboard to be defined by the programmer. An external configuration file can be used instead, or in addition to this:
+  
+  \begin{lstlisting}[style=custompython]
+  ...
+  dashboard.config.from_file('config.cfg')
+  ...
+  \end{lstlisting}
+
+
+  \subsection{For those who don't use GIT}
+
+
+    \textit{Manual} version control requires the developer to tag each new version of the application with an appropriate version identifier~\cite{papazoglou2011managing} using the \code{APP\_VERSION} configuration parameter, for example by adding to the configuration file:
+    
+      \begin{lstlisting}[style=custompython]
+      [dashboard]
+      APP_VERSION=<versionID>
+      \end{lstlisting}
+
+

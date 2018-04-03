@@ -1,9 +1,9 @@
-%!TEX root=restructured.tex
+%!TEX root=paper.tex
 
 
 
   
-  \section{Evolution monitoring }
+  \section{LOC\#3: Monitoring Evolution}
   
 
   When thinking about performance, 
@@ -20,11 +20,12 @@
   \ins{The latest STack Overflow Developer Survey: 88.4\% of **professional** developers use git.}  
   If assume that the code that they run is deployed using .git, then with an extra line of configuration they can allow \tool to find the git\footnote{\url{https://git-scm.com/}} folder of the deployed service and automatically detect the version of the project that is running: 
     
-    \begin{lstlisting}[style=custompython]
-    
-      dashboard.config.git = 'path/to/.git'
+\begin{lstlisting}[style=custompython]
+
+dashboard.config.git = 'path/to/.git'
+  
       
-    \end{lstlisting}  
+\end{lstlisting}  
  
   If the \tool can automatically detect the current version of the project by reading the .git configuration as soon as the API is started and can then group measurements by version\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use git.}. 
 
@@ -71,7 +72,7 @@ The limitation of the previous view is that it does not present the information 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\linewidth]{time_per_user_per_version}
+  \includegraphics[width=0.9\linewidth]{time_per_user_per_version}
   \caption{This perspective shows that the evolution of response times for individual users (horizontal lines) across versions (the x-axis)}
   \label{fig:tuv}
 \end{figure}

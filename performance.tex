@@ -1,4 +1,4 @@
-%!TEX root=restructured.tex
+%!TEX root=paper.tex
 
 \subsection{Service Performance}
 \label{sec:perf}
@@ -28,9 +28,6 @@ In the Zeeguu case study, one of the slowest endpoints, and one with the highest
 
 
 
-
-
-  \newpage
   \subsection{Automated Outlier Detection and Monitoring}
   
   When an API is called from within a highly interactive application (as it is the case with the case study in this paper) 
@@ -47,7 +44,7 @@ In the Zeeguu case study, one of the slowest endpoints, and one with the highest
 
   \begin{figure}[h!]
     \centering
-    \includegraphics[width=\linewidth]{outlier-annotated}
+    \includegraphics[width=0.9\linewidth]{outlier-annotated}
     \caption{Automatically collected outlier information}
     \label{fig:figure1}
   \end{figure}
@@ -57,6 +54,8 @@ The bottom panel shows the stack trace.
 In this particular case, it is revealing for the developer to learn that at the time of the stack trace snapshot, the code was in the google\_translator.py: indeed, the system uses as back-end multiple translators, and it has been observed that many of the outliers happen to be waiting in the google translator.
 
 This information has to be corroborated with the observations that neither the memory nor the processor are overloaded at the moment. Thus this functionality in microsoft\_translator is really slow in itself, and this is not a result of the machine being overloaded for example. 
+
+\lesson{We need more advanced outlier analysis tools... Instead of manually searching in the page to build stats about Google vs. Microsoft}
 
 
 

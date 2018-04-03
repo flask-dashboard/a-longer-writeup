@@ -1,6 +1,6 @@
-%!TEX root=restructured.tex
+%!TEX root=paper.tex
 
-\section{Grouping Requests}
+\section{LOC\#2: Grouping Requests}
 \label{sec:user}
 
 For service endpoints which run computations in real time, the maintainer of a system might want to understand the endpoint performance on a per-user basis, especially for situations where the system response time is a function of some individual user load\footnote{E.g. in GMail some users have two emails while other have twenty thousand and this induces different response times for different users}.
@@ -23,15 +23,15 @@ dashboard.config.group_by = 'User',
 In Zeeguu, \epFeedItems retrieves a list of recommended articles for a given user. Cf. \Fref{fig:ep} it is the endpoint with the slowest response time and highest variability. The reason for this is that a user can be subscribed to anything from one to three dozen article sources and for each of the sources the system must compute the personalized difficulty of each article at every request. 
 
 
-A \perspective{Per-User Performance} perspective should show the different response times for different users. Figure \ref{fig:tpu} presents a subset of the corresponding view in the \tool. The figure shows that the response times for this endpoint can vary considerably for different users with some extreme cases where a user has to wait a full minute until their recommended articles are shown\footnote{After seeing this perspective, the maintainer refactored the architecture of the system to move part the difficulty computation out of the interactive loop}.
-
-
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=.8\linewidth]{time_per_user}
+  \includegraphics[width=.6\linewidth]{time_per_user}
   \caption{The \epFeedItems shows a very high variability across users}
   \label{fig:tpu}
 \end{figure}
+
+
+A \perspective{Per-User Performance} perspective should show the different response times for different users. Figure \ref{fig:tpu} presents a subset of the corresponding view in the \tool. The figure shows that the response times for this endpoint can vary considerably for different users with some extreme cases where a user has to wait a full minute until their recommended articles are shown\footnote{After seeing this perspective, the maintainer refactored the architecture of the system to move part the difficulty computation out of the interactive loop}.
 
 
 
