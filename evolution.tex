@@ -22,6 +22,9 @@
     
 \begin{lstlisting}[style=custompython]
 
+# LOC #3: provide the dashboard with 
+# information on where to find the 
+# git information 
 dashboard.config.git = 'path/to/.git'
   
       
@@ -39,7 +42,7 @@ dashboard.config.git = 'path/to/.git'
 
     \begin{figure}[h!]
       \centering
-      \includegraphics[width=\linewidth]{utilization-evolution}
+      \includegraphics[width=1\linewidth]{utilization-evolution}
       \caption{The Evolution of Endpoint Utilization Across System Versions}
       \label{fig:mv-util}
     \end{figure}
@@ -51,7 +54,7 @@ dashboard.config.git = 'path/to/.git'
 
     \begin{figure}[h!]
       \centering
-      \includegraphics[width=0.9\linewidth]{translation_endpoint_evolution_}
+      \includegraphics[width=\linewidth]{translation_endpoint_evolution_}
       \caption{The Performance Evolution of the \epTranslations endpoint}
       \label{fig:tee}
     \end{figure}
@@ -72,13 +75,13 @@ The limitation of the previous view is that it does not present the information 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.9\linewidth]{time_per_user_per_version}
-  \caption{This perspective shows that the evolution of response times for individual users (horizontal lines) across versions (the x-axis)}
+  \includegraphics[width=0.97\linewidth]{time_per_user_per_version}
+  \caption{This perspective shows that the evolution of response times for individual users (horizontal lines) across versions (the x-axis) for a given endpoint}
   \label{fig:tuv}
 \end{figure}
 
 
-The colors represent users. The figure shows average performance varying  across users and versions with no clear trend: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times. \ins{one can see that for user 1 performance degrades over the }
+The colors represent users. The figure shows average performance varying  across users and versions with no clear trend: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times. \ins{one can see that for user 1 performance degrades over the versions. Given that for other users the performance does not degrade in the same way, it is safe to assume that the problem might lay elsewhere.}
 
 
   

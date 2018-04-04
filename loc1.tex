@@ -2,7 +2,7 @@
 
 
   \newpage
-  \section{LOC \#1: Service Utilization and Performance}
+  \section{Service Utilization and Performance}
 
   Since it is taylored for Flask applications, to deploy the \tool one simply needs to use one line of code\footnote{We don't count the import statement that enables that line...} to bind the dashboard to their Flask web application\footnote{\ins{ In this paper we present the integration with APIs written in Python and Flask hoping that this will not prevent the reader from seeing the more general idea; all the tools we show here for Flask can be applied to other API technologies (e.g. Django) by simply providing a few back-end adapters in the right places. }}:
 
@@ -10,8 +10,8 @@
   \begin{lstlisting}[style=custompython]
   import flask_monitoringdashboard as dashboard
 
-  # app is main application object
-  # every Flask web application has one
+  # LOC #1: associate the main Flask application 
+  # object with the dashboard
   dashboard.bind(app) 
 
   \end{lstlisting}
