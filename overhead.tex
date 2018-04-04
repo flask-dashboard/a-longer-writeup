@@ -4,6 +4,19 @@
 \section{Overhead of the \tool}
 \label{sec:overhead}
 
+
+To know the performance overhead of the \tool, we have implemented an automated benchmark system. It is open source and available online and can be tested by the reader. The benchmark does the following steps: 
+
+\begin{itemize}
+	\item downloads the latest version of the Zeeguu API and installs it in a Docker container
+	\item enables the dasboard and calls several endpoints tracking the response times
+	\item disables the dashboard and calls the same endpoitns tracking the response times
+	\item reports the response times
+\end{itemize}
+
+Based on running the benchmarking script we can report 
+
+
 \ins{PERFORMANCE DISCUSSION: this introspection, which looks up endpoints, happens only once at the startup of the service, so it is going to affect the API startup performance, but not the actual endpoint performance. In our case, the overhead here was quite small: TO MEASURE}.
 
 
