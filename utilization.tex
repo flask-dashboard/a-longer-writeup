@@ -28,15 +28,15 @@ This kind of information is already very useful, and can provide the API maintai
 
   \begin{itemize}
 
-    \item \epTranslations is an indicator of the amount of foreign language reading the users are doing
+    \item \epTranslationsColor is an indicator of the amount of foreign language reading the users are doing
 
-    \epOutcome is an indicator of the amount of foreign vocabulary practice the users are doing.
+    \item \epOutcomeColor is an indicator of the amount of foreign vocabulary practice the users are doing.
 
   \end{itemize}
 
-  \item {\bf Sudden Increase of Endpoint Usage}. One endpoint (\epUserActivity) has been disproportionately been used in the last day and last week; much more than before. 
+  \item {\bf Sudden Increase of Endpoint Usage}. One endpoint (\epUserActivityColor) has disproportionately been used in the last day and last week. 
 
-  \item {\bf Possibly Discontinued Endpoint Usage}. One endpoint (\epFeedItems) has not been used in the last 7 days
+  \item {\bf Possibly Discontinued Endpoint Usage}. One endpoint (\epFeedItemsColor) has not been used in the last 7 days. This might be an endpoint that is deprecated.
 
 \end{itemize}
 
@@ -52,7 +52,7 @@ This kind of information is already very useful, and can provide the API maintai
 
 
 
-The table view is limited, and the one day and one week periods are conveniently but arbitrarily selected. For a more detailed evolution of utilization, Figure \ref{fig:aeu} shows the \perspective{Daily Utilization} perspective on endpoint utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. Figure~\ref{fig:aeu} in particular shows a peak utilization, a day when the API had more than 12.000 hits. 
+The table view is limited, and the one day and one week periods are conveniently but arbitrarily selected. For a more detailed evolution of utilization, Figure \ref{fig:aeu} shows the \perspective{Daily API Utilization} perspective on endpoint utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. Figure~\ref{fig:aeu} in particular shows a peak utilization, a day when the API had more than 12.000 hits. 
 
 \begin{figure}[!ht]
 \centering
@@ -81,7 +81,7 @@ The table view is limited, and the one day and one week periods are conveniently
 %   \todo{Add the time series graph and discuss it before the heatmap? We can then sell the heatmap better} 
 %   \ml{Not sure about which graph you refer to here V}
 
-Another utilization perspective is the \perspective{Hourly Utilization} in which  the \tool can highlight {\em cyclic patterns of usage per hour of day} by means of a heatmap, as in \Fref{fig:dp}. 
+Another utilization perspective is the \perspective{Hourly API Utilization} in which  the \tool can highlight {\em cyclic patterns of usage per hour of day} by means of a heatmap, as in \Fref{fig:dp}. 
 
 
 \begin{figure}[!ht]

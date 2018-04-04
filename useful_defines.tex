@@ -38,6 +38,7 @@
 \definecolor{mygreen}{RGB}{60, 180, 75}
 \definecolor{uploadUserData}{RGB}{135, 143, 197}
 \definecolor{feedItems}{RGB}{245, 130, 48}
+\definecolor{topArticles}{RGB}{139, 210, 121}
 
 
 \newcommand{\niceseparator}
@@ -51,14 +52,26 @@
 
 % Endpoint Names 
 %\newcommand{\epDecoration}[1]{{\small {\bf #1}}\xspace}
-\newcommand{\epDecoration}[1]{\code{#1}}
+\newcommand{\epDecoration}[1]{\code{\small #1}}
 
-\newcommand{\epColorDecoration}[2]{\color{#1}$\blacksquare$\color{black}\code{#2}}
+\newcommand{
+			\epColorDecoration}[2]{#2\code{\small(\color{#1}{\small$\blacksquare$}\color{black})}
+				\xspace}
 
-\newcommand{\epTranslations}{{\epColorDecoration{myred}{api.get\_possible\_translations}}\xspace}
-\newcommand{\epOutcome}{\epColorDecoration{mygreen}{api.report\_exercise\_outcome}}
-\newcommand{\epFeedItems}{\epColorDecoration{feedItems}{api.get\_feed\_items\_with\_metrics}}
-\newcommand{\epUserActivity}{\epColorDecoration{uploadUserData}{api.upload\_user\_activity\_data}}
+\newcommand{\epTranslations}{\epDecoration{get\_possible\_translations}}
+\newcommand{\epTranslationsColor}{\epColorDecoration{myred}{\epTranslations}}
+
+\newcommand{\epOutcome}{\epDecoration{report\_exercise\_outcome}}
+\newcommand{\epOutcomeColor}{\epColorDecoration{mygreen}{\epOutcome}}
+
+\newcommand{\epUserActivity}{\epDecoration{upload\_user\_activity\_data}}
+\newcommand{\epUserActivityColor}{\epColorDecoration{uploadUserData}{\epUserActivity}}
+
+\newcommand{\epFeedItems}{\epDecoration{get\_feed\_items\_with\_metrics}}
+\newcommand{\epFeedItemsColor}{\epColorDecoration{feedItems}{\epFeedItems}}
+
+\newcommand{\epTopArticles}{\epDecoration{top\_recommended\_articles}}
+\newcommand{\epTopArticlesColor}{\epColorDecoration{topArticles}{\epTopArticles}}
 
 
 % Author Comments / Discussion

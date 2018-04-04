@@ -2,11 +2,8 @@
   
   \section{Version-Aware Monitoring}
   
-
-  When thinking about performance, 
-  one can not avoid thinking about the performance evolution. 
-  The time is easy to track, but it is not always the desired 
-  timeline. Sometimes the desired unit of time is the version.
+  The Stack Overflow Developer Survey from 2018 revealed the fact that 88.4\% of professional developers use git for version control. 
+  Given that versioning using git is the main way in which the source code of services evolves, it is natural to monitor their progress also across versions. 
 
   Version control in \tool can be supported in two ways,
   the developer explicitly states the current version, 
@@ -14,9 +11,8 @@
   on some version control system. 
 
 
-  However, with the current configuration of the tool, it would be impossible for the maintainer to see the improvements resulting from the optimization. 
+  % However, with the current configuration of the tool, it would be impossible for the maintainer to see the improvements resulting from the optimization. 
 
-  \ins{The latest STack Overflow Developer Survey: 88.4\% of **professional** developers use git.}  
   If assume that the code that they run is deployed using .git, then with an extra line of configuration they can allow \tool to find the git\footnote{\url{https://git-scm.com/}} folder of the deployed service and automatically detect the version of the project that is running: 
     
 \begin{lstlisting}[style=custompython]
@@ -34,20 +30,27 @@ dashboard.config.git = 'path/to/.git'
 
   
 
-  \subsubsection*{Evolving Utilization}
+  \subsection*{Evolving Utilization}
 
-  \Fref{fig:mv-util} shows the \perspective{Multi-Version Utilization} perspective. 
-  It shows the utilization of all the tracked endpoints across versions. 
+  \Fref{fig:mv-util} shows the \perspective{Multi-Version API Utilization} perspective which presents the utilization of the tracked endpoints across versions. Because the different versions might be deployed for very different periods of time, at the intersection of an endpoint and a version the chart does not plot the absolute utilization of that endpoint in that version but rather the percentage of all the API calls that go to that endpoint. Otherwise a version that is deployed for many weeks would make all those deployed for several days invisible.
+
 
     \begin{figure}[h!]
       \centering
       \includegraphics[width=0.9\linewidth]{utilization-evolution}
-      \caption{The Evolution of Endpoint Utilization Across System Versions}
+      \caption{The Evolution of All the API Endpoints Utilization Across System Versions}
       \label{fig:mv-util}
     \end{figure}
 
+  With this view, several patterns are visible:
+  \begin{itemize}
+    
+    \item \epFeedItems is discontinued a little bit after \epTopArticles is being introduced
 
-    \subsubsection*{Evolving Performance}
+  \end{itemize}
+
+
+  \subsection*{Evolving Performance}
 
     \Fref{fig:tee} is a zoomed-in version of such a view for \epTranslations with versions increasing from top to bottom
 
@@ -62,15 +65,8 @@ dashboard.config.git = 'path/to/.git'
   This view confirms that the performance of the translation endpoint improved in the recent versions: the median of the last three versions is constantly moving towards the left, and progresses from 1.4 seconds (in the top-most box plot in \Fref{fig:tee}) to 0.8 in the latest version (bottom-most box plot).
 
 
-
-  CHALLENGE: Supporting other types of version control... not real challenge, as we said 88percent of devs use git. 
-  CHALLENGE 2: detecting minor versions which don't need to be tracked, since they didn't touch the performance of the system. E.g. a modification of the README, etc. 
-  
-\todo{TODO: endpoint evolution }
-
-
-\subsubsection*{Evolving Groups}
-The limitation of the previous view is that it does not present the information also on a per version basis. To address this, a different visual perspective entitled \perspective{Multi-Version per-User Performance} can be defined. Figure \ref{fig:tuv} presents such a perspective by mapping the average execution time for a given user (lines) and given version (columns) on the area of the corresponding circle. 
+\subsection*{Evolving Groups}
+  The limitation of the previous view is that it does not present the information also on a per version basis. To address this, a different visual perspective entitled \perspective{Multi-Version per-User Performance} can be defined. Figure \ref{fig:tuv} presents such a perspective by mapping the average execution time for a given user (lines) and given version (columns) on the area of the corresponding circle. 
 
 \begin{figure}[h!]
   \centering
