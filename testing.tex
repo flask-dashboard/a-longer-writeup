@@ -3,21 +3,18 @@
 
 
 \newpage
-  \section{Performance Regression Testing}
+  \section{Performance Regression Monitoring}
 
-  What happens when the developer observes a performance degradation of a given API endpoint? How does he know whether the reason is the degradation of the performance of the code, the load on the machines, or maybe the change in the magnitude of the user data?
+  Suppose the developer observes a performance degradation of a given API endpoint in the latest version of the system. How do they know whether the degradation is due to the performance of the code, the server load, or the workload mix of the user? 
 
   \vspace{0.1cm}
 
-  One way of solving the problem is to monitor the evolution of the performance of the endpoints measured with a constant load. Thus, if the performance decreases when an endpoint is tested with a constant load the problem must be the endpoint implementation; otherwise, it must be found elsewhere. 
+  
+  One way of triangulating such an observation is by monitoring the evolution of the performance of the endpoints when tested with a constant load across versions. Thus, if the performance decreases in a new version, and the  when an endpoint is tested with a constant load the problem must be the endpoint implementation. 
 
   \subsection*{Integrating with CI Servers}
 
-  To monitor endpoint performance with a constant load \tool takes advantage of two best practices in software evolution: (1) and API must have unit tests for its endpoints, and (2) these unit tests will be run within a CI server.
-
-  This raises the opportunity of piggybacking on the CI process to track the timing of these unit tests as a proxy of the endpoint performance evolution. 
-
-  
+  To monitor endpoint performance with a constant load \tool takes advantage of two best practices in software evolution: (1) and API must have unit tests for its endpoints, and (2) these unit tests will be run within a CI server. By tracking the timing of these unit tests one obtains a perspective on endpoint performance evolution with a constant load (as long as the unit tests do not change). 
 
   \tool can be configured to work together with Continuous Integration (CI) frameworks like Travis\footnote{\url{https://travis-ci.org/}, one of the most popular CI solutions at the moment} that deal with automated integration testing. To do this one needs to simply add one extra line in the script that runs their continuous integration testing. In the case of Travis CI, a developer has to add the following line in `.travis.yml': 
 
@@ -44,10 +41,9 @@ python -m flask_monitoringdashboard.collect
 
 
   \subsection*{Preemptive Monitoring}
-  The concept of {\em preemptive monitoring} of the application performance by means of instrumenting integration unit testing as the synthetic load is similar to the idea of augmenting service monitoring with online testing~\cite{metzger2010proactive}, i.e.~testing service-based applications by using dedicated test input in parallel to its normal use and operation. The difference is that we take advantage of the capability of the CI framework (i.e. Travis in this case) to create an emulated ``live'' environment for integration testing purposes, and use unit testing as the dedicated test input in order to measure performance. 
+  The concept of {\em preemptive monitoring} of the application performance by means of instrumenting integration unit testing as the synthetic load is similar to the idea of augmenting service monitoring with online testing~\cite{metzger2010proactive}, i.e.~testing service-based applications by using dedicated test input in parallel to its normal use and operation. The difference is that we take advantage of the capability of the CI framework to create an emulated ``live'' environment for integration testing purposes, and use unit testing as the dedicated test input in order to measure performance. 
   
-
-  Figure \ref{fig:response_times_preemptive} shows one example of correlation between the actual endpoint response times across five versions of the system (above) and the corresponding testing times for the synthetic load in the same five versions (below). As suggested by the green line that unites the medians there seems to be a correlation between the two datasets as they are moving in the same. 
+  While this integration testing environment is different from the production one, and the load used is purely synthetic, it can serve as an early performance indicator for the developer.  Figure \ref{fig:response_times_preemptive} shows the actual endpoint response times across five versions of the system (above) and the corresponding testing times for the synthetic load in the same five versions (below). The green line joining the medians hints to a correlation between the two sets of measurements. 
 
       \begin{figure}[h!]
         \centering
@@ -80,7 +76,7 @@ python -m flask_monitoringdashboard.collect
         \bottomrule
       
       \end{tabular}
-      \caption{The measured response time (in ms) using integration with Travis}
+      \caption{Median response times in Figure \ref{fig:response_times_preemptive}}
       \label{tab:correlations}
     \end{table}
 
@@ -96,34 +92,7 @@ python -m flask_monitoringdashboard.collect
 %   \label{fig:preemptive}
 % \end{figure*}
 
-  
-  While this integration testing environment is different from the actual production deployment one, and the load used is purely synthetic, as will show in Section~\ref{sec:evaluation}, it can actually be used successfully as an early performance indicator for the application developer. \ins{Although predicting the performance of the application would require advanced statistical work, it can be succesfully used as an advanced warning system for the overall performance trend for given endpoints}.  
-
-
-  \paragraph{Integration with Travis}
-  
-
-
-
+  \ml{This following paragraph is beautifully written, but it's a bit redundant with what it's already said. However maybe after some more refactorings we can put it to use. Worst case, we move it to the conclusion}
   \ins{Besides functioning as an early warning system for performance, tracking the evolving performance of API tests serves a second purpose. To function as an anchor when the developer analyzes performance degradations. For example, when a developer sees that a given endpoint has become less performant after in a newly deployed version, they are able to investigate whether the performance degradation is visible also with the synthetic load. This would correspond to a performance degradation which is due to ``algorithmic performance degradation''. If on the other hand, the performance of the tests does not change between versions, the developer might conclude that the performance degradation could be due to the workload on the machines, or maybe to the workload mix of the users}
   
-  %By these means, an application developer can use unit tests as synthetic loads for driving the performance monitoring of the application before it reaches the production phase.  As we will discuss further in Section~\ref{sec:testing}, this feature is integral in enabling preemptive performance monitoring of the application.  
-  
 
-\todo{here goes the discussion about our forecasting capabilities}
-
-
-
-
-
-
-
-
-    \begin{figure*}[ht!]
-      \centering
-      \includegraphics[width=0.8\linewidth]{interceptor}
-      \caption{The first thing that needs to be done, is to decorate the application object with an INTERCEPTOR}
-      \label{fig:sep}
-    \end{figure*}
-
-\newpage

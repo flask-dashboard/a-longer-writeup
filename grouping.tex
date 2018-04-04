@@ -9,11 +9,10 @@ For service endpoints which run computations in real time, the maintainer of a s
 To enable this, the \tool must be configured to associate an API call with a given user. The simplest way is to take advantage of the architecture of Flask applications in which a global \code{flask.request} object can be used to retrieve the session which can in turn lead to user identification: 
 
 \begin{lstlisting}[style=custompython]  
-
 # LOC #2: configure the dashboard
 # to group requests by the user id
 dashboard.config.group_by = 'User',
-	lambda: Session.find(flask.request).userid
+	lambda: Session.find(flask.request).user.id
 
 \end{lstlisting}
 
@@ -25,6 +24,8 @@ Explain the code: the group by is assigned a tuple:
 	the global flask.request. Every application must have a way of
 	associating a user with a request. Or an app with a request. 
 	A user is usually retrieved from some session variable. 
+	If we wanted to group by the user group for example, the code
+	would change slightly by replacing ``user.id'' with ``user.group.id''
 \end{itemize}
 
 % \niceseparator
@@ -34,7 +35,7 @@ In Zeeguu, \epFeedItems retrieves a list of recommended articles for a given use
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=.6\linewidth]{time_per_user}
+  \includegraphics[width=.5\linewidth]{time_per_user}
   \caption{The \epFeedItems shows a very high variability across users}
   \label{fig:tpu}
 \end{figure}

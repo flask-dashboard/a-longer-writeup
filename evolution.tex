@@ -1,9 +1,6 @@
 %!TEX root=paper.tex
-
-
-
   
-  \section{LOC\#3: Monitoring Evolution}
+  \section{Evolution Monitoring}
   
 
   When thinking about performance, 
@@ -42,7 +39,7 @@ dashboard.config.git = 'path/to/.git'
 
     \begin{figure}[h!]
       \centering
-      \includegraphics[width=1\linewidth]{utilization-evolution}
+      \includegraphics[width=0.9\linewidth]{utilization-evolution}
       \caption{The Evolution of Endpoint Utilization Across System Versions}
       \label{fig:mv-util}
     \end{figure}
@@ -54,7 +51,7 @@ dashboard.config.git = 'path/to/.git'
 
     \begin{figure}[h!]
       \centering
-      \includegraphics[width=\linewidth]{translation_endpoint_evolution_}
+      \includegraphics[width=0.9\linewidth]{translation_endpoint_evolution_}
       \caption{The Performance Evolution of the \epTranslations endpoint}
       \label{fig:tee}
     \end{figure}
@@ -81,7 +78,7 @@ The limitation of the previous view is that it does not present the information 
 \end{figure}
 
 
-The colors represent users. The figure shows average performance varying  across users and versions with no clear trend: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times. \ins{one can see that for user 1 performance degrades over the versions. Given that for other users the performance does not degrade in the same way, it is safe to assume that the problem might lay elsewhere.}
+The colors represent users. The figure shows average performance varying  across users and versions with no clear trend: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times. \ins{one can see that for user 1 performance degrades over the versions. Given that for other users the performance does not degrade in the same way, it is probable that the problem might lay elsewhere: the server was overloaded or the endpoint is ``algorithmically slower''.}
 
 
   
