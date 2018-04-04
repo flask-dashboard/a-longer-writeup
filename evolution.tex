@@ -1,10 +1,12 @@
 %!TEX root=paper.tex
   
-  \section{Evolution Monitoring}
+  \section{Version-Aware Monitoring}
   
 
   When thinking about performance, 
   one can not avoid thinking about the performance evolution. 
+  The time is easy to track, but it is not always the desired 
+  timeline. Sometimes the desired unit of time is the version.
 
   Version control in \tool can be supported in two ways,
   the developer explicitly states the current version, 
@@ -35,7 +37,7 @@ dashboard.config.git = 'path/to/.git'
   \subsubsection*{Evolving Utilization}
 
   \Fref{fig:mv-util} shows the \perspective{Multi-Version Utilization} perspective. 
-  It shows the utilization of all the tracked endpoints across versions.
+  It shows the utilization of all the tracked endpoints across versions. 
 
     \begin{figure}[h!]
       \centering
