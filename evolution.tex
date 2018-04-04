@@ -52,7 +52,7 @@ dashboard.config.git = 'path/to/.git'
 
   \subsection*{Evolving Performance}
 
-    \Fref{fig:tee} is a zoomed-in version of such a view for \epTranslations with versions increasing from top to bottom
+    \Fref{fig:tee} is a zoomed-in version of such a view for \epTranslationsColor with versions increasing from top to bottom
 
     \begin{figure}[h!]
       \centering
@@ -65,12 +65,12 @@ dashboard.config.git = 'path/to/.git'
   This view confirms that the performance of the translation endpoint improved in the recent versions: the median of the last three versions is constantly moving towards the left, and progresses from 1.4 seconds (in the top-most box plot in \Fref{fig:tee}) to 0.8 in the latest version (bottom-most box plot).
 
 
-\subsection*{Evolving Groups}
-  The limitation of the previous view is that it does not present the information also on a per version basis. To address this, a different visual perspective entitled \perspective{Multi-Version per-User Performance} can be defined. Figure \ref{fig:tuv} presents such a perspective by mapping the average execution time for a given user (lines) and given version (columns) on the area of the corresponding circle. 
+\subsection*{Evolving Grouped Performance}
+  The limitation of the previous view is that it does not present the information also on a per version basis. To address this, a different visual perspective entitled \perspective{User-Focused Multi-Version Endpoint Performance} can be defined. Figure \ref{fig:tuv} presents such a perspective by mapping the average execution time for a given user (lines) and given version (columns) on the area of the corresponding circle. 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.97\linewidth]{time_per_user_per_version}
+  \includegraphics[width=0.77\linewidth]{time_per_user_per_version}
   \caption{This perspective shows that the evolution of response times for individual users (horizontal lines) across versions (the x-axis) for a given endpoint}
   \label{fig:tuv}
 \end{figure}
