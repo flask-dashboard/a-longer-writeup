@@ -3,29 +3,31 @@
 \subsection{Performance}
 \label{sec:perf}
 
-Knowing the performance of one’s API is critical for the quality of a service API. Flask Dashboard introduces a series of perspectives on performance, which focus on the response times of the various endpoints.
+% The \tool also collects information regarding endpoint performance. 
+The \perspective{API Performance} visualization perspective presents
+an overview of the response times for all the tracked endpoints 
+by using a box-and-whiskers plot. 
 
+\Fref{fig:ep} presents such a perspective from our case study which 
+was taken in the last quarter of 2017. Several observatrions are 
+straightforward: 
 
-\ins{HERE? ELSEWHERE? Actually, probably better for performance. The importance of the last day and last seven days became clear only after having used the dashboard for several months. }
+\begin{itemize}
 
+  \item The slowest endpoint and the one with the highest variability is \epFeedItemsColor: it retrieves a list of recommended articles for a given user. Since a user can be subscribed to anything from one to three dozen article sources, and since the computation of the difficulty was done in real time, the variability in time among users is likely to be very large. 
 
+  \item In the top three slowest endpoints, but the second most used endpoint in the system (cf. \Fref{fig:aeu}) is \epTranslationsColor. The endpoint is critical being embedded in the interactive loop in the reader applications that rely on the Zeeguu API: a user would tap on a word and receive a translation from this endpoint.
+ 
+\end{itemize}
 
-The \tool also collects information regarding endpoint performance. The view in \Fref{fig:ep} summarizes the response times for various endpoints by using a box-and-whiskers plot. 
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[width=0.85\linewidth]{endpoint_performance_}
+ \caption{The response time (in ms) per monitored endpoint view allows for identifying performance variability and balancing issues}
+ \label{fig:ep}
+\end{figure}
 
-
- \begin{figure}[!ht]
-   \centering
-   \includegraphics[width=0.85\linewidth]{endpoint_performance_}
-   \caption{The response time (in ms) per monitored endpoint view allows for identifying performance variability and balancing issues}
-   \label{fig:ep}
- \end{figure}
-
-
-
-In the Zeeguu case study, one of the slowest endpoints, and one with the highest variability as shown in \Fref{fig:ep} is \epFeedItemsColor which retrieves a list of recommended articles for a given user. However, since a user can be subscribed to anything from one to three dozen article sources, and since the computation of the difficulty is personalized and it is slow, the variability in time among users is likely to be very large. 
-
-From this view it became clear to the maintainer that four of the endpoints had very large variation in performance.   The most critical for the application and consequently the one optimized first was \epTranslationsColor endpoint which was part of an interactive loop in the reader applications that relied on the Zeeguu API. Moreover, cf. \Fref{fig:aeu} this endpoint is one of the most used in the system.
-
+Such a view is important for allocating optimization efforts. In our case study, the API developers started by improving the performance of \epTranslationsColor and then later optimized the performance of \epFeedItemsColor. However, in order to understand the problems of the two endpoints, a big component represents understanding the outliers: because they are many. 
 
 
   \subsection{Automated Outlier Detection and Monitoring}
@@ -51,11 +53,9 @@ From this view it became clear to the maintainer that four of the endpoints had 
   
 
 The bottom panel shows the stack trace. 
-In this particular case, it is revealing for the developer to learn that at the time of the stack trace snapshot, the code was in the google\_translator.py: indeed, the system uses as back-end multiple translators, and it has been observed that many of the outliers happen to be waiting in the google translator.
+In this particular case, it is revealing for the developer to learn that at the time of the stack trace snapshot, the code was in the google\_translator.py: indeed, the system uses as back-end multiple translators, and it has been observed that many of the outliers happen while the system is waiting for the Google translator.
 
 This information has to be corroborated with the observations that neither the memory nor the processor are overloaded at the moment. Thus this functionality in microsoft\_translator is really slow in itself, and this is not a result of the machine being overloaded for example. 
-
-\lesson{We need more advanced outlier analysis tools... Instead of manually searching in the page to build stats about Google vs. Microsoft}
 
 
 

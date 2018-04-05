@@ -11,9 +11,7 @@
   A dashboard can be attached to an already existing Flask application with a single line of code as the code in the following snippet shows
   \footnote{We do not count the import statement that enables that line}:
 
-  % which binds the dashboard to a Flask application\footnote{\ins{ In this paper we present the integration with APIs written in Python and Flask hoping that this will not prevent the reader from seeing the more general idea; all the tools we show here for Flask can be applied to other API technologies (e.g. Django) by simply providing a few back-end adapters in the right places. }}:
 
-  % caption=Configuring the \tool is straightforward,
   \begin{lstlisting}[style=custompython]
   import flask_monitoringdashboard as dashboard
 
@@ -31,7 +29,7 @@
 
     \begin{figure}[h!]
       \centering
-      \includegraphics[width=\linewidth]{selecting_endpoints.png}
+      \includegraphics[width=0.8\linewidth]{selecting_endpoints.png}
       \caption{Once connected to an API the Dashboard presents the endpoints that are available for monitoring}
       \label{fig:sep}
     \end{figure}
@@ -51,6 +49,8 @@
 
     \item {\bf Utilization} -- refers to how the third parties use the API, which parts are most used, which are little used, etc. This is known to be critical information for upstream developer in general\cite{Haen14a}. In the case of source code dependencies one can detect such information by analyzing software repositories. However, in the case of services, there is no other way but monitoring service utilization. 
 
-    \item {\bf Performance} as measured in response times. This is important, especially for APIs that are supposed to be integrated in live systems. 
+    \item {\bf Performance} as measured in response times. Knowing the performance of one’s API is critical for the quality of a service API, and especially so for APIs that are supposed to be integrated in live systems. 
+
+
 
   \end{itemize}
