@@ -45,5 +45,12 @@
 \niceseparator
 
   The remainder of this section presents several interactive
-  visualizations that are available in the dashboared without any further configuration\footnote{We recommend obtaining a color version of this paper for better readability}.
+  visualizations that are available in the dashboared without any further configuration\footnote{We recommend obtaining a color version of this paper for better readability}. They are focused on two types of information that is important to the API maintainer: 
 
+  \begin{itemize}
+
+    \item {\bf Utilization} -- refers to how the third parties use the API, which parts are most used, which are little used, etc. This is known to be critical information for upstream developer in general\cite{Haen14a}. In the case of source code dependencies one can detect such information by analyzing software repositories. However, in the case of services, there is no other way but monitoring service utilization. 
+
+    \item {\bf Performance} as measured in response times. This is important, especially for APIs that are supposed to be integrated in live systems. 
+
+  \end{itemize}
