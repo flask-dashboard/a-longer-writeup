@@ -3,6 +3,7 @@
 
 
   \section{Performance Triangulation With Regression Monitoring}
+  \label{sec:regression}
 
   Suppose the developer observes a performance degradation of a given API endpoint in the latest version of the system. How do they know whether the degradation is due to the performance of the code, the server load, or the workload mix of the user? 
 
@@ -26,23 +27,23 @@ python -m flask_monitoringdashboard.collect
 
   \end{lstlisting}
 
-  Each time a new build is created through Travis, the \tool automatically detects all available unit tests defined by the application developer (in (-{}-test\_folder)) and iterates through each one of them a number of times (-{}-times) while monitoring the response times for each test. The resulting measurements are uploaded to a specific endpoint that is created by the tool at the API url (-{}-url). The data uploaded to this endpoint is   persisted in a separate part of the tool database so as not to contaminate the ``live'' monitoring data. 
+  Each time a new build is created through Travis, the \tool automatically detects all available unit tests defined by the application developer (in (\code{-{}-test\_folder)}) and iterates through each one of them a number of times (\code{-{}-times}) while monitoring the response times for each test. The resulting measurements are uploaded to a specific endpoint that is created by the tool at the API url (\code{-{}-url}). The data uploaded to this endpoint is   persisted in a separate part of the tool database so as not to contaminate the ``live'' monitoring data. 
 
       \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.45\columnwidth]{travis_builds}
+        \includegraphics[width=0.65\columnwidth]{travis_builds}
         \caption{Response times in 5 consequent Travis builds}
         \label{fig:builds}
       \end{figure}
 
-  \Fref{fig:builds} is a screenshot from the dashboard showing the measured response times for 5 consequent builds, with 180 iterations of the unit tests executed in total across all endpoints. The outliers on the right of the figure are due to initial requests \ins{which must wait for a boot-up phase of the API}.  
+  \Fref{fig:builds} is a screenshot from the dashboard showing the measured response times for 5 consequent builds, with 180 iterations of the unit tests executed in total across all endpoints. The outliers on the right of the figure are due to initial requests \ins{which must wait for a boot-up phase of the API}. \va{Remember to make greyscale for consistency} 
   
 
 
   \subsection*{Preemptive Monitoring}
   The concept of {\em preemptive monitoring} of the application performance by means of instrumenting integration unit testing as the synthetic load is similar to the idea of augmenting service monitoring with online testing~\cite{metzger2010proactive}, i.e.~testing service-based applications by using dedicated test input in parallel to its normal use and operation. The difference is that we take advantage of the capability of the CI framework to create an emulated ``live'' environment for integration testing purposes, and use unit testing as the dedicated test input in order to measure performance. 
   
-  While this integration testing environment is different from the production one, and the load used is purely synthetic, it can serve as an early performance indicator for the developer.  Figure \ref{fig:response_times_preemptive} shows the actual endpoint response times across five versions of the system (above) and the corresponding testing times for the synthetic load in the same five versions (below). The green line joining the medians hints to a correlation between the two sets of measurements. 
+  While this integration testing environment is different from the production one, and the load used is purely synthetic, it can serve as an early performance indicator for the developer.  \Fref{fig:response_times_preemptive} shows the actual endpoint response times across five versions of the system (above) and the corresponding testing times for the synthetic load in the same five versions (below). The green line joining the medians hints to a correlation between the two sets of measurements. 
 
       \begin{figure}[h!]
         \centering
@@ -57,7 +58,7 @@ python -m flask_monitoringdashboard.collect
         \label{fig:response_times_preemptive}
       \end{figure}
 
-  Computing Pearson correlation ($r(3)=.93, p=.02$) between the median values of the two datasets (cf. Table \ref{tab:correlations}) shows that there is a correlation between the two.
+  Computing Pearson correlation ($r(3)=.93, p=.02$) between the median values of the two datasets (cf. Table \ref{tab:correlations}) shows that there is indeed a correlation between the two.
 
 
     \begin{table}[h]
@@ -92,6 +93,7 @@ python -m flask_monitoringdashboard.collect
 % \end{figure*}
 
   \ml{This following paragraph is beautifully written, but it's a bit redundant with what it's already said. However maybe after some more refactorings we can put it to use. Worst case, we move it to the conclusion}
+  \va{I concur}
   \ins{Besides functioning as an early warning system for performance, tracking the evolving performance of API tests serves a second purpose. To function as an anchor when the developer analyzes performance degradations. For example, when a developer sees that a given endpoint has become less performant after in a newly deployed version, they are able to investigate whether the performance degradation is visible also with the synthetic load. This would correspond to a performance degradation which is due to ``algorithmic performance degradation''. If on the other hand, the performance of the tests does not change between versions, the developer might conclude that the performance degradation could be due to the workload on the machines, or maybe to the workload mix of the users}
   
 

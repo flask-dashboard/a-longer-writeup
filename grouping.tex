@@ -1,6 +1,6 @@
 %!TEX root=paper.tex
 
-\section{Grouping Requests}
+\section{Per-User Performance Monitoring}
 \label{sec:user}
 
 It is sometimes the case that the utilization and performance of an API must be understood not only per endpoint, but also by grouping the requests by another criterion. Two such examples are: 
@@ -19,16 +19,16 @@ The following code snippet shows how we enabled \tool to enable user-by-user ana
 # LOC #2: configure the dashboard
 # to group requests by the user id
 dashboard.config.group_by = 'User',
-	lambda: Session.find(flask.request).user.id
+  lambda: Session.find(flask.request).user.id
 
 \end{lstlisting}
 
 The \code{dashboard.config.group\_by} is assigned a tuple with two elements, in which:  
 
 \begin{itemize}
-	\item \code{'User'} stands for the name of this particulart grouping strategy
-	\item \code{lambda: Session.find(... } is a callback with no arguments, 
-	that makes use of the global flask.request and extracts from 
+	\item \code{'User'} stands for the name of this particular grouping strategy
+	\item \code{lambda: Session.find... } is a callback with no arguments, 
+	that makes use of the global \code{flask.request} and extracts from 
 	the request the current session, and in turn the user id\footnote{
 		Note that every web service or application must have a way of 
 		associating a request with a user. In fact, the Session.find(request) 
@@ -36,17 +36,14 @@ The \code{dashboard.config.group\_by} is assigned a tuple with two elements, in 
 \end{itemize}
 
 
-In our case study, we wanted to understand the per-user performance of \epFeedItems 
+In Zeeguu, it was decided to further understand the per-user performance of \epFeedItems
 --  an endpoint that retrieves a list of recommended articles for a given user.
 It is the endpoint with the slowest response time and highest variability (see \Fref{fig:ep}). 
 
 
-% Once the \tool is configured with the line of code aforementioned. 
- 
-
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=.5\linewidth]{time_per_user}
+  \includegraphics[width=.7\linewidth]{time_per_user}
   \caption{The \epFeedItems shows a very high variability across users}
   \label{fig:tpu}
 \end{figure}

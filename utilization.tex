@@ -4,10 +4,11 @@
 \label{sec:util}
  
   The default landing page of the dashboard presents an overview of all the endpoints, 
-  overview which presents some basic utilization information as:
+  which presents some basic utilization information as:
   (1) the number of calls to that endpoint since the begining of tracking
   (2) the number of calls in the last seven days, and
-  (3) the number of calls in the last day\footnote{Although very useful, it was only after several months of using the system that the client requested the extra columsn for one day and seven days. An argument for slow research}s 
+  (3) the number of calls in the last day\footnote{Although very useful, it was only after several months of using the system that the client requested the extra columsn for one day and seven days. An argument for slow research}s
+  \va{Please remove the last footnote - it's the equivalent of shooting yourself in the leg.} 
 
     \begin{figure}[h!]
       \centering
@@ -24,7 +25,7 @@
 
       \begin{itemize}
 
-        \item \epTranslationsColor is an indicator of the amount of foreign language reading the users are doing 
+        \item \epTranslationsColor is an indicator of the amount of foreign language reading the users are doing. 
 
         \item \epOutcomeColor is an indicator of the amount of foreign vocabulary practice the users are doing.
 
@@ -40,7 +41,7 @@
 \niceseparator
 
 
-  For a more detailed evolution of utilization, Figure \ref{fig:aeu} shows the \perspective{Daily API Utilization} perspective on API utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. Figure~\ref{fig:aeu} in particular shows a peak utilization, on June 28 when the API had more than 12.000 hits\footnote{Turns out that the highschool students that were using the system for their class had a deadline on that date}. 
+  For a more detailed view of utilization evolution, \Fref{fig:aeu} shows the \perspective{Daily API Utilization} perspective on API utilization that \tool provides: a stacked bar chart of the number of hits to various endpoints grouped by day\footnote{Endpoint colors are the same in different views}. \Fref{fig:aeu} in particular shows a peak utilization, on June 28, 2017 when the API had more than 12.000 hits\footnote{Turns out that the high school students that were using the system for their French-learning class had a deadline on that date}. 
 
     \begin{figure}[!ht]
     \centering
@@ -56,7 +57,7 @@
   Another utilization perspective is the \perspective{Hourly API Utilization} in which  the \tool can highlight {\em cyclic patterns of usage per hour of day} by means of a heatmap, as in \Fref{fig:dp}. 
 
 
-    \begin{figure}[!ht]
+    \begin{figure}
       \centering
       \includegraphics[width=0.8\linewidth]{daily_patterns_}
       \caption{Usage patterns become easy to spot in the requests per hour heatmap}
