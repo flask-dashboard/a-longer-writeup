@@ -16,21 +16,22 @@ straightforward:
 
   \item The slowest endpoint and the one with the highest variability is \epFeedItemsColor: it retrieves a list of recommended articles for a given user. Since a user can be subscribed to anything from one to three dozen article sources, and since the computation of the difficulty was done in real time, the variability in time among users is likely to be very large. 
 
-  \item In the top three slowest endpoints, but the second most used endpoint in the system (cf. \Fref{fig:aeu}) is \epTranslationsColor. The endpoint is critical being embedded in the interactive loop in the reader applications that rely on the Zeeguu API: a user would tap on a word and receive a translation from this endpoint.
+  \item In the top three slowest endpoints, but the second most used endpoint in the system (cf. \Fref{fig:aeu}) is \epTranslationsColor. The endpoint is critical for the reader applications that rely on the Zeeguu API: each time a user taps on a word on their screen they receive a translation from this endpoint.
  
 \end{itemize}
 
-\begin{figure}[!ht]
+\begin{figure}
  \centering
  \includegraphics[width=0.85\linewidth]{endpoint_performance_}
  \caption{The response time (in ms) per monitored endpoint view allows for identifying performance variability and balancing issues}
  \label{fig:ep}
 \end{figure}
 
-Such a view is important for allocating optimization efforts. In our case study, the API developers started by improving the performance of \epTranslationsColor and then later optimized the performance of \epFeedItemsColor. However, in order to understand the problems of the two endpoints, a big component represents understanding the outliers: because they are many. 
+Such a view is important for allocating optimization efforts. In our case study, the API developers started by improving the performance of \epTranslationsColor and then later optimized the performance of \epFeedItemsColor. However, in order to understand the problems of the two endpoints, a big component represents understanding the outliers: because they are many. \va{the last sentence does not parse} 
 
 
   \subsection{Automated Outlier Detection and Monitoring}
+  \va{Shouldn't this be promoted to a section? It is neither utilization- nor performance- related. Either that, or Section~\ref{sec:user} should be folded into this section too, and then Sections~\ref{sec:version} and~\ref{sec:regression} merged into another section. Otherwise we have a very scattered paper}
   
   When an API is called from within a highly interactive application (as it is the case with the case study in this paper) 
   of particular interest to the API developers are performance {\em outliers}.   Indeed, a translation request that takes three times more than expected can seriously decrease the perceived quality of the application. Thus, identifying, collecting all appropriate data, and diagnosing the root causes of such outliers is especially critical in improving the quality of an application. 
@@ -46,14 +47,14 @@ Such a view is important for allocating optimization efforts. In our case study,
     \centering
     \includegraphics[width=0.9\linewidth]{outlier-annotated}
     \caption{Automatically collected outlier information}
-    \label{fig:figure1}
+    \label{fig:stack}
   \end{figure}
   
 
-The bottom panel shows the stack trace. 
-In this particular case, it is revealing for the developer to learn that at the time of the stack trace snapshot, the code was in the google\_translator.py: indeed, the system uses as back-end multiple translators, and it has been observed that many of the outliers happen while the system is waiting for the Google translator.
-
-This information has to be corroborated with the observations that neither the memory nor the processor are overloaded at the moment. Thus this functionality in microsoft\_translator is really slow in itself, and this is not a result of the machine being overloaded for example. 
+The bottom panel in \Fref{fig:stack} shows the stack trace. 
+In this particular case, it is revealing for the developer to learn that at the time of the stack trace snapshot, the code was in the \code{google\_translator}: indeed, the system uses as back-end multiple translators, and it has been observed that many of the outliers happen while the system is waiting for the Google translator.
+%
+This information has to be corroborated with the observations that neither the memory nor the processor are overloaded at the moment. Thus this functionality in \code{microsoft\_translator} is really slow in itself, and this is not a result of the machine being overloaded for example. \va{last sentence does not parse}
 
 
 

@@ -1,6 +1,6 @@
 %!TEX root=paper.tex
 
-\section{Grouping Requests}
+\section{Per-User Performance Monitoring}
 \label{sec:user}
 
 It is often the case that a service has diferent types of users: the paying and the free-for-evaluation ones, or the in-house and those in a different organization. 
@@ -15,16 +15,16 @@ The following code snippet shows how to configure the dashboard to enable user-b
 # LOC #2: configure the dashboard
 # to group requests by the user id
 dashboard.config.group_by = 'User',
-	lambda: Session.find(flask.request).user.id
+  lambda: Session.find(flask.request).user.id
 
 \end{lstlisting}
 
 The \code{dashboard.config.group\_by} is assigned a tuple with two elements, in which:  
 
 \begin{itemize}
-	\item \code{'User'} stands for the name of this particulart grouping strategy
-	\item \code{lambda: Session.find(... } is a callback with no arguments, 
-	that makes use of the global flask.request and extracts from 
+	\item \code{'User'} stands for the name of this particular grouping strategy
+	\item \code{lambda: Session.find... } is a callback with no arguments, 
+	that makes use of the global \code{flask.request} and extracts from 
 	the request the current session, and in turn the user id\footnote{
 		Note that every web service or application must have a way of 
 		associating a request with a user. In fact, the Session.find(request) 
@@ -33,18 +33,18 @@ The \code{dashboard.config.group\_by} is assigned a tuple with two elements, in 
 
 % \niceseparator
 
-In Zeeguu, \epFeedItems retrieves a list of recommended articles for a given user. Cf. \Fref{fig:ep} it is the endpoint with the slowest response time and highest variability. The reason for this is that a user can be subscribed to anything from one to three dozen article sources and for each of the sources the system must compute the personalized difficulty of each article at every request. 
+In Zeeguu, the \epFeedItems endpoint retrieves a list of recommended articles for a given user. As shown in \Fref{fig:ep}, this is the endpoint with the slowest response time and highest variability. The reason for this is that a user can be subscribed to anything from one to three dozen article sources and for each of the sources the system must compute the personalized difficulty of each article at every request. 
 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=.5\linewidth]{time_per_user}
+  \includegraphics[width=.7\linewidth]{time_per_user}
   \caption{The \epFeedItems shows a very high variability across users}
   \label{fig:tpu}
 \end{figure}
 
 
-A \perspective{Per-User Performance} perspective should show the different response times for different users. Figure \ref{fig:tpu} presents a subset of the corresponding view in the \tool. The figure shows that the response times for this endpoint can vary considerably for different users with some extreme cases where a user has to wait a full minute until their recommended articles are shown\footnote{After seeing this perspective, the maintainer refactored the architecture of the system to move part the difficulty computation out of the interactive loop}.
+A \perspective{Per-User Performance} perspective should show the different response times for different users. \Fref{fig:tpu} presents a subset of the corresponding view in the \tool. The figure shows that the response times for this endpoint can vary considerably for different users with some extreme cases where a user has to wait a full minute until their recommended articles are shown\footnote{After seeing this perspective, the maintainer refactored the architecture of the system to move part the difficulty computation out of the interactive loop}.
 
 
 
