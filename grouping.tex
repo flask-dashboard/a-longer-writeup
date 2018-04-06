@@ -3,10 +3,13 @@
 \section{Grouping Requests}
 \label{sec:user}
 
-For service endpoints which run computations in real time, the maintainer of a system might want to understand the endpoint performance on a per-user basis, especially for situations where the system response time is a function of some individual user load\footnote{E.g. in GMail some users have a few dozen emails while other have tens of  thousand and this induces different response times for different users}.
+It is often the case that a service has diferent types of users: the paying and the free-for-evaluation ones, or the in-house and those in a different organization. 
 
+In some other cases, it might be important for the maintainer of the API to understand the performance on a per-user basis, especially for situations where the system response time is a function of some individual user load\footnote{E.g. in GMail some users have a few dozen emails while other have tens of thousands: this difference in user loads will eventually induce a difference in the response times for different users}.
 
-To enable this, the \tool must be configured to associate an API call with a given user. The simplest way is to take advantage of the architecture of Flask applications in which a global \code{flask.request} object can be used to retrieve the session which can in turn lead to user identification: 
+To support narrowing down the analysis to groups of users, or even individual users, the \tool must log together with every request grouping information for that request. The simplest way of achieving this is to take advantage of the architecture of Flask applications in which a global \code{flask.request} is used to retrieve session information which can in turn is normally used to identify the user sending the request. From the user one can obtain the group. 
+
+The following code snippet shows how to configure the dashboard to enable user-by-user analysis\footnote{	If we wanted to group by the user group for example, the code would change slightly by replacing ``user.id'' with ``user.group.id''}: 
 
 \begin{lstlisting}[style=custompython]  
 # LOC #2: configure the dashboard
@@ -16,16 +19,16 @@ dashboard.config.group_by = 'User',
 
 \end{lstlisting}
 
-Explain the code: the group by is assigned a tuple: 
+The \code{dashboard.config.group\_by} is assigned a tuple with two elements, in which:  
 
 \begin{itemize}
-	\item 'User' stands for the name of the grouping
-	\item the ``lambda'' stands for a function that takes as argument
-	the global flask.request. Every application must have a way of
-	associating a user with a request. Or an app with a request. 
-	A user is usually retrieved from some session variable. 
-	If we wanted to group by the user group for example, the code
-	would change slightly by replacing ``user.id'' with ``user.group.id''
+	\item \code{'User'} stands for the name of this particulart grouping strategy
+	\item \code{lambda: Session.find(... } is a callback with no arguments, 
+	that makes use of the global flask.request and extracts from 
+	the request the current session, and in turn the user id\footnote{
+		Note that every web service or application must have a way of 
+		associating a request with a user. In fact, the Session.find(request) 
+		was already an existing function in the analyzed system}
 \end{itemize}
 
 % \niceseparator
