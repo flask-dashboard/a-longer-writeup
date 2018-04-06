@@ -3,17 +3,14 @@
   \section{Version-Aware Monitoring}
   
   The Stack Overflow Developer Survey from 2018 revealed the fact that 88.4\% of professional developers use git for version control. 
-  Given that versioning using git is the main way in which the source code of services evolves, it is natural to monitor their progress also across versions. 
+  Given that versioning using git is the main way in which the source code of services evolves and is deployed, it is natural to monitor their progress also across versions. 
 
   Version control in \tool can be supported in two ways,
   the developer explicitly states the current version, 
   or the current version is automatically detected based
   on some version control system. 
-
-
-  % However, with the current configuration of the tool, it would be impossible for the maintainer to see the improvements resulting from the optimization. 
-
-  If assume that the code that they run is deployed using .git, then with an extra line of configuration they can allow \tool to find the git\footnote{\url{https://git-scm.com/}} folder of the deployed service and automatically detect the version of the project that is running: 
+  The second option is the most interesting one.
+  For the systems deployed using Git, an extra configuration line enables \tool to automatically\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use git.} associate API traffic with the currently deployed version based on information in the .git folder \footnote{\url{https://git-scm.com/}}: 
     
 \begin{lstlisting}[style=custompython]
 
@@ -25,8 +22,6 @@ dashboard.config.git = 'path/to/.git'
       
 \end{lstlisting}  
  
-  If the \tool can automatically detect the current version of the project by reading the .git configuration as soon as the API is started and can then group measurements by version\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use git.}. 
-
 
   
 
