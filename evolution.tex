@@ -2,15 +2,14 @@
   
   \section{Version-Aware Monitoring}
   
-  The Stack Overflow Developer Survey from 2018 revealed the fact that 88.4\% of professional developers use git for version control. 
+  The Stack Overflow Developer Survey from 2018 revealed the fact that 88.4\% of professional developers use Git. 
   Given that versioning using git is the main way in which the source code of services evolves and is deployed, it is natural to monitor their progress also across versions. 
 
-  Version control in \tool can be supported in two ways,
-  the developer explicitly states the current version, 
-  or the current version is automatically detected based
-  on some version control system. 
-  The second option is the most interesting one.
-  For the systems deployed using Git, an extra configuration line enables \tool to automatically\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use git.} associate API traffic with the currently deployed version based on information in the .git folder \footnote{\url{https://git-scm.com/}}: 
+  Version control in a dashboard can be supported in two ways: 
+  (1) the developer explicitly states the current version, or 
+  (2) the current version is automatically detected based on some version control system. 
+
+  For \tool to start using Git, an extra configuration line enables it to automatically\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use Git.} associate API traffic with the currently deployed version based on information in the .git folder \footnote{\url{https://git-scm.com/}}: 
     
 \begin{lstlisting}[style=custompython]
 
@@ -27,7 +26,7 @@ dashboard.config.git = 'path/to/.git'
 
   \subsection*{Evolving Utilization}
 
-  \Fref{fig:mv-util} shows the \perspective{Multi-Version API Utilization} perspective which presents the utilization of the tracked endpoints across versions. Because the different versions might be deployed for very different periods of time, at the intersection of an endpoint and a version the chart does not plot the absolute utilization of that endpoint in that version but rather the percentage of all the API calls that go to that endpoint. Otherwise a version that is deployed for many weeks would make all those deployed for several days invisible.
+  \Fref{fig:mv-util} shows the \perspective{Multi-Version API Utilization} perspective which presents the utilization of the tracked endpoints across versions. The view is a matrix, in which, the intensity of the color at the intersection of an endpoint line and a version column is proportional to the percentage of requests served by that endpoint in that particular version\footnote{The chart does not plot the absolute utilization of that endpoint in that version but rather the percentage of all the API calls that go to that endpoint. Otherwise a version that is deployed for many weeks would make all those deployed for a few days invisible}.
 
 
     \begin{figure}[h!]
@@ -37,10 +36,14 @@ dashboard.config.git = 'path/to/.git'
       \label{fig:mv-util}
     \end{figure}
 
-  With this view, several patterns are visible:
+  With this view, several patterns could be visible on such a graph:
   \begin{itemize}
     
-    \item \epFeedItems is discontinued a little bit after \epTopArticles is being introduced
+    \item Endpoints being deprecateds. In the case study \epFeedItems stops being used somewhere after the half of the presented timeline.
+
+    \item Endpoints being introduced. In the case study, \epTopArticles appears soon after the half o the presented timeline. 
+
+    \item Endpoint renames. Although not visible in the figure, the candidates for rename would be visible as one would discontinued at the same time when the other would appear. 
 
   \end{itemize}
 
