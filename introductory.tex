@@ -1,9 +1,10 @@
 %!TEX root=paper.tex
 
 \begin{abstract}
-  Python is one of the fastest growing programming languages of the moment. Flask, a Python-based web framework is the technology chosen by tens of thousands of web applications. Many of these Flask-based projects are small websites which can not afford to deploy an advanced service monitoring solution because they are too complicated to install. Many of these projects might offer a service API. Given the complexity of professional monitoring tools it is very likely that 
 
-  In this paper, we set out to show how to design a dashboard for a Flask API which is useful in understanding and guiding service evolution while at the same time, requiring minimal configuration and installation. We present \tool, a tool that provide insight into the utilization and performance of evolving services. We present the ease with which the library can be integrated in an already existing web application, discuss some of the visualization perspectives that the library provides and point to some future challenges for similar libraries.
+  Python is one of the fastest growing programming languages of the moment. Flask, a Python-based web framework is the technology used by tens of thousands of web applications. These applications, from interactive websites to service APIs, lack a technology specific service monitoring solution. 
+
+  In this paper, we present \tool, a tool that provide insight into the utilization and performance of evolving Flask-based web services. We present the ease with which the tool can be integrated in an already existing web application, discuss some of the visualization perspectives that the library provides and point to some future challenges for similar libraries.
 
 \end{abstract}
 
@@ -12,15 +13,14 @@
 
 \section{Introduction}
 
-\todo{Intro to be rewritten; refer to VISSOFT paper as previous work, explain focus is on integration with version control/CI for evolution support, and use of unit tests as early performance indicator}
 
-\todo{motivate with: monitoring in a world which is becoming more and more service-oriented is essential because it allows to perform three main types of actions: system adaptations to provide the request service at the desired level of quality, enabling flexibility in dealing with changing requirements and modes of operation, and enabling operational awareness through dashboards organizing the collected data~\cite{pernici2016monitoring}. In this work we focus on the last part and we discuss how a minimal effort probe-based solution for a particular type of web services can be used to facilitate the other two types of actions by involving the developer.}
+% \todo{motivate with: monitoring in a world which is becoming more and more service-oriented is essential because it allows to perform three main types of actions: system adaptations to provide the request service at the desired level of quality, enabling flexibility in dealing with changing requirements and modes of operation, and enabling operational awareness through dashboards organizing the collected data~\cite{pernici2016monitoring}. In this work we focus on the last part and we discuss how a minimal effort probe-based solution for a particular type of web services can be used to facilitate the other two types of actions by involving the developer.}
 
-\todo{explain: in~\cite{vogel2017low} we introduced the \tool an a high level with a focus on presenting its performance visualization aspects; in this work we only summarize these features by means of introducing some of the provided functionalities of the \tool. We focus on discussing how the tool is implemented and operating, provide a deeper look at its capabilities for integration with version control and continuous integration environments, introduce a mechanism for performance prediction, and provide an evaluation of the proposed approach based on a case study. }
+% \todo{explain: in~\cite{vogel2017low} we introduced the \tool an a high level with a focus on presenting its performance visualization aspects; in this work we only summarize these features by means of introducing some of the provided functionalities of the \tool. We focus on discussing how the tool is implemented and operating, provide a deeper look at its capabilities for integration with version control and continuous integration environments, introduce a mechanism for performance prediction, and provide an evaluation of the proposed approach based on a case study. }
 
 %Every system is a distributed system nowadays \cite{cavage2013there}. Indeed a very large number of applications and web applications are nowadays implemented as two-tier architectures with a front-end implemented with web technologies and a service back-end.
 %\ml{I'm not completely happy with this paragraph}
-{\em There is no getting around it: you are building a distributed system} argues a recent article \cite{cavage2013there}. Indeed, even the simplest second-year student project is a web application implemented as two-tier architecture with a Javascript/HTML5 front-end a service backend, usually a REST API.
+{\em There is no getting around it: you are building a distributed system} argues Cavage  in a recent article written for the {\em Communications of the ACM} \cite{cavage2013there}. Indeed, even the simplest second-year student project is a web application implemented as two-tier architecture with a Javascript/HTML5 front-end a service backend, usually a REST API.
 
 % \hfill mds
 % Many contemporary programming languages are offering libraries, modules, or frameworks that facilitate the development of such architectures. 
@@ -53,36 +53,22 @@ As a case study, on which we will illustrate our solution, we are going to use a
 
 % In the next section, we will present a case study of an open source research API which was for a long time in the third situation presented above -- deployed without analytics insight.
 
-\todo{Add signposting paragraph}
+\subsection*{Extending Previous Work}
+
+This paper is an extension of [Anonymous Paper by Anonymous Auhthors] which was published as a NIER paper in [Anonymous Conference]. The current paper extends that paper in the following ways: 
+\begin{itemize}
+  \item Providing more details about the case study (in Section \ref{sec:case}) and extending the data collection period with half year
+  \item A better categorization of the dashboard perspectives presented in Sections \ref{sec:util}, \ref{sec:grouping}, \ref{sec:evolution} including several new perspectives
+  \item A detailed discussion on automated outlier detection and monitoring (Section \ref{sec:outliers})
+  \item An advanced discussion integration continuous integration environments in order to triangulate the live collected data with information from testing the endpoints with a constant load and introduce a mechanism for performance prediction (Section \ref{sec:testing})
+  \item A discussion on the overhead incurred by the presented tool \ml{(... if we make it... )}
+\end{itemize}
 
 
 
 \section{Case Study}
 
-
-\subsection{The Technology Stack}
-\label{sec:flask}
-
- As discussed in the previous section, Flask is a microframework for Python. ``Micro'' does not mean that a whole web application has to fit into a single Python file (although it certainly can), nor does it mean that Flask is lacking in functionality. The ``micro'' in microframework means Flask aims to keep the core simple but extensible. Flask won’t make many decisions for the user, such as what database to use. Those decisions that it does make, such as what templating engine to use, are easy to change. Everything else is up to the user.
-
- Flask has many configuration values, with sensible defaults, and a few conventions when getting started. By convention, templates and static files are stored in subdirectories within the application's Python source tree, with the names templates and static respectively. While this can be changed, it usually don’t have to, especially when getting started.
-%
- A Python web application based on WSGI has to have one central callable object that implements the actual application. In Flask this is an instance of the Flask class. Each Flask application has to create an instance of this class itself and pass it the name of the module. The following code snippet presents a simple ``Hello World'' web service written in Python with the help of the Flask framework. 
-
-\begin{lstlisting}[style=custompython]
-
-from flask import Flask
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return 'Hello World!'
-
-\end{lstlisting}
-
-
-
-\subsection{An Ecosystem With a Service API at its Core}
+% \subsection{An Ecosystem With a Service API at its Core}
 \label{sec:api}
 \label{sec:case}
 
@@ -113,18 +99,21 @@ def index():
 
   At the time of writing, the ecosystem consists of a reader web application, a web-based exercises platform, and a smartwatch application, which are used by more than \activeUserCount active users on a regular basis. The users come from several Dutch highschools and a language center associated with a Dutch University. Several users are using it on their own, outside of any formal educational context. The learners use \zee to study a variety of of foreign languages including German, Dutch, French. They have also diverse native languages, including: Chinese, Dutch, and English. The system can scale to many languages by delegating the machine translation tasks to third party APIs. 
 
+
+
 \subsection*{Study characteristics}
 
-  We will use this \zee API as a case study for this paper. 
-
-  The \tool has been deployed with the case study API for 
-  ten months (between June 2017 and the time of writing this
-  article, April 2018), time in which more than 112.000 requests
-  to the API have been recorded \footnote{This is a lower bounds
-  on usage, as only a subset of the API endpoints have been 
-  actually instrumented} . The highest load observed 
+  We will use this \zee service API as a case study for this paper. 
+  The API has been deployed for several years without any monitoring
+  solution until June 2017, when the \tool has been deployed with it. 
+  During the ten month deployment (between June 2017 and the time of writing this
+  article, April 2018) more than 112.000 requests
+  to the API have been recorded by the API \footnote{Note that the 
+  recorded requests are a lower bound on the usage of the API, 
+  as only a subset of the API endpoints have been actually instrumented} . The highest load observed 
   until now on the API consisted of 12K requests in a single day. 
-  With the help of the applications in the ecoystem the users have 
+  With the help of the applications in the ecoystem, in the aforementioned
+  time period the users have 
   performed about 30K vocabulary exercises and have translated 
   about 28K words and experssions while reading foreign language 
   texts. 
@@ -135,6 +124,28 @@ def index():
  % \todo{create new account, update URL if necessary, update activeUserCount, add a couple of sentences of the current state of the case study with the college/language center}
 % \ml{we should consider adding also one section in which the architecture/implementation and main features of the dashboard are presented before going on with discussing them in more depth in the following sections --- this should include a rundown on which views are provided from where (overview or per endpoint)}
 
+
+
+\subsection{The Technology Stack}
+\label{sec:flask}
+
+ As discussed in the previous section, Flask is a microframework for Python. 
+ The ``micro'' in microframework means Flask aims to keep the core simple but extensible. 
+ The framework does not make many decisions for the user, such as what database to use and
+ those decisions that it does make, such as what templating engine to use, can be changed. 
+
+ Flask is built on top of WSGI -- The Web Server Gateway Interface -- a calling convention for web servers to forward requests to web applications or frameworks written in Python. A Python web application based on WSGI has to have one central callable object that implements the actual application. In Flask this is an instance of the Flask class. Each Flask application has to create an instance of this class itself and pass it the name of the module. The following code snippet presents a simple ``Hello World'' web service written in Python with the help of the Flask framework. 
+
+\begin{lstlisting}[style=custompython]
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+\end{lstlisting}
 
 
 

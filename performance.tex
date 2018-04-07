@@ -9,7 +9,7 @@ an overview of the response times for all the tracked endpoints
 by using a box-and-whiskers plot. 
 
 \Fref{fig:ep} presents such a perspective from our case study which 
-was taken in the last quarter of 2017. Several observatrions are 
+was taken in the last quarter of 2017. Several observations are 
 straightforward: 
 
 \begin{itemize}
@@ -30,8 +30,9 @@ straightforward:
 Such a view is important for allocating optimization efforts. In our case study, the API developers started by improving the performance of \epTranslationsColor and then later optimized the performance of \epFeedItemsColor. However, in order to understand the problems of the two endpoints, a big component represents understanding the outliers: because they are many. \va{the last sentence does not parse} 
 
 
-  \subsection{Automated Outlier Detection and Monitoring}
-  \va{Shouldn't this be promoted to a section? It is neither utilization- nor performance- related. Either that, or Section~\ref{sec:user} should be folded into this section too, and then Sections~\ref{sec:version} and~\ref{sec:regression} merged into another section. Otherwise we have a very scattered paper}
+  \section{Automated Outlier Detection and Monitoring}
+  \label{sec:outliers}
+  % \va{Shouldn't this be promoted to a section? It is neither utilization- nor performance- related. Either that, or Section~\ref{sec:user} should be folded into this section too, and then Sections~\ref{sec:version} and~\ref{sec:regression} merged into another section. Otherwise we have a very scattered paper}
   
   When an API is called from within a highly interactive application (as it is the case with the case study in this paper) 
   of particular interest to the API developers are performance {\em outliers}.   Indeed, a translation request that takes three times more than expected can seriously decrease the perceived quality of the application. Thus, identifying, collecting all appropriate data, and diagnosing the root causes of such outliers is especially critical in improving the quality of an application. 
