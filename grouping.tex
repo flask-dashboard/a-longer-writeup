@@ -6,7 +6,7 @@
 It is sometimes the case that the utilization and performance of an API must be understood not only per endpoint, but also by grouping the requests by another criterion. Two such examples are: 
 \begin{itemize}
 	\item When a service has diferent types of users (e.g. the paying vs. the free-for-evaluation ones, or the in-house vs. those in a different organization) the maintainer must understand the performance for the different groups
-	\item When the load mix o the users can vary dramatically and the system response time is a function of the individual user load\footnote{E.g. in GMail some users have a few dozen emails while other have tens of thousands: this difference in user loads will eventually induce a difference in the response times for different users} the maintainer must understand the variation of performance with the users (and implicitly the user load). s
+	\item When the load mix o the users can vary dramatically and the system response time is a function of the individual user load\footnote{E.g. in GMail some users have a few dozen emails while other have tens of thousands: this difference in user loads will eventually induce a difference in the response times for different users} the maintainer must understand the variation of performance with the users (and implicitly the user load).
 \end{itemize}
 
 To support narrowing down the analysis to groups of users, or even individual users, the \tool can log together with every request grouping information for that request. The simplest way of achieving this is to take advantage of the architecture of Flask applications in which a global \code{flask.request} is used to retrieve session information which can in turn is normally used to identify the user sending the request. From the user one can obtain the group. 
@@ -49,7 +49,7 @@ It is the endpoint with the slowest response time and highest variability (see \
 \end{figure}
 
 
-After configuring the \tool as shown earlier, the \perspective{Per-User Performance} perspective becomes available to  present the different response times for different users. Figure \ref{fig:tpu} presents a subset of the corresponding view in the \tool. The figure shows that the response times for this endpoint varied considerably for different users with some extreme cases where a user has to wait a full minute until their recommended articles were shown. 
+After configuring the \tool as shown earlier, the \perspective{Per-User Endpoint Performance} perspective becomes available to  present the different response times for different users. Figure \ref{fig:tpu} presents a subset of the corresponding view in the \tool. The figure shows that the response times for this endpoint varied considerably for different users with some extreme cases where a user has to wait a full minute until their recommended articles were shown. 
 
 The reason for this behavior is that a user can be subscribed to anything from one to three dozen 
 article sources and for each of the sources the system computed the personalized difficulty 
