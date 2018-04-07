@@ -31,12 +31,12 @@ python -m flask_monitoringdashboard.collect
 
       \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.65\columnwidth]{travis_builds}
+        \includegraphics[width=0.65\columnwidth]{travis_builds-bw}
         \caption{Response times in 5 consequent Travis builds}
         \label{fig:builds}
       \end{figure}
 
-  \Fref{fig:builds} is a screenshot from the dashboard showing the measured response times for 5 consequent builds, with 180 iterations of the unit tests executed in total across all endpoints. The outliers on the right of the figure are due to initial requests \ins{which must wait for a boot-up phase of the API}. \va{Remember to make greyscale for consistency} 
+  \Fref{fig:builds} is a screenshot from the dashboard showing the measured response times for 5 consequent builds, with 180 iterations of the unit tests executed in total across all endpoints. The outliers on the right of the figure are due to initial requests which must wait for a boot-up phase of the API.
   
 
 
@@ -83,17 +83,5 @@ python -m flask_monitoringdashboard.collect
 
 
 
-%   \begin{figure*}[hb!]
-%   \centering
-%   \subfloat[The reported response time (in ms) per deployed version in the observation period]{\includegraphics[width=.6\columnwidth]{response_per_version_trunced_trend}}
-%   \quad
-%   \subfloat[The measured response time (in ms) using integration with Travis]{\includegraphics[width=.56\columnwidth]{travis_builds_no_outliers_trend}}
-%   \caption{Comparison of the response times per endpoint: actual production system versus preemptive monitoring data}
-%   \label{fig:preemptive}
-% \end{figure*}
-
-  \ml{This following paragraph is beautifully written, but it's a bit redundant with what it's already said. However maybe after some more refactorings we can put it to use. Worst case, we move it to the conclusion}
-  \va{I concur}
-  \ins{Besides functioning as an early warning system for performance, tracking the evolving performance of API tests serves a second purpose. To function as an anchor when the developer analyzes performance degradations. For example, when a developer sees that a given endpoint has become less performant after in a newly deployed version, they are able to investigate whether the performance degradation is visible also with the synthetic load. This would correspond to a performance degradation which is due to ``algorithmic performance degradation''. If on the other hand, the performance of the tests does not change between versions, the developer might conclude that the performance degradation could be due to the workload on the machines, or maybe to the workload mix of the users}
   
 

@@ -4,6 +4,7 @@
 \section{Overhead of the \tool}
 \label{sec:overhead}
 
+\ml{To Do. Or to Drop.}
 
 To know the performance overhead of the \tool, we have implemented an automated benchmark system. It is open source and available online and can be tested by the reader. The benchmark does the following steps: 
 
@@ -18,8 +19,7 @@ Based on running the benchmarking script we can report
 
 Observation -- not easy to benchmark this... it's flask on top of python communicating with 
 
-
-\ins{PERFORMANCE DISCUSSION: this introspection, which looks up endpoints, happens only once at the startup of the service, so it is going to affect the API startup performance, but not the actual endpoint performance. In our case, the overhead here was quite small: TO MEASURE}.
+- this introspection, which looks up endpoints, happens only once at the startup of the service, so it is going to affect the API startup performance, but not the actual endpoint performance. In our case, the overhead here was quite small: TO MEASURE
 
 
   
