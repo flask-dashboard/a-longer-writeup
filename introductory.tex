@@ -115,16 +115,22 @@ def index():
 
 \subsection*{Study characteristics}
 
+  We will use this \zee API as a case study for this paper. 
+
   The \tool has been deployed with the case study API for 
   ten months (between June 2017 and the time of writing this
-  article, April 2018), time in which more than 112.000 hits 
-  of the API have been recorded. The highest load observed 
+  article, April 2018), time in which more than 112.000 requests
+  to the API have been recorded \footnote{This is a lower bounds
+  on usage, as only a subset of the API endpoints have been 
+  actually instrumented} . The highest load observed 
   until now on the API consisted of 12K requests in a single day. 
-
+  With the help of the applications in the ecoystem the users have 
+  performed about 30K vocabulary exercises and have translated 
+  about 28K words and experssions while reading foreign language 
+  texts. 
 
   All the figures and measurements in this paper are captured from the actual deployment of \tool in the context of the \zee API. The figures are interactive offering basic data exploration capabilities: filter, zoom, and details on demand\cite{Shne99a}. The \tool deployment for the case study can be accessed publicly\footnote{\url{https://zeeguu.unibe.ch/api/dashboard}; username: {\em guest}, password: {\em icsme}}. 
 
-  We will use this \zee API as a case study for this paper. 
 
  % \todo{create new account, update URL if necessary, update activeUserCount, add a couple of sentences of the current state of the case study with the college/language center}
 % \ml{we should consider adding also one section in which the architecture/implementation and main features of the dashboard are presented before going on with discussing them in more depth in the following sections --- this should include a rundown on which views are provided from where (overview or per endpoint)}
