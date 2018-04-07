@@ -16,6 +16,8 @@ To know the performance overhead of the \tool, we have implemented an automated 
 
 Based on running the benchmarking script we can report 
 
+Observation -- not easy to benchmark this... it's flask on top of python communicating with 
+
 
 \ins{PERFORMANCE DISCUSSION: this introspection, which looks up endpoints, happens only once at the startup of the service, so it is going to affect the API startup performance, but not the actual endpoint performance. In our case, the overhead here was quite small: TO MEASURE}.
 
