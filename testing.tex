@@ -10,13 +10,13 @@
   \vspace{0.1cm}
 
   
-  One way of triangulating such an observation is by monitoring the evolution of the performance of the endpoints when tested with a constant load across versions. Thus, if the performance decreases in a new version, and the  when an endpoint is tested with a constant load the problem must be the endpoint implementation. 
+  One way of triangulating such an observation is by monitoring the evolution of the performance of the endpoints when tested with a constant load across versions. Thus, if the performance decreases in a new version, and the endpoint in question is tested with a constant load the problem must be the endpoint implementation. 
 
   \subsection*{Integrating with CI Servers}
 
-  To monitor endpoint performance with a constant load \tool takes advantage of two best practices in software evolution: (1) and API must have unit tests for its endpoints, and (2) these unit tests will be run within a CI server. By tracking the timing of these unit tests one obtains a perspective on endpoint performance evolution with a constant load (as long as the unit tests do not change). 
+  To monitor endpoint performance with a constant load \tool takes advantage of two best practices in software evolution: (1) an API must have unit tests for its endpoints, and (2) these unit tests will be run within a Continuous Integration (CI) server. By tracking the timing of these unit tests one can obtain a perspective on endpoint performance evolution with a constant load (as long as the unit tests do not change). 
 
-  \tool can be configured to work together with Continuous Integration (CI) frameworks like Travis\footnote{\url{https://travis-ci.org/}, one of the most popular CI solutions at the moment} that deal with automated integration testing. To do this one needs to simply add one extra line in the script that runs their continuous integration testing. In the case of Travis CI, a developer has to add the following line in `.travis.yml': 
+  \tool can be configured to work together with CI frameworks like Travis\footnote{\url{https://travis-ci.org/}, one of the most popular CI solutions at the moment} that deal with automated integration testing. To do this one needs to simply add one extra line in the script that runs their continuous integration testing. In the case of Travis CI, a developer has to add the following line in the `.travis.yml' configuration file: 
 
 
   \begin{lstlisting}[style=custompython]  
@@ -27,7 +27,7 @@ python -m flask_monitoringdashboard.collect
 
   \end{lstlisting}
 
-  Each time a new build is created through Travis, the \tool automatically detects all available unit tests defined by the application developer (in (\code{-{}-test\_folder)}) and iterates through each one of them a number of times (\code{-{}-times}) while monitoring the response times for each test. The resulting measurements are uploaded to a specific endpoint that is created by the tool at the API url (\code{-{}-url}). The data uploaded to this endpoint is   persisted in a separate part of the tool database so as not to contaminate the ``live'' monitoring data. 
+  Each time a new build is created through Travis, the \tool automatically detects all available unit tests defined by the application developer (in (\code{-{}-test\_folder)}) and iterates through each one of them a number of times (\code{-{}-times}) while monitoring the response times for each test. The resulting measurements are uploaded to a specific endpoint that is created by the tool at the API url (\code{-{}-url}). The data uploaded to this endpoint are persisted in a separate part of the \tool database so as not to contaminate the ``live'' monitoring data. 
 
       \begin{figure}[h!]
         \centering
@@ -58,7 +58,7 @@ python -m flask_monitoringdashboard.collect
         \label{fig:response_times_preemptive}
       \end{figure}
 
-  Computing Pearson correlation ($r(3)=.93, p=.02$) between the median values of the two datasets (cf. Table \ref{tab:correlations}) shows that there is indeed a correlation between the two.
+  Computing Pearson correlation ($r(3)=.93, p=.02$) between the median values of the two datasets (cf. Table \ref{tab:correlations}) shows that there is indeed a correlation between the two. Further investigation on the characteristics of this observation is currently ongoing and it will be elaborated further in future work.
 
 
     \begin{table}[h]

@@ -6,7 +6,7 @@
   The Stack Overflow Developer Survey from 2018 revealed the fact that 88.4\% of professional developers use Git. 
   Given that versioning using git is the main way in which the source code of services evolves and is deployed, it is natural to monitor their progress also across versions. 
 
-  Version control in a dashboard can be supported in two ways: 
+  Version control in the dashboard can be supported in two ways: 
   (1) the developer explicitly states the current version, or 
   (2) the current version is automatically detected based on some version control system. 
 
@@ -15,7 +15,7 @@
 \begin{lstlisting}[style=custompython]
 
 # LOC #3: provide the dashboard with 
-# information on where to find the 
+# information on where to find 
 # git information 
 dashboard.config.git = 'path/to/.git'
   
@@ -40,18 +40,18 @@ dashboard.config.git = 'path/to/.git'
   With this view, several patterns could be visible on such a graph:
   \begin{itemize}
     
-    \item Endpoints being deprecateds. In the case study \epFeedItems stops being used somewhere after the half of the presented timeline.
+    \item Endpoints being deprecated. In the case study, \epFeedItems stops being used somewhere after the half of the presented timeline.
 
     \item Endpoints being introduced. In the case study, \epTopArticles appears soon after the half o the presented timeline. 
 
-    \item Endpoint renames. Although not visible in the figure, the candidates for rename would be visible as one would discontinued at the same time when the other would appear. 
+    \item Endpoint renames. Although not visible in the figure, the candidates for rename would be made easily visible as one would be discontinued at the same time when the other would appear. 
 
   \end{itemize}
 
 
   \subsection*{Evolving Performance}
 
-    \Fref{fig:tee} is a zoomed-in version of such a view for \epTranslationsColor with versions increasing from top to bottom
+    \Fref{fig:tee} is a zoomed-in version of such a view for \epTranslationsColor with versions increasing from top to bottom.
 
     \begin{figure}[h!]
       \centering
@@ -75,7 +75,7 @@ dashboard.config.git = 'path/to/.git'
 \end{figure}
 
 
-The colors represent users. The figure shows average performance varying  across users and versions with no clear trend: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times. One can see that for user with id=1, performance degrades over consecutive versions. Given that for other users the performance does not degrade in the same way, it is probable that the problem might lay elsewhere: the server was overloaded or the endpoint is ``algorithmically slower''. 
+The colors represent users. The figure shows average performance varying  across users and versions with no clear trend: this is probably because varying user workload (i.e. number of sources to which the user is registered) is the reason for the variation in response times. One can see that for user with \code{id=1}, performance degrades over consecutive versions. Given that for other users the performance does not degrade in the same way, it is probable that the problem might lay elsewhere: the server was overloaded or the endpoint is inherently ``algorithmically slower''. 
 
 
   
