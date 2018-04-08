@@ -4,16 +4,27 @@
 \section{Overhead of the \tool}
 \label{sec:overhead}
 
-\ml{To Do. Or to Drop.}
-
 To know the performance overhead of the \tool, we have implemented an automated benchmark system. It is open source and available online and can be tested by the reader. The benchmark does the following steps: 
 
 \begin{itemize}
 	\item downloads the latest version of the Zeeguu API and installs it in a Docker container
-	\item enables the dasboard and calls several endpoints tracking the response times
-	\item disables the dashboard and calls the same endpoitns tracking the response times
-	\item reports the response times
+	\item calls multiple endpoints for 500 times tracking the response times. the endpoints are called in three configurations
+	\begin{itemize}
+		\item with the dashboard disabled
+		\item with the dashboard enabled but with the outlier detection deactivated
+		\item with the dashboard enabled and the outlier tracking enabled always
+	\end{itemize}
 \end{itemize}
+
+\Fref{fig:bench} shows the results of calling every one of the three endpoints for 500 times. 
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\linewidth]{benchmark}
+	\caption{The distribution of response times when calling the three endpoints for 500 times in three conditions: no dashboard, dashboard but no outliers, dashboard and always outlier routine}
+	\label{fig:bench}
+\end{figure}
 
 Based on running the benchmarking script we can report 
 
