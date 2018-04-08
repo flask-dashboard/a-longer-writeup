@@ -2,6 +2,17 @@
 
 \section{Discussion}
 
+\todo{use this subsection to discuss limitations (from the previous evaluation section) and add the need to be able to handle the horizontal scaling of the application; remove sectioning and summarize briefly limitations that have already been discussed in the VISSOFT paper/move material to other sections; consider renaming as limitations or something similar}
+
+
+- The main goal of the \tool design was to allow analytics to be collected and insight to be gained by making the smallest possible changes to a running API. %To allow the collection of evolutionary information 
+
+- We can do this minimal configuration for any technology. We showed here how to do it for Python and Flask because they are some of the most popular web development technologies at the moment. however, nothing prevents generalization. sure, for different technologies, several components have to be adapted: 
+-- endpoint discovery -- this will be done differently for different technologies
+-- deploying the dashboard as a new endpoint -- this will be also done differently for different technologies 
+--   A further possible extension point here is supporting other version control systems (e.g. Mercurial). However, this is a straightforward extension.
+
+
 - could even start with this: NOTHING PREVENTS GENERALIZATION
 In this article we take as an example the Flask case study
 and of the \tool as a dashboard. 
@@ -11,7 +22,6 @@ our approach to other languages and technologies.
 
 - Lanza has done nice stuff for source code evolution patterns. we need more work on automatic detection of service / endpoint evolution patterns. as exemplified by the utilization evolution.
 
-- We can do this minimal configuration for any technology. We showed here how to do it for Python and Flask because they are some of the most popular web development technologies at the moment.
 
 
 - A Special Type of Outlier: Exceptions. TODO: probably something for the journal extension ...
@@ -44,19 +54,18 @@ our approach to other languages and technologies.
 - outlier detection and monitoring is important. manual exploration is critical. however, one needs a performant way of analyzing multiple logs. in the example we saw we had to use the search facility to investigate our hypothesis that Google Translate was slower than Microsoft Translate. Moreover, these trends might change too... 
 
 
+-   Supporting situations where the API is deployed across multiple containers for example.
+
+-   DETECTING ENDPOINT RENAMES.  The history would normally be lost in the case of an API rename. (also known as the {\em provenance issue} in source code evolution analysis)
+    In theory we could infer that an API endpoint was renamed if it is not to be found anymore, and another one with very similar timing characteristics would be found. Such a detection can never be completely sure, but it would help with meeting the needs of the API maintainer... 
 
 
-\todo{use this subsection to discuss limitations (from the previous evaluation section) and add the need to be able to handle the horizontal scaling of the application; remove sectioning and summarize briefly limitations that have already been discussed in the VISSOFT paper/move material to other sections; consider renaming as limitations or something similar}
-
-  \subsection{Distributed System Monitoring}
-  \todo{To think about}
-  Supporting situations where the API is deployed across multiple containers for example.
 
 
-  \subsubsection{Automatically Monitoring System Evolution}
 
-  The main goal of the \tool design was to allow analytics to be collected and insight to be gained by making the smallest possible changes to a running API. %To allow the collection of evolutionary information 
-%
+
+
+  \subsection*{Limitations of the Current Evolution Approach}
   This technique assumes that the web application code which is the target of the monitoring is deployed using \git in the following way: 
 
   \begin{enumerate}
@@ -64,29 +73,20 @@ our approach to other languages and technologies.
     \item The deployment engineer restarts the new version of the service. At this point, the \tool detects that a new HEAD is present in the local code base and consequently starts associating all the new data points with this new commit\footnote{The \tool detects the current version of the analyzed system the first time it is attached to the application object, and thus, assumes that the Flask application is restarted when a new version is deployed. This is in tune with the current version of Flask, but if the web server will support dynamic updates in the future, this might have to be taken into account}.
   \end{enumerate}
 
-  The advantage of this approach is the need for minimal configuration effort, as discussed in the presentation of the tool. The disadvantage is that it will consider on equal ground the smallest of commits, even one that modifies a comment, and the shortest lived of commits, e.g.~a commit which was active only for a half an hour before a new version with a bug fix was deployed, with major and minor releases of the software. %as a distinct way of grouping the data points. 
+    The advantage of this approach is the need for minimal configuration effort, as discussed in the presentation of the tool. The disadvantage is that it will consider on equal ground the smallest of commits, even one that modifies a comment, and the shortest lived of commits, e.g.~a commit which was active only for a half an hour before a new version with a bug fix was deployed, with major and minor releases of the software. %as a distinct way of grouping the data points. 
   A mechanism to control which versions are important for monitoring purposes is therefore required to be added.
 %
-  A further possible extension point here is supporting other version control systems (e.g. Mercurial). However, this is a straightforward extension.
-
-  \subsubsection{NEW: API Renames}
-  \ml{just an idea}
 
 
-    The history would normally be lost in the case of an API rename. (also known as the {\em provenance issue} in source code evolution analysis)
-    In theory we could infer that an API was renamed if it is not to be found anymore, and another one with very similar timing characteristics would be found. Such a detection can never be completely sure, but it would help with meeting the needs of the API maintainer... 
-
-  \subsubsection{User-Awareness }
-
-    For the situations in which the user information is not available, the \tool tracks by default information about different IPs and in some cases this might be a sufficiently good approximation of the user diversity and identity. 
-    %
+  \subsection*{Limitation of Visualizations }
 
     The visualizations for the user experiene perspectives as presented in Section \ref{sec:user} have been tested with several hundred users (of which about \activeUserCount were active during the course of the study), but the scalability of the visualizations must be further investigated for web services with tens of thousands of users.
 
 
-  \subsubsection{Other Possible Groupings}
+  \subsection*{Allowing Multiple Groupings}
 
-    There are other groupings of service utilization and performance that could be important to the maintainer, that we did not explore in this paper. For example, if the service is using OAuth, then together with every request, in the header of the request there is information about the application which is sending a request. Grouping the information by application that sends the request could be important in such a context. 
-
-    In general, providing a mechanism that would allow very easy specification of groupings (either as code annotations, as normal code, or as configuration options) is an open problem that \tool and any other similar library will have to face.
+  One of the current limitations is that one can only specify one type of grouping. 
+  However, there could be cases where multiple groupins would be desirable. 
+  
+  Grouping the information by client application that sends the request could be important as a complementary grouping even in the current \zee case study. 
 
