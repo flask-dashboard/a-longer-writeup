@@ -37,7 +37,7 @@
   By default the dashboard takes an {\em opt-in} approach to monitoring: to prevent the performance penalties incurred by the dashboard\footnote{We discuss performance issues later.} to affect performance-sensitive endpoints, the service developer is asked to manually define the endpoints they want to monitor. 
    
 
-  One alternative to configuring the monitored endpoints from the user interface is to allow the service developer to annotate the code. This would however pollute the code, and prevent deploying two versions which would monitor different endpoints. Also, would pose problems with endpoint evolution in the future.
+  One alternative to configuring the monitored endpoints from the user interface is to allow the service developer to annotate the code. This would however pollute the code, and prevent deploying two versions which would monitor different endpoints. In addition, it would pose problems with endpoint evolution in the future.
 
   
 \niceseparator
@@ -47,7 +47,7 @@
 
   \begin{itemize}
 
-    \item {\bf Utilization} -- refers to how the third parties use the API, which parts are most used, which are little used, etc. This is known to be critical information for upstream developers in general\cite{Haen14a}. In the case of source code dependencies one can detect such information by analyzing software repositories. However, in the case of services, there is no other way but monitoring service utilization. 
+    \item {\bf Utilization} -- refers to how the third parties use the API, which parts are most used, which are less used, etc. This is known to be critical information for upstream developers in general\cite{Haen14a}. In the case of source code dependencies one can detect such information by analyzing software repositories. However, in the case of services, there is no other way but monitoring service utilization. 
 
     \item {\bf Performance} as measured in response times. Knowing the performance of one's API is critical for the quality of a service API, and especially so for APIs that are supposed to be integrated in live systems. 
 
