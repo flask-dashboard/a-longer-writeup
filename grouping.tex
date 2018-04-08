@@ -6,12 +6,12 @@
 It is sometimes the case that the utilization and performance of an API must be understood not only per endpoint, but also by grouping the requests by another criterion. Two such examples are: 
 \begin{itemize}
 	\item When a service has diferent types of users (e.g. the paying vs. the free-for-evaluation ones, or the in-house vs. those in a different organization) the maintainer must understand the performance for the different groups
-	\item When the load mix o the users can vary dramatically and the system response time is a function of the individual user load\footnote{E.g. in GMail some users have a few dozen emails while other have tens of thousands: this difference in user loads will eventually induce a difference in the response times for different users} the maintainer must understand the variation of performance with the users (and implicitly the user load).
+	\item When the load mix of the users can vary dramatically and the system response time is a function of the individual user load\footnote{E.g. in GMail some users have a few dozen emails while other have tens of thousands: this difference in user loads will eventually induce a difference in the response times for different users} the maintainer must understand the variation of performance with the users (and implicitly the user load).
 \end{itemize}
 
 To support narrowing down the analysis to groups of users, or even individual users, the \tool can log together with every request grouping information for that request. The simplest way of achieving this is to take advantage of the architecture of Flask applications in which a global \code{flask.request} is used to retrieve session information which can in turn is normally used to identify the user sending the request. From the user one can obtain the group. 
 
-\niceseparator
+%\niceseparator
 
 The following code snippet shows how we enabled \tool to enable user-by-user analysis\footnote{If we wanted to group by the user group for example, the code would change slightly by replacing ``user.id'' with ``user.group.id''}: 
 
@@ -37,7 +37,7 @@ The \code{dashboard.config.group\_by} is assigned a tuple with two elements, in 
 
 
 In Zeeguu, it was decided to further understand the per-user performance of \epFeedItems
---  an endpoint that retrieves a list of recommended articles for a given user.
+~---  an endpoint that retrieves a list of recommended articles for a given user.
 It is the endpoint with the slowest response time and highest variability (see \Fref{fig:ep}). 
 
 
@@ -53,7 +53,7 @@ After configuring the \tool as shown earlier, the \perspective{Per-User Endpoint
 
 The reason for this behavior is that a user can be subscribed to anything from one to three dozen 
 article sources and for each of the sources the system computed the personalized difficulty 
-of each article at every request. Only after seeing the two perspectives presented in Figures \ref{fig:ep} and \ref{fig:tpu}, the maintainer refactored the architecture of the system to move the difficulty computation out of the interactive loop.
+of each article at every request. After seeing the two perspectives presented in Figures \ref{fig:ep} and \ref{fig:tpu}, the \zee maintainer refactored the architecture of the system to move this difficult computation out of the interactive loop.
 
 
 

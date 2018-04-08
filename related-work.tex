@@ -3,11 +3,12 @@
 \section{Related Work}
 \label{sec:related}
 
-\todo{Refer the reader to~\cite{ghezzi2007run} and ~\cite{metzger2010analytical} for a more extensive discussion}
+Service monitoring data are increasingly being used and more across a variety of systems in which adaptability, flexibility, and environmental awareness are essential~\cite{pernici2016monitoring}. Monitoring can be performed on different types of system components and for several purposes. Service-oriented literature on the subject discussed the multitude of aspects related to monitoring for services; the interested reader is referred to ~\cite{ghezzi2007run},~\cite{metzger2010analytical}, or more recently~\cite{pernici2016monitoring} for an extensive presentation of the subject. 
 
+In this context, our work falls within the server-side run-time monitoring of services ~\cite{ghezzi2007run}. While we don't implement the more advanced features of related monitoring solutions like QoS policies driving the monitoring, it presents nevertheless an easy to use approach towards improving the performance of web applications. The emphasis in this work is given in identifying the appropriate way to visualize the monitoring data.
+  
 There is a long tradition of using visualization for gaining insight into software performance. Tools like Jinsight \cite{Pauw02a} and Web Services Navigator \cite{Pauw05} pioneered such an approach for Java and for Web Services that communicate with SOAP messages. Both have an ``omniscient'' view of the services / objects and their interactions. As opposed to them, in our work we present an analytics platform which focuses on monitoring a single Python web service from its own point of view.
 
-From the perspective of service monitoring, our work falls within the server-side run-time monitoring of services ~\cite{ghezzi2007run}. While we don't implement the more advanced features of related monitoring solutions like QoS policies driving the monitoring, it presents nevertheless an easy to use approach support improving the performance of web applications. 
 
 % \va{Mircea: Consider removing the rest for space...}
 % An existing monitoring tool is Pingdom \footnote{https://www.pingdom.com/company/why-pingdom}, which monitors the uptime of an existing web-service. This tool works by pinging the websites (up to 60 times) every minute automatically. Thus this creates a lot of overhead and is bound to be noisy since it will also be influenced by the speed of the network connection\footnote{Another problem is that such a tool would }
