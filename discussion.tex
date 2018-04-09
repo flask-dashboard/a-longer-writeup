@@ -52,12 +52,18 @@
     A mechanism to control which versions are important for monitoring purposes is therefore required to be added.
 
 
-  \subsection*{Monitoring Failures} 
+  \subsection*{Endpoint Provenance }
 
-    A Special Type of Outlier: Exceptions. TODO: probably something for the journal extension ...statistics about which endpoints fail most often might be useful too.
-    same information as the outlier maybe?
+    The \tool can not detect endpoint renames, and thus the history is normally lost in the case of an API rename. The problem can be approached in a similar way to the {\em provenance problem} in source code evolution analysis)\cite{Davi11a} by infering that a newly introduced endpoint with similar patterns of request traffic might be the same as one that is not used anymore. Since this would still be a statistic approach, the integration in the tool would have to ask the user for a confirmation. 
+    However, this would work better in a system where endpoint tracking is activated by default for all the endpoints. Otherwise, it would require the user to remember to always enable the tracking of the new endpoint. 
 
-    - tracking other types of information: exceptions, etc. especially since logs usually get lost... nobody has time to look in them...
+
+  % \subsection*{Monitoring Failures} 
+
+  %   A Special Type of Outlier: Exceptions. TODO: probably something for the journal extension ...statistics about which endpoints fail most often might be useful too.
+  %   same information as the outlier maybe?
+
+  %   - tracking other types of information: exceptions, etc. especially since logs usually get lost... nobody has time to look in them...
 
 
   \subsection*{Multiple Containers}
@@ -80,14 +86,6 @@
     - We need more advanced outlier analysis tools... Instead of manually searching in the page to build stats about Google vs. Microsoft
 
     - outlier detection and monitoring is important. manual exploration is critical. however, one needs a performant way of analyzing multiple logs. in the example we saw we had to use the search facility to investigate our hypothesis that Google Translate was slower than Microsoft Translate. Moreover, these trends might change too... 
-
-
-  \subsection*{Endpoint Provenance }
-
-    -   DETECTING ENDPOINT RENAMES.  The history would normally be lost in the case of an API rename. (also known as the {\em provenance issue} in source code evolution analysis)
-    In theory we could infer that an API endpoint was renamed if it is not to be found anymore, and another one with very similar timing characteristics would be found. Such a detection can never be completely sure, but it would help with meeting the needs of the API maintainer... 
-
-
 
 
 
