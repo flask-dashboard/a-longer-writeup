@@ -27,10 +27,16 @@ To measure the performance overhead of the \tool, we have implemented an automat
 
 \input{overhead-table}
 
-	The data shows that the dashboard (without outliers) introduces for the faster endpoints an overhead of ~14ms and for the slower endpoint an overhead of ~40ms. 
-	In the case of an outlier, the overhead is doubled, so the design decision of only collecting the outlier information in the exceptional situations is correct.
+	The three endpoints that are tested fall in two categories of complexity: 
+	\begin{itemize}
+		\item The two fast ones, are very simple. 
+		The first returns a list of language codes which are defined in the code, so it does not touch the DB. The second does a simple read from the database. 
+		\item The slower endpoint, does several complex writes to the database, so this is why it is much slower. However, in our case study, about half of the measured endpoints were at least as slow as this one, so its response time is representative.
+	\end{itemize}
 
-	Depending on the application this might be acceptable or this might be too much. In the case of the \zee case study, the maintainers find this acceptable. 
+	The data shows that the dashboard (without outliers) introduces for the faster endpoints an overhead of ~14ms and for the slower endpoint an overhead of ~40ms. 
+	In the case of an outlier, the overhead is doubled, so the design decision of only collecting the extra information only for outliers is valid.
+	Depending on the application these numbers might be acceptable or this might be too much. In the case of the \zee case study, the maintainers find this acceptable. 
 
 
 
