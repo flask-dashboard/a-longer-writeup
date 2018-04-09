@@ -12,7 +12,7 @@
 
   We can use the same approach for other technologies. We showed here how to do it for Python and Flask because they are some of the most popular web development technologies at the moment. However, we hope that this will not prevent the reader from seeing the more general idea. All the interactive perspectives we show here for Flask can be applied to other service technologies (e.g. Django) by simply providing a few back-end adapters in the right places (e.g. endpoint discovery, the \code{/dashboard} endpoint deployment). 
 
-  However, the presented approach also comes with several limitations.
+  However, the presented approach also comes with several limitations. Some of these limitations might also represent challenges for the future builders of similar tools.
 
   \subsection*{The Dashboard Overhead}
 
@@ -25,7 +25,7 @@
     One limitation of the benchmarking is that it does not use a more realistic mix of workload, but rather, measures individual endpoints. It might be that multiple concurrent and diverse endpoints would have different performance impact. In fact, based on the data in the dashboard one could actually construct a statistically relevant workload mix. 
 
 
-  \subsection*{Lack of Proof of Adoptability}
+  \subsection*{Lack of Empirical Proof of Ease of Adoptability}
 
     We designed the dashboard to make it easy to adopt and we think this is to a certain degree apparent. However, we have only presented a single use case where the API developers have used the dashboard. It would be worthwile to organize a dedicated study to observe the challenges and opportunities of the adoption of such a dashboard. It will also be important to see whether the perspectives presented here are relevant for other developers, and also which other perspectives are missing.
 
@@ -35,14 +35,9 @@
   %   The visualizations for the user experiene perspectives as presented in Section \ref{sec:user} have been tested with several hundred users (of which about \activeUserCount were active during the course of the study), but the scalability of the visualizations must be further investigated for web services with tens of thousands of users.
 
 
-  \subsection*{Flexibility: Allowing Multiple Groupings}
+  \subsection*{Lack of Flexibility in Allowing Multiple Groupings}
 
-    To be agile, a tool has to be easily adaptable to different usage scenarios. 
-
-    One of the current limitations is that one can only specify one type of grouping. 
-    However, there could be cases where multiple groupins would be desirable. 
-    
-    Grouping the information by client application that sends the request could be important as a complementary grouping even in the current \zee case study. 
+    To be agile, a tool has to be easily adaptable to different usage scenarios. However, currently one of the current limitations of \tool is that that one can only specify one type of grouping. This is insufficient for the cases where multiple groupings are desirable. In the \zee case study this need emerged in the context in which it would be good to grouping the requests also by the client application that sends the request.
 
   \subsection*{Limitations of the Current Approach to Evolution Monitoring}
 
