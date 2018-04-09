@@ -3,7 +3,16 @@
 \section{Related Work}
 \label{sec:related}
 
-Service monitoring data are increasingly being used and more across a variety of systems in which adaptability, flexibility, and environmental awareness are essential~\cite{pernici2016monitoring}. Monitoring can be performed on different types of system components and for several purposes. Service-oriented literature on the subject discussed the multitude of aspects related to monitoring for services; the interested reader is referred to ~\cite{ghezzi2007run},~\cite{metzger2010analytical}, or more recently~\cite{pernici2016monitoring} for an extensive presentation of the subject. 
+% testing... the performacen
+% there is plenty of work on testing for finding fauls
+% people: https://scholar.google.nl/citations?user=DWd972sAAAAJ&hl=en&oi=ao
+
+
+A rich body of work exists that studies the evolution and maintenance of APIs from the perspective of source code evolution \cite{dig2006apis, hora2015developers, hora2015apiwave}. However, since service monitoring data are increasingly being used across a variety of systems in which adaptability, flexibility, and environmental awareness are essential~\cite{pernici2016monitoring} in our work we focus on the analysis of the runtime aspects of services. There has been also a large body of work on using dynamic analysis in order to support the reverse engineering of software systems\cite{Corn09-dynamic}: in our work we focus more on understanding the usage of a system or service from the perspective of its clients.
+
+Monitoring can be performed on different types of system components and for several purposes. Service-oriented literature on the subject discussed the multitude of aspects related to monitoring for services; the interested reader is referred to ~\cite{ghezzi2007run},~\cite{metzger2010analytical}, or more recently~\cite{pernici2016monitoring} for an extensive presentation of the subject. 
+
+
 
 In this context, our work falls within the server-side run-time monitoring of services ~\cite{ghezzi2007run}. While we don't implement the more advanced features of related monitoring solutions like QoS policies driving the monitoring, it presents nevertheless an easy to use approach towards improving the performance of web applications. The emphasis in this work is given in identifying the appropriate way to visualize the monitoring data.
   
@@ -12,6 +21,7 @@ There is a long tradition of using visualization for gaining insight into softwa
 
 In their work Baresi and Guinea have proposed the Multi-layer Collection and Constraint Language (mlCCL) which allows them to define how to collect, aggregate, and analyze runtime data in a multi-layered system. They also present ECoWare, a framework for event correlation and aggregation that supports mlCCL, and provides a dashboard for on-line and off-line drill-down analyses of collected data \cite{Bare13-monitoring}.
 
+Our 
 - Lanza has done nice stuff for source code evolution patterns. we need more work on automatic detection of service / endpoint evolution patterns. as exemplified by the utilization evolution.
 
 
