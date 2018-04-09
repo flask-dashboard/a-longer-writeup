@@ -20,9 +20,19 @@
 
     One of the downsides of the current implementation is the fact that the dashboard runs in the same process as the main application and that Python only supports green threads. The performance could be greatly improved if instead the Dashboard would be run in a different process, and the information would be posted to it by using a messaging service. However, that would complicate the installation and configuration, and for this kind of architecture, there are also other alternatives.
 
-  \subsection*{Limitation of Visualizations }
 
-    The visualizations for the user experiene perspectives as presented in Section \ref{sec:user} have been tested with several hundred users (of which about \activeUserCount were active during the course of the study), but the scalability of the visualizations must be further investigated for web services with tens of thousands of users.
+  \subsection*{Limitations of the Measurements}
+    One limitation of the benchmarking is that it does not use a more realistic mix of workload, but rather, measures individual endpoints. It might be that multiple concurrent and diverse endpoints would have different performance impact. In fact, based on the data in the dashboard one could actually construct a statistically relevant workload mix. 
+
+
+  \subsection*{Lack of Proof of Adoptability}
+
+    We designed the dashboard to make it easy to adopt and we think this is to a certain degree apparent. However, we have only presented a single use case where the API developers have used the dashboard. It would be worthwile to organize a dedicated study to observe the challenges and opportunities of the adoption of such a dashboard. It will also be important to see whether the perspectives presented here are relevant for other developers, and also which other perspectives are missing.
+
+
+  % \subsection*{Limitation of Visualizations }
+
+  %   The visualizations for the user experiene perspectives as presented in Section \ref{sec:user} have been tested with several hundred users (of which about \activeUserCount were active during the course of the study), but the scalability of the visualizations must be further investigated for web services with tens of thousands of users.
 
 
   \subsection*{Flexibility: Allowing Multiple Groupings}
@@ -34,7 +44,7 @@
     
     Grouping the information by client application that sends the request could be important as a complementary grouping even in the current \zee case study. 
 
-  \subsection*{Limitations of the Current Evolution Approach}
+  \subsection*{Limitations of the Current Approach to Evolution Monitoring}
 
     This technique assumes that the web application code which is the target of the monitoring is deployed using \git in the following way: 
 
@@ -82,9 +92,6 @@
     -   DETECTING ENDPOINT RENAMES.  The history would normally be lost in the case of an API rename. (also known as the {\em provenance issue} in source code evolution analysis)
     In theory we could infer that an API endpoint was renamed if it is not to be found anymore, and another one with very similar timing characteristics would be found. Such a detection can never be completely sure, but it would help with meeting the needs of the API maintainer... 
 
-  \subsection*{Ease of Use}
-
-    - We designed the dashboard to make it easy to adopt. However, we still have to run a study on the challenges and opportunities of the adoption of such a dashboard. 
 
 
 
