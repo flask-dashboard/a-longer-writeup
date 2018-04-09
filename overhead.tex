@@ -1,6 +1,6 @@
 %!TEX root=paper.tex
   
-
+\newpage
 \section{Overhead of the \tool}
 \label{sec:overhead}
 
@@ -21,12 +21,14 @@ To know the performance overhead of the \tool, we have implemented an automated 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=\linewidth]{benchmark.pdf}
+	\includegraphics[width=\linewidth]{benchmark2.pdf}
 	\caption{The distribution of response times when calling the three endpoints for 500 times in three conditions: no dashboard, dashboard but no outliers, dashboard and always outlier routine}
 	\label{fig:bench}
 \end{figure}
 
-Based on running the benchmarking script we can report 
+We run the benchmarking script on a quad-core machine, with Intel Core i5-4590 processor, @ 3.30GHz, 8G of RAM and 240GB SSD disk drive.
+
+
 
 Observation -- not easy to benchmark this... it's flask on top of python communicating with 
 
