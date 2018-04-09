@@ -9,7 +9,7 @@
 
   The \tool is designed to take advantage of the fact that it runs in the same context as the web application it monitors, and that the monitored API already has a web presence. It thus simply makes available one extra endpoint (i.e. \code{/dashboard}) at the same address as the API, which serves the interactive application presented in the remainder of this paper. 
 
-  A dashboard can be attached to an already existing Flask application with a single line of code~\cite{vogel2017low} as the following snippet shows\footnote{We do not count the import statement that enables that line.}:
+  A dashboard can be attached to an already existing Flask application with a single line of code \citationwithheld as the following snippet shows\footnote{We do not count the import statement that enables that line.}:
 
 
   \begin{lstlisting}[style=custompython]
@@ -23,13 +23,11 @@
 
   During binding, the \tool will search for all endpoints defined in the target application and make them available in the dashboard in an interactive configuration panel (\Fref{fig:sep}). The panel presents all the automatically discovered endpoints and lets the user select the ones that should be monitored (the checkboxes in the last column). When the user enables the monitoring of an endpoint a function wrapper is added to the implementation of that endpoint (which is a function in Flask). The information is also saved in a database such that it is persistent across application restarts. 
 
-  \va{\Fref{fig:sep} needs to be updated --- it still has 2017 dates}
-
   % In order to monitor an endpoint, the \tool creates a function wrapper for the API function that corresponds to the endpoint. This way, the wrapper will be executed whenever that API call is made before the actual function is called. The wrapper contains the code that takes care of monitoring an endpoint. 
 
     \begin{figure}[h]
       \centering
-      \includegraphics[width=0.8\linewidth]{selecting_endpoints.png}
+      \includegraphics[width=\linewidth]{selecting_endpoints.png}
       \caption{Once connected to an API the Dashboard presents the endpoints that are available for monitoring}
       \label{fig:sep}
     \end{figure}
