@@ -53,6 +53,10 @@ our approach to other languages and technologies.
 
 - outlier detection and monitoring is important. manual exploration is critical. however, one needs a performant way of analyzing multiple logs. in the example we saw we had to use the search facility to investigate our hypothesis that Google Translate was slower than Microsoft Translate. Moreover, these trends might change too... 
 
+- Performance. We have provided a mechanism for measuring performance, and showed a glimpse into the overhead imposed by the first version of the Dashboard. For our case study the overhead is acceptable, but for performance critical applications, it might be too large. One of the downsides of the current implementation is the fact that the dashboard runs in the same process as the main application and that Python only supports green threads. The performance could be greatly improved if instead the Dashboard would be run in a different process, and the information would be posted to it by using a messaging service. However, that would complicate the installation and configuration, and for this kind of architecture, there are also other alternatives.
+
+- We designed the dashboard to make it easy to adopt. However, we still have to run a study on the challenges and opportunities of the adoption of such a dashboard. 
+
 
 -   Supporting situations where the API is deployed across multiple containers for example.
 
