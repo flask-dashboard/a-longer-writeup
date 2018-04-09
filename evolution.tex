@@ -29,19 +29,19 @@ dashboard.config.git = 'path/to/.git'
 
     \begin{figure}[h!]
       \centering
-      \includegraphics[width=\linewidth]{utilization-evolution}
+      \includegraphics[width=\linewidth]{utilization-evolution.pdf}
       \caption{Evolving Endpoint Utilization Across System Versions}
       \label{fig:mv-util}
     \end{figure}
 
   \Fref{fig:mv-util} shows the \perspective{Multi-Version API Utilization} perspective which presents the utilization of the tracked endpoints across versions. The view is a matrix, in which, the intensity of the color at the intersection of an endpoint line and a version column is proportional to the percentage of requests served by that endpoint in that particular version\footnote{The chart does not plot the absolute utilization of that endpoint in that version but rather the percentage of all the API calls that go to that endpoint. Otherwise a version that is deployed for many weeks would make all those deployed for a few days invisible}.
 
-  With this view, several patterns could be visible on such a graph:
+  Several patterns could be visible on such a graph:
   \begin{itemize}
     
-    \item Endpoints being deprecated. In the case study, \epFeedItems stops being used somewhere after the half of the presented timeline.
+    \item Endpoints being deprecated. In the case study, \epFeedItemsColor stops being used somewhere after the half of the presented timeline.
 
-    \item Endpoints being introduced. In the case study, \epTopArticles appears soon after the half o the presented timeline. 
+    \item Endpoints being introduced. In the case study, \epTopArticlesColor appears soon after the half o the presented timeline. 
 
     \item Endpoint renames. Although not visible in the figure, the candidates for rename would be made easily visible as one would be discontinued at the same time when the other would appear. 
 

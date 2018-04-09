@@ -11,7 +11,7 @@
   
   One way of triangulating such an observation is by monitoring the evolution of the performance of the endpoints when tested with a constant load across versions. Thus, if the performance decreases in a new version, and the endpoint in question is tested with a constant load the problem must be the endpoint implementation. 
 
-  \subsection*{Integrating with CI Servers}
+  \subsection*{Integrating with Continuous Integration Servers}
 
   To monitor endpoint performance with a constant load \tool takes advantage of two best practices in software evolution: (1) an API must have unit tests for its endpoints, and (2) these unit tests will be run within a Continuous Integration (CI) server. By tracking the timing of these unit tests one can obtain a perspective on endpoint performance evolution with a constant load (as long as the unit tests do not change). 
 
