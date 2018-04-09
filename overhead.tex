@@ -4,19 +4,17 @@
 \section{Overhead of the \tool}
 \label{sec:overhead}
 
-To know the performance overhead of the \tool, we have implemented an automated benchmark system. It is open source and available online and can be tested by the reader. The benchmark does the following steps: 
+To measure the performance overhead of the \tool, we have implemented an automated benchmarking system. It is open source and available online and can be tested by the reader. The benchmark downloads the latest version of the \zee API and installs it in a Docker container. Then it calls several selected endpoints for 500 times each, tracking the response times. The endpoints are called in three different configurations: 
 
-\begin{itemize}
-	\item downloads the latest version of the Zeeguu API and installs it in a Docker container
-	\item calls multiple endpoints for 500 times tracking the response times. the endpoints are called in three configurations
-	\begin{itemize}
-		\item with the dashboard disabled
-		\item with the dashboard enabled but with the outlier detection deactivated
-		\item with the dashboard enabled and the outlier tracking enabled always
-	\end{itemize}
-\end{itemize}
+	\begin{enumerate}
+		\item With the dashboard disabled
+		\item With the dashboard enabled but with the outlier detection deactivated
+		\item With the dashboard enabled and the outlier treshold set to zero. This helps us measure the time usually spent in an outlier.
+	\end{enumerate}
 
-\Fref{fig:bench} shows the results of calling every one of the three endpoints for 500 times. 
+
+
+\Fref{fig:bench} shows using violin plots the distribution of times resulting from running the benchmark for three different endpoints on a quad-core machine, with Intel Core i5-4590 processor, @ 3.30GHz, 8G of RAM and 240GB SSD disk drive.
 
 
 \begin{figure}[h!]
@@ -26,8 +24,8 @@ To know the performance overhead of the \tool, we have implemented an automated 
 	\label{fig:bench}
 \end{figure}
 
-We run the benchmarking script on a quad-core machine, with Intel Core i5-4590 processor, @ 3.30GHz, 8G of RAM and 240GB SSD disk drive.
 
+\input{overhead-table}
 
 
 Observation -- not easy to benchmark this... it's flask on top of python communicating with 

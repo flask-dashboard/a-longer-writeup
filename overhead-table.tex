@@ -1,0 +1,35 @@
+%!TEX root=paper.tex
+
+\newcommand{\yes}{YES}
+
+\begin{table}[tb]
+	
+	\centering
+
+	\begin{tabular}{rllrr}
+		\toprule
+		\bfseries Endpoint & \bfseries Dashboard & \bfseries Outliers & \bfseries Mean (ms) & \bfseries SD (ms) \\
+
+		\midrule
+
+	         available\_languages  &    &	    &   6.3 &  2.3 \\ 
+	         available\_languages  &  \yes &    &  19.9 &  5.6 \\ 
+	         available\_languages  &  \yes &  \yes &  29.4 &  5.4 \\ \\ 
+
+	                user\_article  &    &	    &  13.9 &  2.6 \\
+	                user\_article  &  \yes &    &  26.9 &  3.2 \\
+	                user\_article  &  \yes &  \yes &  44.8 & 10.0 \\ \\
+
+	    create\_default\_ex...     &    &	    &  76.0 & 22.4 \\ 
+	    create\_default\_ex...     &  \yes &    & 313.6 & 43.2 \\
+	    create\_default\_ex...     &  \yes &  \yes & 385.3 & 16.9 \\
+	
+		\bottomrule
+
+	\end{tabular}
+	\caption{Descriptive statistics of the response times reported by running the benchmark}
+	\label{tab:benchmark}
+
+\end{table}
+
+
