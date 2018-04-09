@@ -16,8 +16,7 @@ To support narrowing down the analysis to groups of users, or even individual us
 The following code snippet shows how we enabled \tool to enable user-by-user analysis\footnote{If we wanted to group by the user group for example, the code would change slightly by replacing ``user.id'' with ``user.group.id''}: 
 
 \begin{lstlisting}[style=custompython]  
-# LOC #2: configure the dashboard
-# to group requests by the user id
+# LOC #2: group requests by user id
 dashboard.config.group_by = 'User',
   lambda: Session.find(flask.request).user.id
 
@@ -43,8 +42,8 @@ It is the endpoint with the slowest response time and highest variability (see \
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=.7\linewidth]{time_per_user}
-  \caption{The \epFeedItems shows a very high variability across users}
+  \includegraphics[width=.66\linewidth]{time_per_user}
+  \caption{And endpoint with a high variability across users}
   \label{fig:tpu}
 \end{figure}
 

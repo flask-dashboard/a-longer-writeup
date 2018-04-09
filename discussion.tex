@@ -48,14 +48,7 @@
 
   \subsection*{Limitations to Evolution Monitoring}
 
-    This technique assumes that the web application code which is the target of the monitoring is deployed using \git in the following way: 
-
-    \begin{enumerate}
-      \item The deployment engineer pulls the latest version of the code from the integration server; this will result in a new commit being pointed at by the \code{HEAD} pointer. %than previously
-      \item The deployment engineer restarts the new version of the service. At this point, the \tool detects that a new \code{HEAD} is present in the local code base and consequently starts associating all the new data points with this new commit\footnote{The \tool detects the current version of the analyzed system the first time it is attached to the application object, and thus, assumes that the Flask application is restarted when a new version is deployed. This is in tune with the current version of Flask, but if the web server will support dynamic updates in the future, this might have to be taken into account}.
-    \end{enumerate}
-
-      The advantage of this approach is the need for minimal configuration effort, as discussed in the presentation of the \tool. The disadvantage is that it will consider on equal ground the smallest of commits, even one that modifies a comment, and the shortest lived of commits, e.g.~a commit which was active only for a half an hour before a new version with a bug fix was deployed, with major and minor releases of the software. %as a distinct way of grouping the data points. 
+      The advantage of the presented approach to evolution monitoring based on observing the \code{.git} folder is the need for minimal configuration effort, as discussed in the presentation of the \tool. The disadvantage is that it will consider on equal ground the smallest of commits, even one that modifies a comment, and the shortest lived of commits, e.g.~a commit which was active only for a half an hour before a new version with a bug fix was deployed, with major and minor releases of the software. %as a distinct way of grouping the data points. 
     A mechanism to control which versions are important for monitoring purposes is therefore required to be added to the \tool.
 
 

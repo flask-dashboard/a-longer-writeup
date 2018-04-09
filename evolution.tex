@@ -13,7 +13,6 @@
   For \tool to start using Git, an extra configuration line enables it to automatically\footnote{Alternatively, the maintainer can add version identifiers manually for the web application through a configuration file if the system does not use Git.} associate API traffic with the currently deployed version based on information in the .git folder \footnote{\url{https://git-scm.com/}}: 
     
 \begin{lstlisting}[style=custompython]
-
 # LOC #3: provide the dashboard with 
 # information on where to find 
 # git information 
@@ -22,6 +21,7 @@ dashboard.config.git = 'path/to/.git'
       
 \end{lstlisting}  
  
+    This technique assumes that the web application code which is the target of the monitoring is deployed using \git by pulling the latest version of the code from the integration server; this will result in a new commit being pointed at by the \code{HEAD} pointer. Thus, when the deployment engineer restarts the new version of the service, the \tool detects that a new \code{HEAD} is present in the local code base and consequently starts associating all the new data points with this new commit. The \tool detects the current version of the analyzed system the first time it is attached to the application object, and thus, assumes that the Flask application is restarted when a new version is deployed. This would not work in the presence of dynamic updates.
 
   
 
@@ -29,8 +29,8 @@ dashboard.config.git = 'path/to/.git'
 
     \begin{figure}[h!]
       \centering
-      \includegraphics[width=0.9\linewidth]{utilization-evolution}
-      \caption{The Evolution of All the API Endpoints Utilization Across System Versions}
+      \includegraphics[width=\linewidth]{utilization-evolution}
+      \caption{Evolving Endpoint Utilization Across System Versions}
       \label{fig:mv-util}
     \end{figure}
 
@@ -54,8 +54,8 @@ dashboard.config.git = 'path/to/.git'
 
     \begin{figure}[h!]
       \centering
-      \includegraphics[width=0.85\linewidth]{translation_endpoint_evolution_}
-      \caption{The Performance Evolution of the \epTranslations endpoint}
+      \includegraphics[width=0.97\linewidth]{translation_endpoint_evolution_}
+      \caption{Endpoint performance across three versions}
       \label{fig:tee}
     \end{figure}
 

@@ -1,7 +1,6 @@
 %!TEX root=paper.tex
 
 
-\vspace{1cm}
   \section{Performance Triangulation With Regression Monitoring}
   \label{sec:testing}
 
@@ -41,9 +40,9 @@ python -m flask_monitoringdashboard.collect
 
 
   \subsection*{Preemptive Monitoring}
-  The concept of {\em preemptive monitoring} of the application performance by means of instrumenting integration unit testing as the synthetic load is similar to the idea of augmenting service monitoring with online testing~\cite{metzger2010proactive}, i.e.~testing service-based applications by using dedicated test input in parallel to its normal use and operation. The difference is that we take advantage of the capability of the CI framework to create an emulated ``live'' environment for integration testing purposes, and use unit testing as the dedicated test input in order to measure performance. 
+  The concept of {\em preemptive monitoring} of the application performance by means of instrumenting integration unit testing as the synthetic load is similar to the idea of augmenting service monitoring with online testing~\cite{metzger2010proactive}, i.e.~testing service-based applications by using dedicated test input in parallel to its normal use and operation. The difference is that we take advantage of the capability of the CI framework to create an emulated ``live'' environment for integration testing purposes, and use unit testing as the dedicated test input. % in order to measure performance. 
   
-  While this integration testing environment is different from the production one, and the load used is purely synthetic, it can serve as an early performance indicator for the developer.  \Fref{fig:response_times_preemptive} shows the actual endpoint response times across five versions of the system (above) and the corresponding testing times for the synthetic load in the same five versions (below). The green line joining the medians hints to a correlation between the two sets of measurements. 
+  While this integration testing environment is different from the production one, and the load used is purely synthetic, it can serve as an early performance indicator for the developer.  \Fref{fig:response_times_preemptive} shows the actual endpoint response times across five versions of the system (above) and the corresponding testing times for the synthetic load in the same five versions (below). 
 
       \begin{figure}[h!]
         \centering
@@ -53,12 +52,13 @@ python -m flask_monitoringdashboard.collect
         \advance\leftskip-0.2cm
         \includegraphics[width=0.5\columnwidth]{travis_builds_no_outliers_trend}
         \caption{The reported response time (in ms) per deployed version in the observation period: 
-        in the actual deployment (above) and using integration with Travis (below)}        
+        in the actual deployment (above) and using integration with Travis (below). 
+        Green line hints to a correlation between the two sets of measurements. }        
         
         \label{fig:response_times_preemptive}
       \end{figure}
 
-  Computing Pearson correlation ($r(3)=.93, p=.02$) between the median values of the two datasets (cf. Table \ref{tab:correlations}) shows that there is indeed a correlation between the two. Further investigation on the characteristics of this observation is currently ongoing and it will be elaborated further in future work.
+  Computing Pearson correlation ($r(3)=.93, p=.02$) between the median values of the two datasets (cf. Table \ref{tab:correlations}) shows a correlation between the two. Further investigation on the characteristics of this observation is currently ongoing and it will be elaborated further in future work.
 
 
     \begin{table}[h]
