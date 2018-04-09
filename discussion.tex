@@ -7,27 +7,33 @@
 
   The main goal of the \tool design was to allow analytics to be collected and insight to be gained by making the smallest possible changes to a running API. 
 
-  In this paper we present the integration with APIs written in Python and Flask hoping that this will not prevent the reader from seeing the more general idea; all the tools we show here for Flask can be applied to other API technologies (e.g. Django) by simply providing a few back-end adapters in the right places.
+  %In this paper we present the integration with APIs written in Python and Flask hoping that this will not prevent the reader from seeing the more general idea; all the tools we show here for Flask can be applied to other API technologies (e.g. Django) by simply providing a few back-end adapters in the right places.
 
+  The presented approach was centered around an API written in Python and Flask, but, in principle, 
+  we can use the same approach for other technologies. We showed here how to do it for Python and Flask because they are some of the most popular web development technologies at the moment. However,
+  % we hope that this will not prevent the reader from seeing the more general idea. All 
+  all the interactive perspectives we developed can be equally applied to other service technologies (e.g. Django) by simply providing a few back-end adapters in the right places (e.g. endpoint discovery, the \code{/dashboard} endpoint deployment, etc.)
+  As such, our approach is more generic than the technologies that it relies upon for its implementation. 
 
-  We can use the same approach for other technologies. We showed here how to do it for Python and Flask because they are some of the most popular web development technologies at the moment. However, we hope that this will not prevent the reader from seeing the more general idea. All the interactive perspectives we show here for Flask can be applied to other service technologies (e.g. Django) by simply providing a few back-end adapters in the right places (e.g. endpoint discovery, the \code{/dashboard} endpoint deployment). 
-
-  However, the presented approach also comes with several limitations. Some of these limitations might also represent challenges for the future builders of similar tools.
+  At the same time, the presented approach also comes with several limitations. Some of these limitations might also represent challenges for the future builders of similar tools.
 
   \subsection*{The Dashboard Overhead}
 
     We have provided a mechanism for measuring performance, and showed a glimpse into the overhead imposed by the first version of the Dashboard. For our case study the overhead is acceptable, but for performance critical applications, it might be too large. 
 
-    One of the downsides of the current implementation is the fact that the dashboard runs in the same process as the main application and that Python only supports green threads. The performance could be greatly improved if instead the Dashboard would be run in a different process, and the information would be posted to it by using a messaging service. However, that would complicate the installation and configuration, and for this kind of architecture, there are also other alternatives.
+    One of the downsides of the current implementation is the fact that the dashboard runs in the same process as the main application and that Python only supports green threads. The performance could be greatly improved if instead the dashboard would run in a different process, %and the information would be posted to it by using a messaging service.
+    and a message queue was used to allow the decoupling of the monitoring itself from the persistence of measurements to the dashboard DB. 
+    However, that would complicate the installation and configuration of the \tool.
+    %, and for this kind of architecture, there are also other alternatives.
 
 
   \subsection*{Limitations of the Measurements}
-    One limitation of the benchmarking is that it does not use a more realistic mix of workload, but rather, measures individual endpoints. It might be that multiple concurrent and diverse endpoints would have different performance impact. In fact, based on the data in the dashboard one could actually construct a statistically relevant workload mix. 
+    One limitation of the benchmarking we used in Section~\ref{sec:overhead} is that it does not use a more realistic mix of workload, but rather, measures individual endpoints. It might be that multiple concurrent and diverse endpoints would result into different performance impact. In fact, based on the data in the dashboard one could actually construct a statistically relevant workload mix. At this point, this constitutes future work.
 
 
   \subsection*{Lack of Empirical Proof of Ease of Adoptability}
 
-    We designed the dashboard to make it easy to adopt and we think this is to a certain degree apparent. However, we have only presented a single use case where the API developers have used the dashboard. It would be worthwile to organize a dedicated study to observe the challenges and opportunities of the adoption of such a dashboard. It will also be important to see whether the perspectives presented here are relevant for other developers, and also which other perspectives are missing.
+    We designed the dashboard to make it easy to adopt and we think this is to a certain degree apparent. However, we have only presented a single use case where the API developers have used the dashboard. It would be worthwhile to organize a dedicated study to observe the challenges and opportunities of the adoption of such a dashboard across different applications. It will also be important to see whether the perspectives presented here are relevant for other developers, and also which other perspectives are missing.
 
 
   % \subsection*{Limitation of Visualizations }
@@ -37,24 +43,24 @@
 
   \subsection*{Lack of Flexibility in Allowing Multiple Groupings}
 
-    To be agile, a tool has to be easily adaptable to different usage scenarios. However, currently one of the current limitations of \tool is that that one can only specify one type of grouping. This is insufficient for the cases where multiple groupings are desirable. In the \zee case study this need emerged in the context in which it would be good to grouping the requests also by the client application that sends the request.
+    To be agile, a tool has to be easily adaptable to different usage scenarios. However, currently one of the current limitations of \tool is that that one can specify only one type of grouping. This is insufficient for cases where multiple groupings are desirable. In the \zee case study this need emerged in the context in which it would be good to grouping the requests also by the client application that sends the request. This feature is currently under development.
 
-  \subsection*{Limitations of the Current Approach to Evolution Monitoring}
+  \subsection*{Limitations to Evolution Monitoring}
 
     This technique assumes that the web application code which is the target of the monitoring is deployed using \git in the following way: 
 
     \begin{enumerate}
-      \item The deployment engineer pulls the latest version of the code from the integration server; this will result in a new commit being pointed at by the HEAD pointer. %than previously
-      \item The deployment engineer restarts the new version of the service. At this point, the \tool detects that a new HEAD is present in the local code base and consequently starts associating all the new data points with this new commit\footnote{The \tool detects the current version of the analyzed system the first time it is attached to the application object, and thus, assumes that the Flask application is restarted when a new version is deployed. This is in tune with the current version of Flask, but if the web server will support dynamic updates in the future, this might have to be taken into account}.
+      \item The deployment engineer pulls the latest version of the code from the integration server; this will result in a new commit being pointed at by the \code{HEAD} pointer. %than previously
+      \item The deployment engineer restarts the new version of the service. At this point, the \tool detects that a new \code{HEAD} is present in the local code base and consequently starts associating all the new data points with this new commit\footnote{The \tool detects the current version of the analyzed system the first time it is attached to the application object, and thus, assumes that the Flask application is restarted when a new version is deployed. This is in tune with the current version of Flask, but if the web server will support dynamic updates in the future, this might have to be taken into account}.
     \end{enumerate}
 
-      The advantage of this approach is the need for minimal configuration effort, as discussed in the presentation of the tool. The disadvantage is that it will consider on equal ground the smallest of commits, even one that modifies a comment, and the shortest lived of commits, e.g.~a commit which was active only for a half an hour before a new version with a bug fix was deployed, with major and minor releases of the software. %as a distinct way of grouping the data points. 
-    A mechanism to control which versions are important for monitoring purposes is therefore required to be added.
+      The advantage of this approach is the need for minimal configuration effort, as discussed in the presentation of the \tool. The disadvantage is that it will consider on equal ground the smallest of commits, even one that modifies a comment, and the shortest lived of commits, e.g.~a commit which was active only for a half an hour before a new version with a bug fix was deployed, with major and minor releases of the software. %as a distinct way of grouping the data points. 
+    A mechanism to control which versions are important for monitoring purposes is therefore required to be added to the \tool.
 
 
   \subsection*{Endpoint Provenance }
 
-    The \tool can not detect endpoint renames, and thus the history is normally lost in the case of an API rename. The problem can be approached in a similar way to the {\em provenance problem} in source code evolution analysis)\cite{Davi11a} by infering that a newly introduced endpoint with similar patterns of request traffic might be the same as one that is not used anymore. Since this would still be a statistic approach, the integration in the tool would have to ask the user for a confirmation. 
+    The \tool can not detect endpoint renames, and thus the history is normally lost in the case of an API rename. The problem can be approached in a similar way to the {\em provenance problem} in source code evolution analysis)\cite{Davi11a} by inferring that a newly introduced endpoint with similar patterns of request traffic might be the same as one that is not used anymore. Since this would still be a statistical approach, the integration in the tool would have to ask the user for confirmation. 
     However, this would work better in a system where endpoint tracking is activated by default for all the endpoints. Otherwise, it would require the user to remember to always enable the tracking of the new endpoint. 
 
 
@@ -66,22 +72,24 @@
   %   - tracking other types of information: exceptions, etc. especially since logs usually get lost... nobody has time to look in them...
 
 
-  \subsection*{Multiple Containers}
+  \subsection*{Performance Prediction}
 
-  -   Supporting situations where the API is deployed across multiple containers for example.
-  \ml{@V: Do you want to add this? Or can we skip it?}
+	In Section~\ref{sec:testing} we provided evidence towards our assumption that integration testing can be used for performance triangulation across service versions. The idea is to use a synthetic load based on unit testing to drive endpoints before they are deployed in production and observe whether performance improves or deteriorates on a version by version basis. The next logical step is to use this information for performance prediction purposes. A full blown performance prediction feature would require advanced statistical work, but it can be used as an advanced warning system for the overall performance trend for a given set of endpoints. As discussed in Section~\ref{sec:testing} however further evaluation of this feature is currently ongoing.
 
+  \subsection*{Distributed Deployment}
 
-  \subsection*{Performance Regressions}
+	Last but not least, the presented approach and case study assume that the monitored Flask application is deployed as a single node, i.e. without support for horizontal scaling by means of replication~\cite{vaquero2011dynamically}  --- or at least that the application owner is interested in monitoring each application deployment in isolation. This is a clear limitation of this work which we are already working towards addressing by allowing multiple application instances to be registered with the same dashboard, essentially providing a ``meta-dashboard'' approach through which application endpoint performance and utilization can be monitored and visualized in a unified way. Due to the addition of an orthogonal to the service evolution dimension that the \tool currently supports, this requires a significant effort of re-engineering on our part.   
+	
+	
+%	-   Supporting situations where the API is deployed across multiple containers for example.
+%	\ml{@V: Do you want to add this? Or can we skip it?}
 
-    - Although predicting the performance of the application would require advanced statistical work, it can be succesfully used as an advanced warning system for the overall performance trend for given endpoints.
-
-    - threats to the validity of the constant-load performance testing. performance regressions? 
-
-
-    - time as measured in days and commits are two sides of the same coin. 
-
-    \ml{@V: do you want to give a first stab to this?}
+%    - threats to the validity of the constant-load performance testing. performance regressions? 
+%
+%
+%    - time as measured in days and commits are two sides of the same coin. 
+%
+%    \ml{@V: do you want to give a first stab to this?}
 
 
   % \subsection*{Advanced Outlier Analysis}
