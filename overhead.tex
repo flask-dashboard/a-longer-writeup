@@ -7,20 +7,20 @@
 To measure the performance overhead of the \tool, we have implemented an automated benchmarking system. It is open source and available online and can be tested by the reader. The benchmark downloads the latest version of the \zee API and installs it in a Docker container. Then it calls several selected endpoints for 500 times each, tracking the response times. The endpoints are called in three different configurations: 
 
 	\begin{enumerate}
-		\item With the dashboard disabled
+		\item With no dashboard installed
 		\item With the dashboard enabled but with the outlier detection deactivated
-		\item With the dashboard enabled and the outlier treshold set to zero. This helps us measure the time usually spent in an outlier.
+		\item With the dashboard enabled and the outlier treshold set to zero, thus effectively treating every request {\em like it were an outlier}\footnote{This forces all the requests to be treated as outliers, and thus provides insight into this situation, which otherwise would be hard to generate}.
 	\end{enumerate}
 
 
 
-\Fref{fig:bench} shows using violin plots the distribution of times resulting from running the benchmark for three different endpoints on a quad-core machine, with Intel Core i5-4590 processor, @ 3.30GHz, 8G of RAM and 240GB SSD disk drive.
+\Fref{fig:bench} and Table \ref{tab:benchmark} present with descriptive statistics and respectively violin plots the distribution of times resulting from running the benchmark for three different endpoints on a quad-core machine, with Intel Core i5-4590 processor, @ 3.30GHz, 8G of RAM and 240GB SSD disk drive.
 
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{benchmark2.pdf}
-	\caption{The distribution of response times when calling the three endpoints for 500 times in three conditions: no dashboard, dashboard but no outliers, dashboard and always outlier routine}
+	\caption{The distribution of response times when calling the three endpoints for 500 times in three conditions: no dashboard, dashboard but no outliers, dashboard and every request treated as an outlier}
 	\label{fig:bench}
 \end{figure}
 

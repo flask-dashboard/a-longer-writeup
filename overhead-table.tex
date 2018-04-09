@@ -1,6 +1,6 @@
 %!TEX root=paper.tex
 
-\newcommand{\yes}{YES}
+\newcommand{\yes}{\checkmark}
 
 \begin{table}[tb]
 	
@@ -8,7 +8,7 @@
 
 	\begin{tabular}{rllrr}
 		\toprule
-		\bfseries Endpoint & \bfseries Dashboard & \bfseries Outliers & \bfseries Mean (ms) & \bfseries SD (ms) \\
+		\bfseries Endpoint & \bfseries Dash. & \bfseries All Out. & \bfseries Mean (ms) & \bfseries SD (ms) \\
 
 		\midrule
 
@@ -20,14 +20,14 @@
 	                user\_article  &  \yes &    &  26.9 &  3.2 \\
 	                user\_article  &  \yes &  \yes &  44.8 & 10.0 \\ \\
 
-	    create\_default\_ex...     &    &	    &  76.0 & 22.4 \\ 
+	    create\_default\_ex...     &    &	    &  276.0 & 22.4 \\ 
 	    create\_default\_ex...     &  \yes &    & 313.6 & 43.2 \\
 	    create\_default\_ex...     &  \yes &  \yes & 385.3 & 16.9 \\
 	
 		\bottomrule
 
 	\end{tabular}
-	\caption{Descriptive statistics of the response times reported by running the benchmark}
+	\caption{Response times for three endpoints run 500 times in three different conditions each. Dash. = with dashboard. All Out. = every call being considered an outlier}
 	\label{tab:benchmark}
 
 \end{table}
