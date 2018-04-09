@@ -66,11 +66,17 @@ Email: \{first.last\}@university.to
 \section{Conclusion and Future Work}
 \label{sec:conclusions}
 
-\todo{update as appropriate}
+In the previous sections we discussed our proposal for a monitoring dashboard for Flask-based web applications as the means for providing a low effort and flexible analytics solution to projects on a budget. The emphasis is in allowing application developers to gain insight into how the performance and utilization of their services evolves together with the application itself. For this purpose the \tool allows for integration with both \git and the Travis continuous integration platform for a seamless user experience. We also discussed more advanced features of the dashboard in the form of grouping results by user groups, and provided evidence towards the use of unit testing-sourced synthetic loads as a limited form of performance prediction. Finally we measured the overhead of the proposed solution within acceptable by the case study application owner limits, and discussed what we perceive as limitations of our proposal in Section~\ref{sec:discussion}.
 
-In this paper we have shown that it is possible to create a monitoring solution which provides basic insight into web service utilization and performance  with very little effort from the developer. The user group that we are aiming for with this work is application developers using Flask and Python to build web applications with limited or no budget for implementing their own monitoring solutions. The emphasis is in allowing such users to gain insight into how the performance of the service evolves together with the application itself. We believe that the same architecture, and lessons can be applied to other frameworks and other languages.
+The same section effectively acts also as a roadmap for further development of the \tool. Some of the tasks have already been identified as ongoing work (allowing different types of grouping, enabling performance prediction, developing a meta-dashboard) while others constitute short- to medium-term future work (identification of important versions to be monitored, support for endpoint provenance) with the ultimate goal of increasing the adoption of the \tool by as many projects as possible. This will allow us to evaluate our proposal in depth in the future.
 
-In the future, we plan to perform case studies with other sytstems, with the goal of discover other needs and to wean out the less useful visualizations in the \tool. We plan to also extend the tool towards supporting multiple deployments of the same applications across multiple nodes (e.g. for the situations where the application is deployed together with a load balancer). Finally, we plan to integrate \tool with unit testing as a complementary source of information about performance evolution.
+\va{@Mircea: see what you can add in the above, if any}
+
+%\todo{update as appropriate}
+%
+%In this paper we have shown that it is possible to create a monitoring solution which provides basic insight into web service utilization and performance  with very little effort from the developer. The user group that we are aiming for with this work is application developers using Flask and Python to build web applications with limited or no budget for implementing their own monitoring solutions. The emphasis is in allowing such users to gain insight into how the performance of the service evolves together with the application itself. We believe that the same architecture, and lessons can be applied to other frameworks and other languages.
+%
+%In the future, we plan to perform case studies with other sytstems, with the goal of discover other needs and to wean out the less useful visualizations in the \tool. We plan to also extend the tool towards supporting multiple deployments of the same applications across multiple nodes (e.g. for the situations where the application is deployed together with a load balancer). Finally, we plan to integrate \tool with unit testing as a complementary source of information about performance evolution.
 
 
 
