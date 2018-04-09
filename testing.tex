@@ -19,7 +19,8 @@
 
 
   \begin{lstlisting}[style=custompython]  
-# LOC #4: to be added to the .travis.yml file
+
+# LOC #4: is added to the .travis.yml file
 python -m flask_monitoringdashboard.collect
    --test_folder=./tests_zeeguu_api --times=5 
    --url=https://zeeguu.unibe.ch/api/dashboard
@@ -30,7 +31,7 @@ python -m flask_monitoringdashboard.collect
 
       \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.85\columnwidth]{travis_builds-bw}
+        \includegraphics[width=\columnwidth]{travis_builds-bw}
         \caption{Response times in 5 consequent Travis builds}
         \label{fig:builds}
       \end{figure}

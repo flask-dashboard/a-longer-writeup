@@ -32,9 +32,6 @@
     One limitation of the benchmarking we used in Section~\ref{sec:overhead} is that it does not use a more realistic mix of workload, but rather, measures individual endpoints. It might be that multiple concurrent and diverse endpoints would result into different performance impact. In fact, based on the data in the dashboard one could actually construct a statistically relevant workload mix. At this point, this constitutes future work.
 
 
-  \subsection*{Lack of Empirical Proof of Ease of Adoptability}
-
-    We designed the dashboard to make it easy to adopt and we think this is to a certain degree apparent. However, we have only presented a single use case where the API developers have used the dashboard. It would be worthwhile to organize a dedicated study to observe the challenges and opportunities of the adoption of such a dashboard across different applications. It will also be important to see whether the perspectives presented here are relevant for other developers, and also which other perspectives are missing.
 
 
   % \subsection*{Limitation of Visualizations }
@@ -74,6 +71,12 @@
 
 	Last but not least, the presented approach and case study assume that the monitored Flask application is deployed as a single node, i.e. without support for horizontal scaling by means of replication~\cite{vaquero2011dynamically}  --- or at least that the application owner is interested in monitoring each application deployment in isolation. This is a clear limitation of this work which we are already working towards addressing by allowing multiple application instances to be registered with the same dashboard, essentially providing a ``meta-dashboard'' approach through which application endpoint performance and utilization can be monitored and visualized in a unified way. Due to the addition of an orthogonal to the service evolution dimension that the \tool currently supports, this requires a significant effort of re-engineering on our part.   
 	
+
+
+  \subsection*{Need of Further Proof of Usefulness and Ease of Adoptability}
+
+    We designed the dashboard to make it easy to adopt and we think this is to a certain degree apparent. However, we have only presented a single use case where the API developers have used the dashboard. It has been successfull, since based on the dashboard, the developers have become aware of the limitations of their service APIs and have started improving it. However, we belive that it will be worthwhile to organize a dedicated study to observe the challenges and opportunities of the adoption of such a dashboard across different applications. It will also be important to see whether the perspectives presented here are relevant for other developers, and also which other perspectives are missing.
+  
 	
 %	-   Supporting situations where the API is deployed across multiple containers for example.
 %	\ml{@V: Do you want to add this? Or can we skip it?}
