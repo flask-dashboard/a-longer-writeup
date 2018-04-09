@@ -14,7 +14,7 @@ To measure the performance overhead of the \tool, we have implemented an automat
 
 
 
-\Fref{fig:bench} and Table \ref{tab:benchmark} present with descriptive statistics and respectively violin plots the distribution of times resulting from running the benchmark for three different endpoints on a quad-core machine, with Intel Core i5-4590 processor, @ 3.30GHz, 8G of RAM and 240GB SSD disk drive.
+\Fref{fig:bench} and Table \ref{tab:benchmark} present with violin plots and respectively descriptive statistics the distribution of times resulting from running the benchmark for three different endpoints on a quad-core machine, with Intel Core i5-4590 processor, @ 3.30GHz, 8G of RAM and 240GB SSD disk drive.
 
 
 \begin{figure}[h!]
@@ -27,10 +27,11 @@ To measure the performance overhead of the \tool, we have implemented an automat
 
 \input{overhead-table}
 
+	The data shows that the dashboard (without outliers) introduces for the faster endpoints an overhead of ~14ms and for the slower endpoint an overhead of ~40ms. 
+	In the case of an outlier, the overhead is doubled, so the design decision of only collecting the outlier information in the exceptional situations is correct.
 
-Observation -- not easy to benchmark this... it's flask on top of python communicating with 
+	Depending on the application this might be acceptable or this might be too much. In the case of the \zee case study, the maintainers find this acceptable. 
 
-- this introspection, which looks up endpoints, happens only once at the startup of the service, so it is going to affect the API startup performance, but not the actual endpoint performance. In our case, the overhead here was quite small: TO MEASURE
 
 
   
