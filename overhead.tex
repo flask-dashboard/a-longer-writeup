@@ -7,7 +7,7 @@
 To measure the performance overhead of the \tool, we have implemented an automated benchmarking system. It is open source and available online and can be tested by the reader\footnote{\em [The link will be added after deanonymization]}. The benchmark downloads the latest version of the \zee API and installs it in a Docker container. Then it calls several selected endpoints for 500 times each, tracking the response times. The endpoints are called in three different configurations: 
 
 	\begin{enumerate}
-		\item With no dashboard installed.
+		\item With no dashboard installed.
 		\item With the dashboard enabled but with the outlier detection deactivated.
 		\item With the dashboard enabled and the outlier threshold set to zero, thus effectively treating every request {\em like it were an outlier}.\footnote{This forces all the requests to be treated as outliers, and thus provides insight into this situation, which otherwise would be hard to generate}.
 	\end{enumerate}
